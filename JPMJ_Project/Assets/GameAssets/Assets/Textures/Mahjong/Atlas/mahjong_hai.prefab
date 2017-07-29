@@ -1,0 +1,526 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &123514
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 423514}
+  - 114: {fileID: 11423514}
+  m_Layer: 0
+  m_Name: mahjong_hai
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &423514
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 123514}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &11423514
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 123514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d0c51bb0b6e93049af5e88f93826e3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: 34969fac9e469904580e4747f56ca385, type: 2}
+  mSprites:
+  - name: c_5
+    x: 81
+    y: 376
+    width: 34
+    height: 51
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 7
+    paddingRight: 7
+    paddingTop: 6
+    paddingBottom: 7
+  - name: c_4
+    x: 0
+    y: 18
+    width: 31
+    height: 38
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 7
+    paddingRight: 10
+    paddingTop: 12
+    paddingBottom: 14
+  - name: c_1
+    x: 118
+    y: 460
+    width: 39
+    height: 52
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 5
+    paddingRight: 4
+    paddingTop: 7
+    paddingBottom: 5
+  - name: c_6
+    x: 116
+    y: 385
+    width: 40
+    height: 42
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 5
+    paddingRight: 3
+    paddingTop: 10
+    paddingBottom: 12
+  - name: mj_bg
+    x: 0
+    y: 428
+    width: 58
+    height: 84
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 0
+    paddingRight: 0
+    paddingTop: 0
+    paddingBottom: 0
+  - name: mj_bg_back
+    x: 59
+    y: 428
+    width: 58
+    height: 84
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 0
+    paddingRight: 0
+    paddingTop: 0
+    paddingBottom: 0
+  - name: c_2
+    x: 32
+    y: 225
+    width: 34
+    height: 42
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 7
+    paddingRight: 7
+    paddingTop: 10
+    paddingBottom: 12
+  - name: tiao_1
+    x: 158
+    y: 459
+    width: 38
+    height: 53
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 5
+    paddingRight: 5
+    paddingTop: 10
+    paddingBottom: 1
+  - name: tiao_2
+    x: 235
+    y: 462
+    width: 10
+    height: 50
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 18
+    paddingRight: 20
+    paddingTop: 11
+    paddingBottom: 3
+  - name: tiao_3
+    x: 191
+    y: 378
+    width: 32
+    height: 49
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 8
+    paddingRight: 8
+    paddingTop: 12
+    paddingBottom: 3
+  - name: tiao_4
+    x: 0
+    y: 57
+    width: 26
+    height: 50
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 11
+    paddingRight: 11
+    paddingTop: 11
+    paddingBottom: 3
+  - name: tiao_5
+    x: 98
+    y: 270
+    width: 31
+    height: 50
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 8
+    paddingRight: 9
+    paddingTop: 11
+    paddingBottom: 3
+  - name: tiao_6
+    x: 66
+    y: 270
+    width: 31
+    height: 50
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 9
+    paddingRight: 8
+    paddingTop: 11
+    paddingBottom: 3
+  - name: tiao_7
+    x: 130
+    y: 269
+    width: 30
+    height: 51
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 9
+    paddingRight: 9
+    paddingTop: 10
+    paddingBottom: 3
+  - name: tiao_8
+    x: 224
+    y: 377
+    width: 31
+    height: 50
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 7
+    paddingRight: 10
+    paddingTop: 11
+    paddingBottom: 3
+  - name: tiao_9
+    x: 34
+    y: 268
+    width: 31
+    height: 52
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 8
+    paddingRight: 9
+    paddingTop: 10
+    paddingBottom: 2
+  - name: tong_1
+    x: 104
+    y: 232
+    width: 34
+    height: 35
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 7
+    paddingRight: 7
+    paddingTop: 15
+    paddingBottom: 14
+  - name: tong_2
+    x: 230
+    y: 273
+    width: 23
+    height: 47
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 11
+    paddingRight: 14
+    paddingTop: 10
+    paddingBottom: 7
+  - name: tong_3
+    x: 39
+    y: 381
+    width: 41
+    height: 46
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 4
+    paddingRight: 3
+    paddingTop: 10
+    paddingBottom: 8
+  - name: tong_4
+    x: 196
+    y: 276
+    width: 33
+    height: 44
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 7
+    paddingRight: 8
+    paddingTop: 13
+    paddingBottom: 7
+  - name: tong_5
+    x: 161
+    y: 276
+    width: 34
+    height: 44
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 7
+    paddingRight: 7
+    paddingTop: 13
+    paddingBottom: 7
+  - name: tong_6
+    x: 0
+    y: 108
+    width: 28
+    height: 51
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 10
+    paddingRight: 10
+    paddingTop: 10
+    paddingBottom: 3
+  - name: tong_7
+    x: 197
+    y: 458
+    width: 37
+    height: 54
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 6
+    paddingRight: 5
+    paddingTop: 7
+    paddingBottom: 3
+  - name: tong_8
+    x: 0
+    y: 160
+    width: 28
+    height: 53
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 10
+    paddingRight: 10
+    paddingTop: 7
+    paddingBottom: 4
+  - name: tong_9
+    x: 0
+    y: 376
+    width: 38
+    height: 51
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 6
+    paddingRight: 4
+    paddingTop: 9
+    paddingBottom: 4
+  - name: w_1
+    x: 157
+    y: 379
+    width: 33
+    height: 48
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 6
+    paddingRight: 9
+    paddingTop: 13
+    paddingBottom: 3
+  - name: w_2
+    x: 204
+    y: 323
+    width: 33
+    height: 52
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 7
+    paddingRight: 8
+    paddingTop: 9
+    paddingBottom: 3
+  - name: w_3
+    x: 102
+    y: 322
+    width: 33
+    height: 53
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 5
+    paddingRight: 10
+    paddingTop: 8
+    paddingBottom: 3
+  - name: w_4
+    x: 170
+    y: 323
+    width: 33
+    height: 52
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 6
+    paddingRight: 9
+    paddingTop: 9
+    paddingBottom: 3
+  - name: w_5
+    x: 136
+    y: 323
+    width: 33
+    height: 52
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 7
+    paddingRight: 8
+    paddingTop: 9
+    paddingBottom: 3
+  - name: w_6
+    x: 68
+    y: 321
+    width: 33
+    height: 54
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 6
+    paddingRight: 9
+    paddingTop: 7
+    paddingBottom: 3
+  - name: w_7
+    x: 0
+    y: 321
+    width: 33
+    height: 54
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 5
+    paddingRight: 10
+    paddingTop: 7
+    paddingBottom: 3
+  - name: w_8
+    x: 0
+    y: 268
+    width: 33
+    height: 52
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 6
+    paddingRight: 9
+    paddingTop: 9
+    paddingBottom: 3
+  - name: w_9
+    x: 34
+    y: 321
+    width: 33
+    height: 54
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 8
+    paddingRight: 7
+    paddingTop: 7
+    paddingBottom: 3
+  - name: c_3
+    x: 67
+    y: 229
+    width: 36
+    height: 38
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 8
+    paddingRight: 4
+    paddingTop: 13
+    paddingBottom: 13
+  - name: c_7
+    x: 0
+    y: 214
+    width: 31
+    height: 53
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 10
+    paddingRight: 7
+    paddingTop: 5
+    paddingBottom: 6
+  mPixelSize: 1
+  mReplacement: {fileID: 0}
+  mCoordinates: 0
+  sprites: []
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 123514}
+  m_IsPrefabParent: 1
