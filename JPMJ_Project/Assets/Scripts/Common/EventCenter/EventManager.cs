@@ -1,13 +1,18 @@
-﻿using UnityEngine;
+﻿/**
+ * EventManager
+ * singleton event manager
+ * brandy added
+ */
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-
-public class EventManager 
+public class EventManager
 {
     private List<IObserver> _observerList = null;
 
-    private EventManager() 
+    private EventManager()
     {
         _observerList = new List<IObserver>();
     }
@@ -15,8 +20,11 @@ public class EventManager
     private static EventManager instance = null;
     public static EventManager Get()
     {
-        if(instance == null)
+        if (instance == null)
+        {
             instance = new EventManager();
+        }
+
         return instance;
     }
 
@@ -28,32 +36,41 @@ public class EventManager
     }
 
 
-    public void addObserver(IObserver observer) 
+    public void addObserver(IObserver observer)
     {
-        if(observer == null)
+        if (observer == null)
             return;
-        
-        if(!_observerList.Contains(observer))
+
+        if (!_observerList.Contains(observer))
             _observerList.Add(observer);
     }
-    public void removeObserver(IObserver observer) 
+
+    public void removeObserver(IObserver observer)
     {
-        if(observer == null)
+        if (observer == null)
+        {
             return;
-        
-        if(_observerList.Contains(observer))
+        }
+
+        if (_observerList.Contains(observer))
+        {
             _observerList.Remove(observer);
+        }
+
     }
 
 
     // send ui event.
-    public void SendEvent(UIEventType eventType, params object[] args) 
+    public void SendEvent(UIEventType eventType, params object[] args)
     {
-        for( int i = 0; i < _observerList.Count; i++ ) 
+        int count = _observerList.Count;
+        for (int i = 0; i < count; i++)
         {
             IObserver observer = (IObserver)_observerList[i];
-            if( observer != null )
+            if (observer != null)
+            {
                 observer.OnHandleEvent(eventType, args);
+            }
         }
     }
 }

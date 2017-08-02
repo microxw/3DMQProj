@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿/**
+ * Utils
+ * tool functions
+ * brandy added
+ */
+
+using UnityEngine;
 using System.Collections;
 
 public class Utils 

@@ -1,32 +1,38 @@
-﻿using System.Collections.Generic;
+﻿/**
+ * PlayerAction
+ * player's action and state
+ * brandy added
+ */
+
+using System.Collections.Generic;
 
 public enum EActionState
 {
-    None           = 0,
+    None = 0,
 
-    Select_Agari   = 1, // ron or tsumo. and enable sute hai.
-    Select_Sutehai = 2,
+    Select_Agari = 1, // 炮胡或者自摸. and enable sute hai.
+    Select_Sutehai = 2, // 舍牌
 
-    Select_Reach   = 3,
-    Select_Chii    = 4,
-    Select_Kan     = 5,
+    Select_Reach = 3,
+    Select_Chii = 4, // 吃
+    Select_Kan = 5, // 杠
 }
 
 public enum EActionType
 {
-    Pon    = 0,
-    Chii   = 1,
-    Kan    = 2,
-    Reach  = 3,
-    Tsumo  = 4,
-    Ron    = 5,
-    Nagashi= 6,
+    Pon = 0,  // 碰
+    Chii = 1,  // 吃
+    Kan = 2,  // 杠
+    Reach = 3,
+    Tsumo = 4,  // 自摸
+    Ron = 5,  // 炮胡
+    Nagashi = 6,
 
-    RyuuKyoku = 7,
+    RyuuKyoku = 7, //流局
 }
 
 
-public class PlayerAction 
+public class PlayerAction
 {
     public const int Chii_Select_Left = 0;
     public const int Chii_Select_Center = 1;
@@ -78,67 +84,67 @@ public class PlayerAction
     private EResponse _response = EResponse.Nagashi;
     public EResponse Response
     {
-        get{ return _response; }
-        set{ _response = value; }
+        get { return _response; }
+        set { _response = value; }
     }
 
     private EActionState _state = EActionState.None;
     public EActionState State
     {
-        get{ return _state; }
-        set{ _state = value; }
+        get { return _state; }
+        set { _state = value; }
     }
 
 
     public const int Sutehai_Index_Max = 13;
 
-    // 捨牌のインデックス
+    // 舍牌的索引
     private int _sutehaiIndex = Sutehai_Index_Max;
     public int SutehaiIndex
     {
-        get{ return _sutehaiIndex; }
-        set{ _sutehaiIndex = value; }
+        get { return _sutehaiIndex; }
+        set { _sutehaiIndex = value; }
     }
 
 
-    // ロンが可能
+    // 炮胡的可能
     private bool _validRon;
     public bool IsValidRon
     {
-        get{ return _validRon; }
-        set{ _validRon = value; }
+        get { return _validRon; }
+        set { _validRon = value; }
     }
 
-    // ツモが可能
+    // 自摸的可能
     private bool _validTsumo;
     public bool IsValidTsumo
     {
-        get{ return _validTsumo; }
-        set{ _validTsumo = value; }
+        get { return _validTsumo; }
+        set { _validTsumo = value; }
     }
 
-    // ポンが可能
+    // 碰的可能
     private bool _validPon;
     public bool IsValidPon
     {
-        get{ return _validPon; }
-        set{ _validPon = value; }
+        get { return _validPon; }
+        set { _validPon = value; }
     }
 
-    // Reachが可能
+    // 听牌的可能
     private bool _validReach;
     public bool IsValidReach
     {
-        get{ return _validReach; }
-        set{ _validReach = value; }
+        get { return _validReach; }
+        set { _validReach = value; }
     }
 
     // all reach hai index
     private List<int> _reachHaiIndexList = new List<int>();
     public List<int> ReachHaiIndexList
     {
-        get{ return _reachHaiIndexList; }
-        set{ _reachHaiIndexList = value; }
+        get { return _reachHaiIndexList; }
+        set { _reachHaiIndexList = value; }
     }
 
 
@@ -151,36 +157,40 @@ public class PlayerAction
     private List<Hai> _allSarashiHais = new List<Hai>();
     public List<Hai> AllSarashiHais
     {
-        get{ return _allSarashiHais; }
-        protected set{ _allSarashiHais = value; }
+        get { return _allSarashiHais; }
+        protected set { _allSarashiHais = value; }
     }
 
     protected void SetAnySarashiHai(List<Hai> sarashiHai)
     {
-        if(sarashiHai == null) return;
+        if (sarashiHai == null) return;
 
         IsValidChii = true;
-        for( int i = 0; i < sarashiHai.Count; i++ )
+        int count = sarashiHai.Count;
+        Hai sHai = null;
+        for (int i = 0; i < count; i++)
         {
-            if( !AllSarashiHais.Exists( h=>h.ID == sarashiHai[i].ID ) )
-                AllSarashiHais.Add( new Hai(sarashiHai[i]) );
+            sHai = sarashiHai[i];
+            if (!AllSarashiHais.Exists(h => h.ID == sHai.ID))
+            {
+                AllSarashiHais.Add(new Hai(sHai));
+            }
         }
     }
-
 
     // chii left
     private bool _validChiiLeft = false;
     public bool IsValidChiiLeft
     {
-        get{ return _validChiiLeft; }
-        protected set{ _validChiiLeft = value; }
+        get { return _validChiiLeft; }
+        protected set { _validChiiLeft = value; }
     }
 
     private List<Hai> _sarashiHaiLeft = new List<Hai>();
     public List<Hai> SarashiHaiLeft
     {
-        get{ return _sarashiHaiLeft; }
-        protected set{ _sarashiHaiLeft = value; }
+        get { return _sarashiHaiLeft; }
+        protected set { _sarashiHaiLeft = value; }
     }
 
     public void setValidChiiLeft(bool validChii, List<Hai> sarashiHai)
@@ -195,15 +205,15 @@ public class PlayerAction
     private bool _validChiiCenter = false;
     public bool IsValidChiiCenter
     {
-        get{ return _validChiiCenter; }
-        protected set{ _validChiiCenter = value; }
+        get { return _validChiiCenter; }
+        protected set { _validChiiCenter = value; }
     }
 
     private List<Hai> _sarashiHaiCenter = new List<Hai>();
     public List<Hai> SarashiHaiCenter
     {
-        get{ return _sarashiHaiCenter; }
-        protected set{ _sarashiHaiCenter = value; }
+        get { return _sarashiHaiCenter; }
+        protected set { _sarashiHaiCenter = value; }
     }
 
     public void setValidChiiCenter(bool validChii, List<Hai> sarashiHai)
@@ -218,15 +228,15 @@ public class PlayerAction
     private bool _validChiiRight = false;
     public bool IsValidChiiRight
     {
-        get{ return _validChiiRight; }
-        protected set{ _validChiiRight = value; }
+        get { return _validChiiRight; }
+        protected set { _validChiiRight = value; }
     }
 
     private List<Hai> _sarashiHaiRight = new List<Hai>();
     public List<Hai> SarashiHaiRight
     {
-        get{ return _sarashiHaiRight; }
-        protected set{ _sarashiHaiRight = value; }
+        get { return _sarashiHaiRight; }
+        protected set { _sarashiHaiRight = value; }
     }
 
     public void setValidChiiRight(bool validChii, List<Hai> sarashiHai)
@@ -239,33 +249,33 @@ public class PlayerAction
     #endregion
 
 
-    // AnKan or KaKanが可能
+    // 暗杠和加杠的可能
     private bool _validTsumoKan = false;
     public bool IsValidTsumoKan
     {
-        get{ return _validTsumoKan; }
-        protected set{ _validTsumoKan = value; }
+        get { return _validTsumoKan; }
+        protected set { _validTsumoKan = value; }
     }
 
     private List<Hai> _tsumoKanHais = new List<Hai>();
     public List<Hai> TsumoKanHaiList
     {
-        get{ return _tsumoKanHais; }
-        protected set{ _tsumoKanHais = value; }
+        get { return _tsumoKanHais; }
+        protected set { _tsumoKanHais = value; }
     }
 
-    public void setValidTsumoKan(bool validKan, List<Hai> kanHais) 
+    public void setValidTsumoKan(bool validKan, List<Hai> kanHais)
     {
         _validTsumoKan = validKan;
         _tsumoKanHais = kanHais;
     }
 
-    // DaiMinKanが可能
+    // 大明杠的可能
     private bool _validDaiMinKan = false;
     public bool IsValidDaiMinKan
     {
-        get{ return _validDaiMinKan; }
-        set{ _validDaiMinKan = value; }
+        get { return _validDaiMinKan; }
+        set { _validDaiMinKan = value; }
     }
 
 
@@ -273,42 +283,38 @@ public class PlayerAction
     private List<EActionType> _menuList = new List<EActionType>();
     public List<EActionType> MenuList
     {
-        get{ return _menuList; }
+        get { return _menuList; }
     }
 
 
     private int _reachSelectIndex = 0;
-    /// <summary>
-    /// Gets or sets the index of the ReachHaiIndexList
-    /// </summary>
+    // Gets or sets the index of the ReachHaiIndexList
     public int ReachSelectIndex
     {
-        get{ return _reachSelectIndex; }
-        set{ _reachSelectIndex = value; }
+        get { return _reachSelectIndex; }
+        set { _reachSelectIndex = value; }
     }
 
     private int _ponSelectIndex = 0;
     public int PonSelectIndex
     {
-        get{ return _ponSelectIndex; }
-        set{ _ponSelectIndex = value; }
+        get { return _ponSelectIndex; }
+        set { _ponSelectIndex = value; }
     }
 
     private int _kanSelectIndex = 0;
-    /// <summary>
-    /// Gets or sets the selected index of the TsumoKanHaiList
-    /// </summary>
+    // Gets or sets the selected index of the TsumoKanHaiList
     public int KanSelectIndex
     {
-        get{ return _kanSelectIndex; }
-        set{ _kanSelectIndex = value; }
+        get { return _kanSelectIndex; }
+        set { _kanSelectIndex = value; }
     }
 
     private int _chiiSelectType = 0;
     public int ChiiSelectType
     {
-        get{ return _chiiSelectType; }
-        set{ _chiiSelectType = value; }
+        get { return _chiiSelectType; }
+        set { _chiiSelectType = value; }
     }
     #endregion
 }

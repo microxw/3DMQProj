@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿/**
+ * GameManager
+ * singleton game manager
+ * brandy added
+ */
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
@@ -12,7 +18,7 @@ public class GameManager : StateMachine, IObserver
         return _instance;
     }
 
-    private MahjongMain mahjong;
+    private MahjongMain mahjong; //it's the game logic manager
     public MahjongMain LogicMain
     {
         get { return mahjong; }
@@ -36,9 +42,10 @@ public class GameManager : StateMachine, IObserver
     }
 
 
+    //create instance here
     void Awake() {
-        _instance = this;
-        mahjong = new MahjongMain();
+        _instance = this; //GetComponent<GameManager>()
+		mahjong = new MahjongMain();
     }
 
     void Start() {

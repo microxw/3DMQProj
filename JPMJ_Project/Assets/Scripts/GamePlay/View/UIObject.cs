@@ -1,14 +1,22 @@
-﻿using UnityEngine;
+﻿/**
+ * UIObject
+ * all UI base class for initiaization and binding player
+ * brandy added
+ */
+
+using UnityEngine;
 using System.Collections;
 
 
 public class UIObject : MonoBehaviour 
 {
     protected Player _ownerPlayer;
+
     public Player OwnerPlayer
     {
         get{ return _ownerPlayer; }
     }
+
     protected PlayerAction PlayerAction
     {
         get{ return _ownerPlayer.Action; }

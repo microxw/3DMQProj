@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿/**
+ * MahjongPai
+ * mahjong pai UI 
+ * brandy added
+ */
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -40,7 +46,7 @@ public class MahjongPai : UIObject
     public readonly static float Width  = 58f;
     public readonly static float Height = 84f;
 
-    public const int LandHaiPosOffsetY = -15; // 当麻将横着放时，往下移15像素. /
+    public const int LandHaiPosOffsetY = -15; //当麻将横着放时，往下移15像素
 
 
     public Color normalColor = Color.white;
@@ -83,7 +89,6 @@ public class MahjongPai : UIObject
             background.color = disableColor;
         }
     }
-
 
     public override void Init() 
     {
@@ -149,8 +154,6 @@ public class MahjongPai : UIObject
     public void SetTedashi(bool state)
     {
         this.isTedashi = state;
-
-
     }
 
     public void SetNaki(bool state)

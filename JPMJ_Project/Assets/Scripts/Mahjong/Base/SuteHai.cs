@@ -1,18 +1,18 @@
-﻿
-/// <summary>
-/// 捨牌を管理する
-/// 捨牌: 打出去的牌
-/// </summary>
+﻿/**
+ * SuteHai
+ * 管理舍牌（舍牌：玩家打出去的牌）
+ * brandy added
+ */
 
 public class SuteHai : Hai
 {
-    // 鳴きフラグ (吃碰以及明槓)
+    // (吃碰以及明杠)
     private bool _isNaki = false;
 
-    // リーチフラグ(立直flag)
-    private bool _isReach = false;
+	// (听牌flag)
+	private bool _isReach = false;
 
-    // 手出しフラグ(正常打出去)
+    // (正常打出去)
     private bool _isTedashi = false;
 
 

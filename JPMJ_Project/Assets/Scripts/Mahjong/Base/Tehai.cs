@@ -1,31 +1,34 @@
-﻿using System.Collections.Generic;
+﻿/**
+ * Tehai
+ * 管理手牌（手牌:拿到手上的牌，不包括吃碰杠的牌）
+ * brandy added
+ */
 
-/// <summary>
-/// 手牌を管理する。
-/// 手牌:拿到手上的牌
-/// </summary>
+using System.Collections.Generic;
 
 public class Tehai
 {
-    public static int Compare( Hai x, Hai y )
+    public static int Compare(Hai x, Hai y)
     {
-        if( x.ID == y.ID ){
-            if( x.IsRed && !y.IsRed )
+        if (x.ID == y.ID)
+        {
+            if (x.IsRed && !y.IsRed)
                 return -1;
-            else if( !x.IsRed && y.IsRed )
+            else if (!x.IsRed && y.IsRed)
                 return 1;
             else
                 return 0;
         }
-        else{
+        else
+        {
             return x.ID - y.ID;
         }
     }
 
 
-    // 純手牌の長さの最大値
+    // 纯手牌的长度的最大值
     public readonly static int JYUN_TEHAI_LENGTH_MAX = 14;
-    // 副露の最大値
+    // 副露の最大値（最多4铺牌，包括吃碰杠，放在桌面上）
     public readonly static int FUURO_MAX = 4;
 
     // 面子の長さ(3)
@@ -46,10 +49,10 @@ public class Tehai
         initialize();
     }
 
-    public Tehai( Tehai src )
+    public Tehai(Tehai src)
     {
         initialize();
-        copy( this, src, true );
+        copy(this, src, true);
 
         Sort();
     }
@@ -61,21 +64,21 @@ public class Tehai
     }
 
 
-    // 手牌をコピーする
+    // 复制手牌
     public static void copy(Tehai dest, Tehai src, bool jyunTehaiCopy)
     {
-        if( jyunTehaiCopy == true )
+        if (jyunTehaiCopy == true)
         {
             dest._jyunTehais.Clear();
 
-            for(int i = 0; i < src._jyunTehais.Count; i++)
-                dest._jyunTehais.Add( new Hai( src._jyunTehais[i] ) );
+            for (int i = 0; i < src._jyunTehais.Count; i++)
+                dest._jyunTehais.Add(new Hai(src._jyunTehais[i]));
         }
 
         dest._fuuros.Clear();
 
-        for(int i = 0; i < src._fuuros.Count; i++)
-            dest._fuuros.Add( new Fuuro( src._fuuros[i] ) );
+        for (int i = 0; i < src._fuuros.Count; i++)
+            dest._fuuros.Add(new Fuuro(src._fuuros[i]));
     }
 
 
@@ -88,25 +91,25 @@ public class Tehai
     // 鸣听Flag
     public bool isNaki()
     {
-        for(int i = 0; i < _fuuros.Count; i++)
+        for (int i = 0; i < _fuuros.Count; i++)
         {
-            if(_fuuros[i].Type != EFuuroType.AnKan)
+            if (_fuuros[i].Type != EFuuroType.AnKan)
                 return true;
         }
 
         return false;
     }
 
-    /// <summary>
-    /// 副露の配列をコピーする
-    /// </summary>
+    // <summary>
+    // 副露の配列をコピーする
+    // </summary>
 
     public static bool copyFuuros(Fuuro[] dest, Fuuro[] src, int length)
     {
-        if(length > FUURO_MAX)
+        if (length > FUURO_MAX)
             return false;
 
-        for(int i = 0; i < length; i++)
+        for (int i = 0; i < length; i++)
             Fuuro.copy(dest[i], src[i]);
 
         return true;
@@ -114,11 +117,11 @@ public class Tehai
 
     public void Sort()
     {
-        _jyunTehais.Sort( Tehai.Compare );
+        _jyunTehais.Sort(Tehai.Compare);
         return;
     }
 
-    // 純手牌を取得する
+    // 取得纯手牌
     public Hai[] getJyunTehai()
     {
         return _jyunTehais.ToArray();
@@ -131,26 +134,26 @@ public class Tehai
 
     public int getHaiIndex(int haiID)
     {
-        return _jyunTehais.FindIndex( h=> h.ID == haiID );
+        return _jyunTehais.FindIndex(h => h.ID == haiID);
     }
 
-    // 純手牌に牌を追加する
+    // 在纯手牌上追加牌
     public bool addJyunTehai(Hai hai)
     {
-        if( _jyunTehais.Count >= JYUN_TEHAI_LENGTH_MAX )
+        if (_jyunTehais.Count >= JYUN_TEHAI_LENGTH_MAX)
             return false;
 
-        _jyunTehais.Add( new Hai(hai) );
+        _jyunTehais.Add(new Hai(hai));
 
         return true;
     }
 
     public bool insertJyunTehai(int index, Hai hai)
     {
-        if( _jyunTehais.Count >= JYUN_TEHAI_LENGTH_MAX )
+        if (_jyunTehais.Count >= JYUN_TEHAI_LENGTH_MAX)
             return false;
 
-        if( index < 0 || index > _jyunTehais.Count )
+        if (index < 0 || index > _jyunTehais.Count)
             return false;
 
         _jyunTehais.Insert(index, hai);
@@ -158,10 +161,10 @@ public class Tehai
         return true;
     }
 
-    // 純手牌から指定位置の牌を削除する
+    // 从纯手牌中删除指定位置的牌
     public Hai removeJyunTehaiAt(int index)
     {
-        if( index >= _jyunTehais.Count )
+        if (index >= _jyunTehais.Count)
             return null;
 
         Hai hai = _jyunTehais[index];
@@ -170,12 +173,13 @@ public class Tehai
         return hai;
     }
 
-    // 純手牌から指定の牌を削除する
+    // 从纯手牌中删除指定的牌
     public bool removeJyunTehai(Hai hai)
     {
-        for( int i = 0; i < _jyunTehais.Count; i++ )
+        for (int i = 0; i < _jyunTehais.Count; i++)
         {
-            if( _jyunTehais[i].ID == hai.ID ){
+            if (_jyunTehais[i].ID == hai.ID)
+            {
                 _jyunTehais.RemoveAt(i);
                 return true;
             }
@@ -184,16 +188,16 @@ public class Tehai
         return false;
     }
 
-    // 純手牌をコピーする
+    // 复制纯手牌
     public static bool copyJyunTehai(Hai[] dest, Hai[] src, int length = -1)
     {
-        if(length <= 0)
+        if (length <= 0)
             length = src.Length;
 
-        if( length > JYUN_TEHAI_LENGTH_MAX )
+        if (length > JYUN_TEHAI_LENGTH_MAX)
             return false;
 
-        for(int i = 0; i < length; i++)
+        for (int i = 0; i < length; i++)
         {
             Hai.copy(dest[i], src[i]);
         }
@@ -201,10 +205,10 @@ public class Tehai
         return true;
     }
 
-    // 純手牌の指定位置の牌をコピーする
+    // 复制纯手牌指定位置的牌
     public bool copyJyunTehaiIndex(Hai hai, int index)
     {
-        if( index >= _jyunTehais.Count )
+        if (index >= _jyunTehais.Count)
             return false;
 
         Hai.copy(hai, _jyunTehais[index]);
@@ -213,12 +217,12 @@ public class Tehai
     }
 
 
-    // チー(左)の可否をチェックする
+    // 检查一下这个sute牌是否可在左边被吃
     public bool validChiiLeft(Hai suteHai, List<Hai> sarashiHais)
     {
         if (_fuuros.Count >= FUURO_MAX)
             return false;
-        
+
         if (suteHai.IsTsuu)
             return false;
 
@@ -229,16 +233,17 @@ public class Tehai
         int noKindCenter = noKindLeft + 1;
         int noKindRight = noKindLeft + 2;
 
-        for (int i = 0; i < _jyunTehais.Count; i++)
+        int count = _jyunTehais.Count;
+        for (int i = 0; i < count; i++)
         {
-            if (_jyunTehais[i].NumKind == noKindCenter) 
+            if (_jyunTehais[i].NumKind == noKindCenter)
             {
-                for (int j = i + 1; j < _jyunTehais.Count; j++) 
+                for (int j = i + 1; j < count; j++)
                 {
-                    if (_jyunTehais[j].NumKind == noKindRight) 
+                    if (_jyunTehais[j].NumKind == noKindRight)
                     {
-                        sarashiHais.Add( _jyunTehais[i] );
-                        sarashiHais.Add( _jyunTehais[j] );
+                        sarashiHais.Add(_jyunTehais[i]);
+                        sarashiHais.Add(_jyunTehais[j]);
 
                         return true;
                     }
@@ -249,15 +254,15 @@ public class Tehai
         return false;
     }
 
-    // チー(左)を設定する
+    // 设定左边吃牌
     public bool setChiiLeft(Hai suteHai, int relation)
     {
         List<Hai> sarashiHais = new List<Hai>();
 
-        if( !validChiiLeft(suteHai, sarashiHais) )
+        if (!validChiiLeft(suteHai, sarashiHais))
             return false;
 
-        Hai[] hais = new Hai[Tehai.MENTSU_LENGTH_3];
+        Hai[] hais = new Hai[Tehai.MENTSU_LENGTH_3]; //创建新的一聚牌队列（三个）
 
         hais[0] = new Hai(suteHai);
         int newPickIndex = 0;
@@ -280,9 +285,10 @@ public class Tehai
                     {
                         hais[2] = new Hai(_jyunTehais[j]);
 
-                        removeJyunTehaiAt(j);
+                        removeJyunTehaiAt(j); //从纯手牌中删除
 
-                        _fuuros.Add( new Fuuro(EFuuroType.MinShun, hais, relation, newPickIndex) );
+                        //再把新建的hais添加到副牌中展示
+                        _fuuros.Add(new Fuuro(EFuuroType.MinShun, hais, relation, newPickIndex));
 
                         return true;
                     }
@@ -293,7 +299,7 @@ public class Tehai
         return false;
     }
 
-    // チー(中央)の可否をチェックする
+    // 检查一下这个sute牌是否可在中间被吃
     public bool validChiiCenter(Hai suteHai, List<Hai> sarashiHais)
     {
         if (_fuuros.Count >= FUURO_MAX)
@@ -309,16 +315,17 @@ public class Tehai
         int noKindLeft = noKindCenter - 1;
         int noKindRight = noKindCenter + 1;
 
-        for (int i = 0; i < _jyunTehais.Count; i++) 
+        int count = _jyunTehais.Count;
+        for (int i = 0; i < count; i++)
         {
             if (_jyunTehais[i].NumKind == noKindLeft)
             {
-                for (int j = i + 1; j < _jyunTehais.Count; j++) 
+                for (int j = i + 1; j < count; j++)
                 {
                     if (_jyunTehais[j].NumKind == noKindRight)
                     {
-                        sarashiHais.Add( _jyunTehais[i] );
-                        sarashiHais.Add( _jyunTehais[j] );
+                        sarashiHais.Add(_jyunTehais[i]);
+                        sarashiHais.Add(_jyunTehais[j]);
 
                         return true;
                     }
@@ -329,12 +336,12 @@ public class Tehai
         return false;
     }
 
-    // チー(中央)を設定する
+    // 设定中间吃牌
     public bool setChiiCenter(Hai suteHai, int relation)
     {
         List<Hai> sarashiHais = new List<Hai>();
 
-        if( !validChiiCenter(suteHai, sarashiHais) )
+        if (!validChiiCenter(suteHai, sarashiHais))
             return false;
 
         Hai[] hais = new Hai[Tehai.MENTSU_LENGTH_3];
@@ -362,7 +369,7 @@ public class Tehai
 
                         removeJyunTehaiAt(j);
 
-                        _fuuros.Add( new Fuuro(EFuuroType.MinShun, hais, relation, newPickIndex) );
+                        _fuuros.Add(new Fuuro(EFuuroType.MinShun, hais, relation, newPickIndex));
 
                         return true;
                     }
@@ -373,7 +380,7 @@ public class Tehai
         return false;
     }
 
-    // チー(右)の可否をチェックする
+    // 检查一下这个sute牌是否可在右边被吃
     public bool validChiiRight(Hai suteHai, List<Hai> sarashiHais)
     {
         if (_fuuros.Count >= FUURO_MAX)
@@ -389,16 +396,17 @@ public class Tehai
         int noKindLeft = noKindRight - 2;
         int noKindCenter = noKindRight - 1;
 
-        for (int i = 0; i < _jyunTehais.Count; i++) 
+        int count = _jyunTehais.Count;
+        for (int i = 0; i < count; i++)
         {
             if (_jyunTehais[i].NumKind == noKindLeft)
             {
-                for (int j = i + 1; j < _jyunTehais.Count; j++) 
+                for (int j = i + 1; j < count; j++)
                 {
                     if (_jyunTehais[j].NumKind == noKindCenter)
                     {
-                        sarashiHais.Add( _jyunTehais[i] );
-                        sarashiHais.Add( _jyunTehais[j] );
+                        sarashiHais.Add(_jyunTehais[i]);
+                        sarashiHais.Add(_jyunTehais[j]);
 
                         return true;
                     }
@@ -409,12 +417,12 @@ public class Tehai
         return false;
     }
 
-    // チー(右)を設定する
+    // 设定右边吃牌
     public bool setChiiRight(Hai suteHai, int relation)
     {
         List<Hai> sarashiHais = new List<Hai>();
 
-        if( !validChiiRight(suteHai, sarashiHais) )
+        if (!validChiiRight(suteHai, sarashiHais))
             return false;
 
         Hai[] hais = new Hai[Tehai.MENTSU_LENGTH_3];
@@ -442,7 +450,7 @@ public class Tehai
 
                         removeJyunTehaiAt(j);
 
-                        _fuuros.Add( new Fuuro(EFuuroType.MinShun, hais, relation, newPickIndex) );
+                        _fuuros.Add(new Fuuro(EFuuroType.MinShun, hais, relation, newPickIndex));
 
                         return true;
                     }
@@ -453,20 +461,20 @@ public class Tehai
         return false;
     }
 
-    // ポン(碰)の可否をチェックする
+    // 检查一下是否可以碰
     public bool validPon(Hai suteHai)
     {
-        if(_fuuros.Count >= FUURO_MAX)
+        if (_fuuros.Count >= FUURO_MAX)
             return false;
 
         int count = 1; // include the suteHai.
-        for(int i = 0; i < _jyunTehais.Count; i++)
+        for (int i = 0; i < _jyunTehais.Count; i++)
         {
-            if(_jyunTehais[i].ID == suteHai.ID)
+            if (_jyunTehais[i].ID == suteHai.ID)
             {
                 count++;
 
-                if(count >= Tehai.MENTSU_LENGTH_3)
+                if (count >= Tehai.MENTSU_LENGTH_3)
                     return true;
             }
         }
@@ -474,10 +482,10 @@ public class Tehai
         return false;
     }
 
-    // ポンを設定する
+    // 设定碰
     public bool setPon(Hai suteHai, int relation)
     {
-        if( !validPon(suteHai) )
+        if (!validPon(suteHai))
             return false;
 
         Hai[] hais = new Hai[Tehai.MENTSU_LENGTH_3];
@@ -486,9 +494,9 @@ public class Tehai
         int newPickIndex = 0;
 
         int count = 1;
-        for(int i = 0; i < _jyunTehais.Count; i++) 
+        for (int i = 0; i < _jyunTehais.Count; i++)
         {
-            if( _jyunTehais[i].ID == suteHai.ID)
+            if (_jyunTehais[i].ID == suteHai.ID)
             {
                 hais[count] = new Hai(_jyunTehais[i]);
                 count++;
@@ -496,61 +504,63 @@ public class Tehai
                 removeJyunTehaiAt(i);
                 i--;
 
-                if(count >= Tehai.MENTSU_LENGTH_3)
+                if (count >= Tehai.MENTSU_LENGTH_3)
                     break;
             }
         }
 
-        _fuuros.Add( new Fuuro(EFuuroType.MinKou, hais, relation, newPickIndex) );
+        _fuuros.Add(new Fuuro(EFuuroType.MinKou, hais, relation, newPickIndex));
 
         return true;
     }
 
 
-    // Any tsumo 槓の可否をチェックする
+    // 检查是否有自摸杠
     public bool validAnyTsumoKan(Hai addHai, List<Hai> kanHais)
     {
-        if( _fuuros.Count > FUURO_MAX ) // the 4th can kakan.
+        if (_fuuros.Count > FUURO_MAX) // the 4th can kakan. 四铺还是可以杠的
             return false;
 
-        addJyunTehai(addHai);
+        addJyunTehai(addHai); //添加到纯手牌
         Sort();
 
         Hai checkHai = null;
 
-        // 加槓のチェック
-        for(int i = 0; i < _fuuros.Count; i++) 
+        // 加杠的检查（铺牌里面有碰的就可能会产生杠的情况）
+        for (int i = 0; i < _fuuros.Count; i++)
         {
-            if(_fuuros[i].Type == EFuuroType.MinKou)
+            if (_fuuros[i].Type == EFuuroType.MinKou)
             {
                 checkHai = _fuuros[i].Hais[0];
-                for(int j = 0; j < _jyunTehais.Count; j++) 
+                for (int j = 0; j < _jyunTehais.Count; j++)
                 {
-                    if( _jyunTehais[j].ID == checkHai.ID ) 
-                        kanHais.Add( new Hai(checkHai) );
+                    if (_jyunTehais[j].ID == checkHai.ID)
+                        kanHais.Add(new Hai(checkHai));
                 }
             }
         }
 
-        if( _fuuros.Count >= FUURO_MAX ){
+        if (_fuuros.Count >= FUURO_MAX)
+        {
             removeJyunTehai(addHai);
             Sort();
             return kanHais.Count > 0;
         }
 
-        // 暗槓のチェック
+        // 暗杠检查
         checkHai = _jyunTehais[0];
         int count = 1;
 
-        for(int i = 1; i < _jyunTehais.Count; i++) 
+        for (int i = 1; i < _jyunTehais.Count; i++)
         {
-            if( _jyunTehais[i].ID == checkHai.ID)
+            if (_jyunTehais[i].ID == checkHai.ID)
             {
                 count++;
-                if( count >= Tehai.MENTSU_LENGTH_4 )
-                    kanHais.Add( new Hai( checkHai ) );
+                if (count >= Tehai.MENTSU_LENGTH_4)
+                    kanHais.Add(new Hai(checkHai));
             }
-            else{
+            else
+            {
                 checkHai = _jyunTehais[i];
                 count = 1;
             }
@@ -562,17 +572,16 @@ public class Tehai
         return kanHais.Count > 0;
     }
 
-
-
+    //检查是否有大明杠
     public bool validDaiMinKan(Hai suteHai)
     {
-        if( _fuuros.Count >= FUURO_MAX )
+        if (_fuuros.Count >= FUURO_MAX)
             return false;
 
         int count = 1;
         for (int i = 0; i < _jyunTehais.Count; i++)
         {
-            if(_jyunTehais[i].ID == suteHai.ID)
+            if (_jyunTehais[i].ID == suteHai.ID)
             {
                 count++;
                 if (count >= Tehai.MENTSU_LENGTH_4)
@@ -583,7 +592,7 @@ public class Tehai
         return false;
     }
 
-    // 大明槓を設定する
+    // 设定大明杠
     public bool setDaiMinKan(Hai suteHai, int relation)
     {
         Hai[] hais = new Hai[Tehai.MENTSU_LENGTH_4];
@@ -593,9 +602,9 @@ public class Tehai
 
         int count = 1;
 
-        for(int i = 0; i < _jyunTehais.Count; i++)
+        for (int i = 0; i < _jyunTehais.Count; i++)
         {
-            if( _jyunTehais[i].ID == suteHai.ID)
+            if (_jyunTehais[i].ID == suteHai.ID)
             {
                 hais[count] = new Hai(_jyunTehais[i]);
                 count++;
@@ -603,28 +612,28 @@ public class Tehai
                 removeJyunTehaiAt(i);
                 i--;
 
-                if( count >= Tehai.MENTSU_LENGTH_4 )
+                if (count >= Tehai.MENTSU_LENGTH_4)
                     break;
             }
         }
 
-        _fuuros.Add( new Fuuro(EFuuroType.DaiMinKan, hais, relation, newPickIndex) );
+        _fuuros.Add(new Fuuro(EFuuroType.DaiMinKan, hais, relation, newPickIndex));
 
         return true;
     }
 
 
-    // 加槓の可否をチェックする
+    // 检查是否加杠
     public bool validKaKan(Hai tsumoHai)
     {
-        if( _fuuros.Count > FUURO_MAX )
+        if (_fuuros.Count > FUURO_MAX)
             return false;
 
         for (int i = 0; i < _fuuros.Count; i++)
         {
             if (_fuuros[i].Type == EFuuroType.MinKou)
             {
-                if( _fuuros[i].Hais[0].ID == tsumoHai.ID)
+                if (_fuuros[i].Hais[0].ID == tsumoHai.ID)
                     return true;
             }
         }
@@ -632,23 +641,23 @@ public class Tehai
         return false;
     }
 
-    // 加槓を設定する
+    // 设定加杠
     public bool setKaKan(Hai tsumoHai)
     {
-        if( !validKaKan(tsumoHai) )
+        if (!validKaKan(tsumoHai))
             return false;
 
         int relation = (int)ERelation.JiBun; //0;
         int newPickIndex = 3;
 
-        for (int i = 0; i < _fuuros.Count; i++) 
+        for (int i = 0; i < _fuuros.Count; i++)
         {
-            if( _fuuros[i].Type == EFuuroType.MinKou ) 
+            if (_fuuros[i].Type == EFuuroType.MinKou)
             {
-                if(_fuuros[i].Hais[0].ID == tsumoHai.ID)
+                if (_fuuros[i].Hais[0].ID == tsumoHai.ID)
                 {
-                    List<Hai> fuuroHais = new List<Hai>( _fuuros[i].Hais );
-                    fuuroHais.Add( new Hai(tsumoHai) );
+                    List<Hai> fuuroHais = new List<Hai>(_fuuros[i].Hais);
+                    fuuroHais.Add(new Hai(tsumoHai));
 
                     _fuuros[i].Update(EFuuroType.KaKan, fuuroHais.ToArray(), relation, newPickIndex);
                 }
@@ -659,19 +668,19 @@ public class Tehai
     }
 
 
-    // 暗槓の可否をチェックする
+    // 检查是否暗杠
     public bool validAnKan(Hai tsumoHai)
     {
-        if( _fuuros.Count >= FUURO_MAX )
+        if (_fuuros.Count >= FUURO_MAX)
             return false;
 
         int count = 1;
         for (int i = 0; i < _jyunTehais.Count; i++)
         {
-            if(_jyunTehais[i].ID == tsumoHai.ID)
+            if (_jyunTehais[i].ID == tsumoHai.ID)
             {
                 count++;
-                if( count >= Tehai.MENTSU_LENGTH_4 )
+                if (count >= Tehai.MENTSU_LENGTH_4)
                     return true;
             }
         }
@@ -679,10 +688,10 @@ public class Tehai
         return false;
     }
 
-    // 暗槓を設定する
+    // 设定暗杠
     public bool setAnKan(Hai tsumoHai)
     {
-        if( !validAnKan(tsumoHai) )
+        if (!validAnKan(tsumoHai))
             return false;
 
         int relation = (int)ERelation.JiBun; //0;
@@ -695,7 +704,7 @@ public class Tehai
         int count = 1;
         for (int i = 0; i < _jyunTehais.Count; i++)
         {
-            if(_jyunTehais[i].ID == tsumoHai.ID)
+            if (_jyunTehais[i].ID == tsumoHai.ID)
             {
                 hais[count] = new Hai(_jyunTehais[i]);
                 count++;
@@ -703,12 +712,12 @@ public class Tehai
                 removeJyunTehaiAt(i);
                 i--;
 
-                if( count >= Tehai.MENTSU_LENGTH_4 )
+                if (count >= Tehai.MENTSU_LENGTH_4)
                     break;
             }
         }
 
-        _fuuros.Add( new Fuuro(EFuuroType.AnKan, hais, relation, newPickIndex) );
+        _fuuros.Add(new Fuuro(EFuuroType.AnKan, hais, relation, newPickIndex));
 
         return true;
     }

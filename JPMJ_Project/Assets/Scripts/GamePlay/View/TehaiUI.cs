@@ -1,9 +1,15 @@
-﻿using UnityEngine;
+﻿/**
+ * TehaiUI
+ * 手牌UI的对象类（手牌:拿到手上的牌，不包括吃碰杠的牌）
+ * brandy added
+ */
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 
-public class TehaiUI : UIObject 
+public class TehaiUI : UIObject
 {
     public Vector2 AlignLeftLocalPos = new Vector2(-380, 0);
     public int HaiPosOffsetX = 2;
@@ -15,25 +21,30 @@ public class TehaiUI : UIObject
     private UIPanel uiPanel;
 
 
-    void Awake(){
-        uiPanel = GetComponent<UIPanel>();
+    void Awake()
+    {
+        uiPanel = GetComponent<UIPanel>(); // need be fixed later, replace NGUI
     }
 
-    void Start () {
-        
+    void Start()
+    {
+
     }
 
 
-    public override void Clear() {
+    public override void Clear()
+    {
         base.Clear();
 
-        for( int i = 0; i < tehaiList.Count; i++ ) {
-            PlayerUI.CollectMahjongPai( tehaiList[i] );
+        for (int i = 0; i < tehaiList.Count; i++)
+        {
+            PlayerUI.CollectMahjongPai(tehaiList[i]);
         }
         tehaiList.Clear();
     }
 
-    public override void SetParentPanelDepth( int depth ) {
+    public override void SetParentPanelDepth(int depth)
+    {
         uiPanel.depth = depth + TehaiDepth;
     }
 
@@ -44,57 +55,59 @@ public class TehaiUI : UIObject
     }
     protected IEnumerator Sort(Hai[] hais, float delay, bool setLastNew)
     {
-        yield return new WaitForSeconds( delay );
+        yield return new WaitForSeconds(delay);
 
-        SetTehai( hais );
+        SetTehai(hais);
     }
 
-    public void SetTehai(Hai[] hais, bool setLastNew = false) 
+    public void SetTehai(Hai[] hais, bool setLastNew = false)
     {
         Clear();
 
-        for( int i = 0; i < hais.Length; i++ ) 
+        for (int i = 0; i < hais.Length; i++)
         {
-            AddPai( hais[i], setLastNew, !OwnerPlayer.IsAI );
+            AddPai(hais[i], setLastNew, !OwnerPlayer.IsAI);
         }
         //uiPanel.Update();
     }
 
-    public void AddPai( Hai hai, bool newPicked = false, bool isShow = false )
+    public void AddPai(Hai hai, bool newPicked = false, bool isShow = false)
     {
-        MahjongPai pai = PlayerUI.CreateMahjongPai( transform, Vector3.zero, hai, isShow );
+        MahjongPai pai = PlayerUI.CreateMahjongPai(transform, Vector3.zero, hai, isShow);
 
         AddPai(pai, newPicked, isShow);
     }
 
-    public void AddPai( MahjongPai pai, bool newPicked = false, bool isShow = false )
+    public void AddPai(MahjongPai pai, bool newPicked = false, bool isShow = false)
     {
         int index = tehaiList.Count;
         float posX = AlignLeftLocalPos.x + MahjongPai.Width * index + HaiPosOffsetX * index;
 
         pai.transform.parent = transform;
-        pai.transform.localPosition = new Vector3( posX, AlignLeftLocalPos.y, 0 );
+        pai.transform.localPosition = new Vector3(posX, AlignLeftLocalPos.y, 0);
 
-        if( isShow ) {
+        if (isShow)
+        {
             pai.Show();
         }
-        else {
+        else
+        {
             pai.Hide();
         }
 
-        if(OwnerPlayer.IsAI == false)
+        if (OwnerPlayer.IsAI == false)
             pai.SetOnClick(OnClickMahjong);
 
         pai.gameObject.name = pai.ID.ToString();
-        tehaiList.Add( pai );
+        tehaiList.Add(pai);
 
-        if( newPicked ) 
-            pai.transform.localPosition += new Vector3( NewHaiPosOffsetX, 0, 0 );
+        if (newPicked)
+            pai.transform.localPosition += new Vector3(NewHaiPosOffsetX, 0, 0);
     }
 
-    public MahjongPai SuteHai( int index )
+    public MahjongPai SuteHai(int index)
     {
-        if( index >= 0 && index < tehaiList.Count )
+        if (index >= 0 && index < tehaiList.Count)
         {
             MahjongPai pai = tehaiList[index];
             tehaiList.RemoveAt(index);
@@ -107,14 +120,16 @@ public class TehaiUI : UIObject
     }
 
 
-    public void SetAllHaisVisiable(bool visiable) 
+    public void SetAllHaisVisiable(bool visiable)
     {
-        for( int i = 0; i < tehaiList.Count; i++ ) 
+        for (int i = 0; i < tehaiList.Count; i++)
         {
-            if( visiable ) {
+            if (visiable)
+            {
                 tehaiList[i].Show();
             }
-            else {
+            else
+            {
                 tehaiList[i].Hide();
             }
         }
@@ -127,174 +142,177 @@ public class TehaiUI : UIObject
     protected List<MahjongPai> chiiPaiSelectList = new List<MahjongPai>();
 
 
-
     void OnClickMahjong()
     {
-        int index = tehaiList.IndexOf( MahjongPai.current );
+        int index = tehaiList.IndexOf(MahjongPai.current);
         //Debug.Log("OnClick Mahjong " + index.ToString());
         //index = OwnerPlayer.Tehai.getJyunTehaiCount() - 1; // Test: the last one.
 
-        switch(PlayerAction.State)
+        switch (PlayerAction.State)
         {
-            //case EActionState.Select_Agari:
-            case EActionState.Select_Sutehai:
-            {
-                PlayerAction.Response = EResponse.SuteHai;
-                PlayerAction.SutehaiIndex = index;
-
-                EventManager.Get().SendEvent(UIEventType.HideMenuList);
-                OwnerPlayer.OnPlayerInputFinished();
-            }
-            break;
-
-            case EActionState.Select_Reach:
-            {
-                PlayerAction.Response = EResponse.Reach;
-                PlayerAction.ReachSelectIndex = PlayerAction.ReachHaiIndexList.FindIndex(i => i == index);
-
-                SetEnableStateColor(true);
-                EventManager.Get().SendEvent(UIEventType.HideMenuList);
-                OwnerPlayer.OnPlayerInputFinished();
-            }
-            break;
-
-            case EActionState.Select_Kan:
-            {
-                Hai kanHai = new Hai( MahjongPai.current.ID );
-
-                if( OwnerPlayer.Tehai.validKaKan( kanHai ) )
+            //case EActionState.Select_Agari: // select 炮胡或者自摸
+            case EActionState.Select_Sutehai: // select 舍牌
                 {
-                    PlayerAction.Response = EResponse.Kakan;
+                    PlayerAction.Response = EResponse.SuteHai;
+                    PlayerAction.SutehaiIndex = index;
+
+                    EventManager.Get().SendEvent(UIEventType.HideMenuList);
+                    OwnerPlayer.OnPlayerInputFinished();
                 }
-                else
+                break;
+
+            case EActionState.Select_Reach: // select 听牌
                 {
-                    PlayerAction.Response = EResponse.Ankan;
+                    PlayerAction.Response = EResponse.Reach;
+                    PlayerAction.ReachSelectIndex = PlayerAction.ReachHaiIndexList.FindIndex(i => i == index);
+
+                    SetEnableStateColor(true);
+                    EventManager.Get().SendEvent(UIEventType.HideMenuList);
+                    OwnerPlayer.OnPlayerInputFinished();
                 }
+                break;
 
-                PlayerAction.KanSelectIndex = PlayerAction.TsumoKanHaiList.FindIndex(h=> h.ID == kanHai.ID);
-
-                SetEnableStateColor(true);
-                EventManager.Get().SendEvent(UIEventType.HideMenuList);
-                OwnerPlayer.OnPlayerInputFinished();
-            }
-            break;
-
-            case EActionState.Select_Chii:
-            {
-                MahjongPai curSelect = MahjongPai.current;
-
-                if( chiiPaiSelectList.Contains(curSelect) )
+            case EActionState.Select_Kan: // select 杠
                 {
-                    chiiPaiSelectList.Remove( curSelect );
-                    curSelect.transform.localPosition -= SelectStatePosOffset;
+                    Hai kanHai = new Hai(MahjongPai.current.ID);
 
-                    // check to enable select other chii type pai.
-                    List<int> enableIndexList = new List<int>();
-                    Hai[] jyunTehais = OwnerPlayer.Tehai.getJyunTehai();
-
-                    for(int i = 0; i < PlayerAction.AllSarashiHais.Count; i++)
+                    if (OwnerPlayer.Tehai.validKaKan(kanHai))
                     {
-                        for( int j = 0; j < jyunTehais.Length; j++){
-                            if( jyunTehais[j].ID == PlayerAction.AllSarashiHais[i].ID )
-                                enableIndexList.Add( j );
-                        }
+                        PlayerAction.Response = EResponse.Kakan;
+                    }
+                    else
+                    {
+                        PlayerAction.Response = EResponse.Ankan;
                     }
 
-                    EnableInput( enableIndexList );
+                    PlayerAction.KanSelectIndex = PlayerAction.TsumoKanHaiList.FindIndex(h => h.ID == kanHai.ID);
+
+                    SetEnableStateColor(true);
+                    EventManager.Get().SendEvent(UIEventType.HideMenuList);
+                    OwnerPlayer.OnPlayerInputFinished();
                 }
-                else
+                break;
+
+            case EActionState.Select_Chii: // select 吃
                 {
-                    chiiPaiSelectList.Add( curSelect );
-                    curSelect.transform.localPosition += SelectStatePosOffset;
+                    MahjongPai curSelect = MahjongPai.current;
 
-                    if( chiiPaiSelectList.Count >= 2 ) // confirm Chii.
+                    if (chiiPaiSelectList.Contains(curSelect))
                     {
-                        chiiPaiSelectList.Sort( MahjongPaiCompare );
+                        chiiPaiSelectList.Remove(curSelect);
+                        curSelect.transform.localPosition -= SelectStatePosOffset;
 
-                        if( PlayerAction.SarashiHaiRight.Count >= 2 )
-                        {
-                            PlayerAction.SarashiHaiRight.Sort( Tehai.Compare );
-                            if( chiiPaiSelectList[0].ID == PlayerAction.SarashiHaiRight[0].ID &&
-                               chiiPaiSelectList[1].ID == PlayerAction.SarashiHaiRight[1].ID)
-                            {
-                                PlayerAction.Response = EResponse.Chii_Right;
-                                PlayerAction.ChiiSelectType = PlayerAction.Chii_Select_Right;
-                                Debug.Log("Chii type is Chii_Right");
-                            }
-                        }
-
-                        if( PlayerAction.SarashiHaiCenter.Count >= 2 )
-                        {
-                            PlayerAction.SarashiHaiCenter.Sort( Tehai.Compare );
-                            if( chiiPaiSelectList[0].ID == PlayerAction.SarashiHaiCenter[0].ID &&
-                               chiiPaiSelectList[1].ID == PlayerAction.SarashiHaiCenter[1].ID)
-                            {
-                                PlayerAction.Response = EResponse.Chii_Center;
-                                PlayerAction.ChiiSelectType = PlayerAction.Chii_Select_Center;
-                                Debug.Log("Chii type is Chii_Center");
-                            }
-                        }
-
-                        if( PlayerAction.SarashiHaiLeft.Count >= 2 )
-                        {
-                            PlayerAction.SarashiHaiLeft.Sort( Tehai.Compare );
-                            if( chiiPaiSelectList[0].ID == PlayerAction.SarashiHaiLeft[0].ID &&
-                               chiiPaiSelectList[1].ID == PlayerAction.SarashiHaiLeft[1].ID)
-                            {
-                                PlayerAction.Response = EResponse.Chii_Left;
-                                PlayerAction.ChiiSelectType = PlayerAction.Chii_Select_Left;
-                                Debug.Log("Chii type is Chii_Left");
-                            }
-                        }
-
-                        EventManager.Get().SendEvent(UIEventType.HideMenuList);
-                        OwnerPlayer.OnPlayerInputFinished();
-
-                        chiiPaiSelectList.Clear();
-                    }
-                    else // check to disable select other chii type pai.
-                    {
+                        // check to enable select other chii type pai.
                         List<int> enableIndexList = new List<int>();
                         Hai[] jyunTehais = OwnerPlayer.Tehai.getJyunTehai();
 
-                        int curSelectID = chiiPaiSelectList[0].ID;
-                        enableIndexList.Add( index );
-
-                        if( PlayerAction.SarashiHaiRight.Exists(h => h.ID == curSelectID) )
+                        for (int i = 0; i < PlayerAction.AllSarashiHais.Count; i++)
                         {
-                            Hai otherHai = PlayerAction.SarashiHaiRight.Find(h => h.ID != curSelectID);
-
-                            for( int i = 0; i < jyunTehais.Length; i++ ){
-                                if( jyunTehais[i].ID == otherHai.ID && !enableIndexList.Contains(i) )
-                                    enableIndexList.Add( i );
+                            for (int j = 0; j < jyunTehais.Length; j++)
+                            {
+                                if (jyunTehais[j].ID == PlayerAction.AllSarashiHais[i].ID)
+                                    enableIndexList.Add(j);
                             }
                         }
 
-                        if( PlayerAction.SarashiHaiCenter.Exists(h => h.ID == curSelectID) )
+                        EnableInput(enableIndexList);
+                    }
+                    else
+                    {
+                        chiiPaiSelectList.Add(curSelect);
+                        curSelect.transform.localPosition += SelectStatePosOffset;
+
+                        if (chiiPaiSelectList.Count >= 2) // confirm Chii.
                         {
-                            Hai otherHai = PlayerAction.SarashiHaiCenter.Find(h => h.ID != curSelectID);
+                            chiiPaiSelectList.Sort(MahjongPaiCompare);
 
-                            for( int i = 0; i < jyunTehais.Length; i++ ){
-                                if( jyunTehais[i].ID == otherHai.ID && !enableIndexList.Contains(i) )
-                                    enableIndexList.Add( i );
+                            if (PlayerAction.SarashiHaiRight.Count >= 2)
+                            {
+                                PlayerAction.SarashiHaiRight.Sort(Tehai.Compare);
+                                if (chiiPaiSelectList[0].ID == PlayerAction.SarashiHaiRight[0].ID &&
+                                   chiiPaiSelectList[1].ID == PlayerAction.SarashiHaiRight[1].ID)
+                                {
+                                    PlayerAction.Response = EResponse.Chii_Right;
+                                    PlayerAction.ChiiSelectType = PlayerAction.Chii_Select_Right;
+                                    Debug.Log("Chii type is Chii_Right");
+                                }
                             }
-                        }
 
-                        if( PlayerAction.SarashiHaiLeft.Exists(h => h.ID == curSelectID) )
+                            if (PlayerAction.SarashiHaiCenter.Count >= 2)
+                            {
+                                PlayerAction.SarashiHaiCenter.Sort(Tehai.Compare);
+                                if (chiiPaiSelectList[0].ID == PlayerAction.SarashiHaiCenter[0].ID &&
+                                   chiiPaiSelectList[1].ID == PlayerAction.SarashiHaiCenter[1].ID)
+                                {
+                                    PlayerAction.Response = EResponse.Chii_Center;
+                                    PlayerAction.ChiiSelectType = PlayerAction.Chii_Select_Center;
+                                    Debug.Log("Chii type is Chii_Center");
+                                }
+                            }
+
+                            if (PlayerAction.SarashiHaiLeft.Count >= 2)
+                            {
+                                PlayerAction.SarashiHaiLeft.Sort(Tehai.Compare);
+                                if (chiiPaiSelectList[0].ID == PlayerAction.SarashiHaiLeft[0].ID &&
+                                   chiiPaiSelectList[1].ID == PlayerAction.SarashiHaiLeft[1].ID)
+                                {
+                                    PlayerAction.Response = EResponse.Chii_Left;
+                                    PlayerAction.ChiiSelectType = PlayerAction.Chii_Select_Left;
+                                    Debug.Log("Chii type is Chii_Left");
+                                }
+                            }
+
+                            EventManager.Get().SendEvent(UIEventType.HideMenuList);
+                            OwnerPlayer.OnPlayerInputFinished();
+
+                            chiiPaiSelectList.Clear();
+                        }
+                        else // check to disable select other chii type pai.
                         {
-                            Hai otherHai = PlayerAction.SarashiHaiLeft.Find(h => h.ID != curSelectID);
+                            List<int> enableIndexList = new List<int>();
+                            Hai[] jyunTehais = OwnerPlayer.Tehai.getJyunTehai();
 
-                            for( int i = 0; i < jyunTehais.Length; i++ ){
-                                if( jyunTehais[i].ID == otherHai.ID && !enableIndexList.Contains(i) )
-                                    enableIndexList.Add( i );
+                            int curSelectID = chiiPaiSelectList[0].ID;
+                            enableIndexList.Add(index);
+
+                            if (PlayerAction.SarashiHaiRight.Exists(h => h.ID == curSelectID))
+                            {
+                                Hai otherHai = PlayerAction.SarashiHaiRight.Find(h => h.ID != curSelectID);
+
+                                for (int i = 0; i < jyunTehais.Length; i++)
+                                {
+                                    if (jyunTehais[i].ID == otherHai.ID && !enableIndexList.Contains(i))
+                                        enableIndexList.Add(i);
+                                }
                             }
-                        }
 
-                        EnableInput( enableIndexList );
+                            if (PlayerAction.SarashiHaiCenter.Exists(h => h.ID == curSelectID))
+                            {
+                                Hai otherHai = PlayerAction.SarashiHaiCenter.Find(h => h.ID != curSelectID);
+
+                                for (int i = 0; i < jyunTehais.Length; i++)
+                                {
+                                    if (jyunTehais[i].ID == otherHai.ID && !enableIndexList.Contains(i))
+                                        enableIndexList.Add(i);
+                                }
+                            }
+
+                            if (PlayerAction.SarashiHaiLeft.Exists(h => h.ID == curSelectID))
+                            {
+                                Hai otherHai = PlayerAction.SarashiHaiLeft.Find(h => h.ID != curSelectID);
+
+                                for (int i = 0; i < jyunTehais.Length; i++)
+                                {
+                                    if (jyunTehais[i].ID == otherHai.ID && !enableIndexList.Contains(i))
+                                        enableIndexList.Add(i);
+                                }
+                            }
+
+                            EnableInput(enableIndexList);
+                        }
                     }
                 }
-            }
-            break;
+                break;
         }
     }
 
@@ -305,52 +323,63 @@ public class TehaiUI : UIObject
 
     public void DisableInput(bool updateColor = false)
     {
-        for(int i = 0; i < tehaiList.Count; i++)
+        for (int i = 0; i < tehaiList.Count; i++)
+        {
             tehaiList[i].DisableInput(updateColor);
+        }
+
     }
     public void EnableInput(bool updateColor = false)
     {
-        for(int i = 0; i < tehaiList.Count; i++)
+        for (int i = 0; i < tehaiList.Count; i++)
+        {
             tehaiList[i].EnableInput(updateColor);
+        }
     }
 
 
     public void DisableInput(List<int> indexList)
     {
-        if(indexList == null)
+        if (indexList == null)
             return;
 
         EnableInput(true);
 
         int index = 0;
-        for( int i = 0; i < indexList.Count; i++ )
+        for (int i = 0; i < indexList.Count; i++)
         {
             index = indexList[i];
 
-            if( index >= 0 && index < indexList.Count )
+            if (index >= 0 && index < indexList.Count)
+            {
                 tehaiList[index].DisableInput(true);
+            }
         }
     }
     public void EnableInput(List<int> indexList)
     {
-        if(indexList == null)
+        if (indexList == null)
             return;
 
         DisableInput(true);
 
         int index = 0;
-        for( int i = 0; i < indexList.Count; i++ )
+        for (int i = 0; i < indexList.Count; i++)
         {
             index = indexList[i];
 
-            if( index >= 0 && index < tehaiList.Count )
+            if (index >= 0 && index < tehaiList.Count)
+            {
                 tehaiList[index].EnableInput(true);
+            }
         }
     }
 
     public void SetEnableStateColor(bool state)
     {
-        for(int i = 0; i < tehaiList.Count; i++)
-            tehaiList[i].SetEnableStateColor( state );
+        for (int i = 0; i < tehaiList.Count; i++)
+        {
+            tehaiList[i].SetEnableStateColor(state);
+        }
     }
 }

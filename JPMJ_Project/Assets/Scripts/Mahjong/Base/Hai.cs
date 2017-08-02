@@ -1,7 +1,8 @@
-﻿
-/// <summary>
-/// 牌
-/// </summary>
+﻿/**
+ * Hai
+ * describe the various defines of majhong pai
+ * brandy added
+ */
 
 public class Hai 
 {
@@ -79,9 +80,9 @@ public class Hai
     // 中 
     public readonly static int ID_CHUN = 33;
 
-    // IDの最小値 
+    // ID的最小値 
     public readonly static int ID_MIN = ID_WAN_1;
-    // IDの最大値 
+    // ID的最大値 
     public readonly static int ID_MAX = ID_CHUN;
 
     // 1 
@@ -193,8 +194,8 @@ public class Hai
     // 字牌 
     public readonly static int KIND_TSUU = KIND_FON | KIND_SANGEN;
 
-    // 番号の配列 
-    private readonly static int[] NUMS = 
+	// 号码排列
+	private readonly static int[] NUMS = 
     {
         // 萬子
         NUM_WAN_1, NUM_WAN_2, NUM_WAN_3, NUM_WAN_4, NUM_WAN_5, NUM_WAN_6, NUM_WAN_7, NUM_WAN_8, NUM_WAN_9,
@@ -208,8 +209,8 @@ public class Hai
         NUM_HAKU, NUM_HATSU, NUM_CHUN 
     };
 
-    // 種類の配列 
-    private readonly static int[] KINDS = 
+	// 种类的排列
+	private readonly static int[] KINDS = 
     {
         // 萬子
         KIND_WAN, KIND_WAN, KIND_WAN, KIND_WAN, KIND_WAN, KIND_WAN, KIND_WAN, KIND_WAN, KIND_WAN,
@@ -223,8 +224,8 @@ public class Hai
         KIND_SANGEN, KIND_SANGEN, KIND_SANGEN 
     };
 
-    // 一九牌フラグ(flag)の配列 
-    private readonly static bool[] IS_ICHIKYUUS = 
+	// 一九牌标志(flag)的排列
+	private readonly static bool[] IS_ICHIKYUUS = 
     {
         // 萬子
         true, false, false, false, false, false, false, false, true,
@@ -238,8 +239,8 @@ public class Hai
         false, false, false 
     };
 
-    // 字牌フラグ(flag)の配列 
-    private readonly static bool[] IS_TSUUS = 
+	// 字牌标志(flag)的排列
+	private readonly static bool[] IS_TSUUS = 
     {
         // 萬子
         false, false, false, false, false, false, false, false, false,
@@ -253,8 +254,8 @@ public class Hai
         true, true, true 
     };
 
-    // ネクスト牌のIDの配列 
-    private readonly static int[] NEXT_HAI_IDS = 
+	// next牌id的排列
+	private readonly static int[] NEXT_HAI_IDS = 
     {
         // 萬子
         ID_WAN_2, ID_WAN_3, ID_WAN_4, ID_WAN_5, ID_WAN_6, ID_WAN_7, ID_WAN_8, ID_WAN_9, ID_WAN_1,
@@ -293,78 +294,52 @@ public class Hai
     }
 
 
-    /// <summary>
-    /// Copy the specified hai src to dest.
-    /// 牌をコピーする
-    /// </summary>
-
-    public static void copy( Hai dest, Hai src )
+	// 复制牌
+	public static void copy( Hai dest, Hai src )
     {
         dest._id = src._id;
         dest._isRed = src._isRed;
     }
 
-    /// <summary>
-    /// Gets the ID.
-    /// </summary>
-
+    // Gets the ID.
     public int ID
     {
         get{ return _id; }
     }
 
-    // 赤ドラ
-    /// <summary>
-    /// Gets or sets the Hai is 赤ドラ.
-    /// </summary>
-
-    public bool IsRed
+	// Gets or sets the Hai is 红多拉.
+	public bool IsRed
     {
         get{ return _isRed; }
         set{ _isRed = value; }
     }
 
-    /// <summary>
-    /// 番号を取得する.
-    /// </summary>
-
-    public int Num
+	// 取得号码.
+	public int Num
     {
         get{ return NUMS[_id]; }
     }
 
-    /// <summary>
-    /// 種類を取得する.
-    /// </summary>
-
-    public int Kind
+	// 取得种类.
+	public int Kind
     {
         get{ return KINDS[_id]; }
     }
 
-    /// <summary>
-    /// NK(番号と種類のOR)を取得する.
-    /// </summary>
-
-    public int NumKind
+	// 获得nk(号码和种类的or)
+	public int NumKind
     {
         get{ return NUMS[_id] | KINDS[_id]; }
     }
 
-    /// <summary>
-    /// 一九牌フラグを取得する.
-    /// </summary>
-
-    public bool IsIchikyuu
+    // 取得九牌旗(flag).
+	public bool IsIchikyuu
     {
         get{ return IS_ICHIKYUUS[_id]; }
     }
 
-    /// <summary>
-    /// 字牌フラグ(flag)を取得する.
-    /// </summary>
-
-    public bool IsTsuu
+	// 取得字牌标志(flag).
+	public bool IsTsuu
     {
         get{ return IS_TSUUS[_id]; }
     }
@@ -373,44 +348,33 @@ public class Hai
     {
         get{ return _id >= ID_TON && _id <= ID_PE; }
     }
+
     public bool IsSanGen
     {
         get{ return _id >= ID_HAKU && _id <= ID_CHUN; }
     }
 
-    /// <summary>
-    /// 一九、字牌 フラグを取得する
-    /// </summary>
-
-    public bool IsYaochuu
+	// 一九，取得字牌标志
+	public bool IsYaochuu
     {
         get{ return IS_ICHIKYUUS[_id] | IS_TSUUS[_id]; }
     }
 
-    /// <summary>
-    /// Gets the next hai identifier.
-    /// </summary>
-
+    // Gets the next hai identifier.
     public int NextHaiID
     {
         get{ return NEXT_HAI_IDS[_id]; }
     }
 
 
-    /// <summary>
-    /// 字牌フラグを取得する.
-    /// </summary>
-
-    public static bool CheckIsTsuu(int numKind)
+	// 取得字牌标志.
+	public static bool CheckIsTsuu(int numKind)
     {
         return (numKind & KIND_TSUU) != 0;
     }
 
-    /// <summary>
-    /// NK(番号と種類のOR)をIDに変換する
-    /// </summary>
-
-    public static int NumKindToID(int numKind)
+	// nk(号码和种类的or)转换为id
+	public static int NumKindToID(int numKind)
     {
         int id;
         if (numKind >= KIND_SANGEN) {
@@ -433,22 +397,15 @@ public class Hai
         return id;
     }
 
-    /// <summary>
-    /// check if the target hai is valid.
-    /// </summary>
-
+    // check if the target hai is valid.
     public static bool IsValidHai(Hai hai)
     {
         return (hai != null) && IsValidHaiID(hai.ID);
     }
 
-    /// <summary>
-    /// check if the target hai ID is valid.
-    /// </summary>
-
+    // check if the target hai ID is valid.
     public static bool IsValidHaiID(int id)
     {
         return id >= ID_MIN && id <= ID_MAX;
     }
 }
-

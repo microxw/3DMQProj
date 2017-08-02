@@ -1,10 +1,12 @@
-﻿using System.Collections;
+﻿/**
+ * MahjongMain
+ * The game logic manager
+ * brandy added
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 
- 
-/// <summary>
-/// Mahjong main. The game logic manager
-/// </summary>
 
 public class MahjongMain : Mahjong 
 {
@@ -14,7 +16,6 @@ public class MahjongMain : Mahjong
         get{ return m_agariUpdateInfoList; }
         protected set{ m_agariUpdateInfoList = value; }
     }
-
 
     protected ERyuuKyokuReason m_ryuuKyokuReason = ERyuuKyokuReason.None;
     public ERyuuKyokuReason RyuuKyokuReason
@@ -55,12 +56,12 @@ public class MahjongMain : Mahjong
     // Step: 1
     protected override void initialize()
     {
-        // 山を作成する
-        m_yama = new Yama();
+		// 开山
+		m_yama = new Yama();
 
         m_sais = new Sai[] { new Sai(), new Sai() };
 
-        // 赤ドラを設定する
+        // 设定红多拉
         if( GameSettings.UseRedDora ) {
             m_yama.setRedDora(Hai.ID_PIN_5, 2);
             m_yama.setRedDora(Hai.ID_WAN_5, 1);
@@ -276,9 +277,9 @@ public class MahjongMain : Mahjong
         return m_tsumoHai == null;
     }
 
-    /// <summary>
-    /// Ends the game, and calculate the final point score.
-    /// </summary>
+    // <summary>
+    // Ends the game, and calculate the final point score.
+    // </summary>
     public void EndGame()
     {
         AgariUpdateInfoList.Clear();
@@ -864,11 +865,11 @@ public class MahjongMain : Mahjong
     }
 
 
-    /// <summary>
-    /// Is the kan count over 4. 
-    /// Ryuukyoku rule in this game is: 
-    /// once total kan count >= 4 and they are not belong to the same one player.
-    /// </summary>
+    // <summary>
+    // Is the kan count over 4. 
+    // Ryuukyoku rule in this game is: 
+    // once total kan count >= 4 and they are not belong to the same one player.
+    // </summary>
     public bool checkKanCountOverFlow()
     {
         int[] allPlayerKanCount = new int[4];
@@ -1201,12 +1202,12 @@ public class MahjongMain : Mahjong
 
     #region RyuuKyoku
 
-    /// <summary>
-    /// Handles the ryuukyoku man gan.
-    /// Only one player who is the nearest to Oya can perform nagashimangan
-    /// if some one is nagashimangan(流局满贯), return true, otherwise return false.
-    /// </summary>
-    /// <returns><c>true</c>, if some one is ryuukyoku man, <c>false</c> otherwise.</returns>
+    // <summary>
+    // Handles the ryuukyoku man gan.
+    // Only one player who is the nearest to Oya can perform nagashimangan
+    // if some one is nagashimangan(流局满贯), return true, otherwise return false.
+    // </summary>
+    // <returns><c>true</c>, if some one is ryuukyoku man, <c>false</c> otherwise.</returns>
     public bool HandleNagashiMangan() 
     {
         // 流し満貫の確認をする, start at OyaIndex.
@@ -1339,8 +1340,8 @@ public class MahjongMain : Mahjong
         }
         else
         {
-            /// Note: only the first ron player can get the reach bou,
-            ///       make sure the first ron player is the nearest one to m_kazeFrom player.
+            // Note: only the first ron player can get the reach bou,
+            //       make sure the first ron player is the nearest one to m_kazeFrom player.
 
             int index = -1;
 
@@ -1492,10 +1493,10 @@ public class MahjongMain : Mahjong
         AgariUpdateInfoList.Add( aupdateInfo );
 
 
-        /// reach bou point won't be contained to PlayerTenbouChangeInfo 
-        /// 
-        /// Note: only the first ron player can get the reach bou,
-        ///       make sure the first ron player is the nearest one to m_kazeFrom player.
+        // reach bou point won't be contained to PlayerTenbouChangeInfo 
+        // 
+        // Note: only the first ron player can get the reach bou,
+        //       make sure the first ron player is the nearest one to m_kazeFrom player.
 
         // リーチ棒の点数を清算する
         m_activePlayer.increaseTenbou( m_reachBou * GameSettings.Reach_Cost );
@@ -1621,7 +1622,7 @@ public class MahjongMain : Mahjong
         AgariUpdateInfoList.Add( aupdateInfo );
 
 
-        /// reach bou point won't be contained to PlayerTenbouChangeInfo 
+        // reach bou point won't be contained to PlayerTenbouChangeInfo 
         // リーチ棒の点数を清算する
         m_activePlayer.increaseTenbou( m_reachBou * GameSettings.Reach_Cost );
         m_reachBou = 0;

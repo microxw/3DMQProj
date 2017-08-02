@@ -1,22 +1,20 @@
-﻿
-/// <summary>
-/// サイコロ(色子)を管理する
-/// </summary>
+﻿/**
+ * Sai
+ * 管理骰子
+ * brandy added
+ */
 
-public class Sai 
+public class Sai
 {
     // 番号
     private int _num = 1;
 
     public int Num
     {
-        get{ return _num; }
+        get { return _num; }
     }
 
-    /// <summary>
-    /// サイコロを振って番号を取得する。
-    /// 摇色子，结果1-6.
-    /// </summary>
+    // 摇动骰子获取号码（结果1-6）
     public int SaiFuri()
     {
         _num = Utils.GetRandomNum(1, 7);

@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿/**
+ * GameStateBase
+ * base class for states change
+ * brandy added
+ */
+
+using UnityEngine;
 using System.Collections;
 
 
@@ -18,7 +24,7 @@ public class GameStateBase : State
 
     public virtual void OnHandleEvent(UIEventType evtID, object[] args) 
     {
-        
+
     }
 
     public override void Exit()

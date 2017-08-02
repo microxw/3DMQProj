@@ -1,3 +1,9 @@
+/**
+ * State
+ * get gameObject life circle
+ * brandy added
+ */
+
 using UnityEngine;
 using System.Collections;
 
@@ -7,7 +13,8 @@ public abstract class State : MonoBehaviour
     public virtual void Enter ()
     {
         AddListeners();
-        //Debug.LogWarningFormat( "~State {0} Enter.", GetType().Name );
+
+        Debug.LogWarningFormat( "~State {0} Enter.", GetType().Name );
     }
 
     public virtual void Exit ()

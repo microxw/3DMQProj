@@ -67,24 +67,25 @@ using UnityEngine;
 // }
 // }
 
-/// <summary>
-/// This class encodes and decodes JSON strings.
-/// Spec. details, see http://www.json.org/
-///
-/// JSON uses Arrays and Objects. These correspond here to the datatypes IList and IDictionary.
-/// All numbers are parsed to doubles.
-/// </summary>
+// <summary>
+// This class encodes and decodes JSON strings.
+// Spec. details, see http://www.json.org/
+//
+// JSON uses Arrays and Objects. These correspond here to the datatypes IList and IDictionary.
+// All numbers are parsed to doubles.
+// </summary>
 public static class MiniJSON
 {
-    /// <summary>
-    /// Parses the string json into a value
-    /// </summary>
-    /// <param name="json">A JSON string.</param>
-    /// <returns>An List&lt;object&gt;, a Dictionary&lt;string, object&gt;, a double, an integer,a string, null, true, or false</returns>
+    // <summary>
+    // Parses the string json into a value
+    // </summary>
+    // <param name="json">A JSON string.</param>
+    // <returns>An List&lt;object&gt;, a Dictionary&lt;string, object&gt;, a double, an integer,a string, null, true, or false</returns>
     public static object Deserialize(string json)
     {
         // save the string for debug information
-        if (json == null) {
+        if (json == null)
+        {
             return null;
         }
 
@@ -125,7 +126,8 @@ public static class MiniJSON
 
         public static object Parse(string jsonString)
         {
-            using (var instance = new Parser(jsonString)) {
+            using (var instance = new Parser(jsonString))
+            {
                 return instance.ParseValue();
             }
         }
@@ -144,31 +146,35 @@ public static class MiniJSON
             json.Read();
 
             // {
-            while (true) {
-                switch (NextToken) {
+            while (true)
+            {
+                switch (NextToken)
+                {
                     case TOKEN.NONE:
-                    return null;
+                        return null;
                     case TOKEN.COMMA:
-                    continue;
+                        continue;
                     case TOKEN.CURLY_CLOSE:
-                    return table;
+                        return table;
                     default:
-                    // name
-                    string name = ParseString();
-                    if (name == null) {
-                        return null;
-                    }
+                        // name
+                        string name = ParseString();
+                        if (name == null)
+                        {
+                            return null;
+                        }
 
-                    // :
-                    if (NextToken != TOKEN.COLON) {
-                        return null;
-                    }
-                    // ditch the colon
-                    json.Read();
+                        // :
+                        if (NextToken != TOKEN.COLON)
+                        {
+                            return null;
+                        }
+                        // ditch the colon
+                        json.Read();
 
-                    // value
-                    table[name] = ParseValue();
-                    break;
+                        // value
+                        table[name] = ParseValue();
+                        break;
                 }
             }
         }
@@ -182,22 +188,24 @@ public static class MiniJSON
 
             // [
             var parsing = true;
-            while (parsing) {
+            while (parsing)
+            {
                 TOKEN nextToken = NextToken;
 
-                switch (nextToken) {
+                switch (nextToken)
+                {
                     case TOKEN.NONE:
-                    return null;
+                        return null;
                     case TOKEN.COMMA:
-                    continue;
+                        continue;
                     case TOKEN.SQUARED_CLOSE:
-                    parsing = false;
-                    break;
+                        parsing = false;
+                        break;
                     default:
-                    object value = ParseByToken(nextToken);
+                        object value = ParseByToken(nextToken);
 
-                    array.Add(value);
-                    break;
+                        array.Add(value);
+                        break;
                 }
             }
 
@@ -212,23 +220,24 @@ public static class MiniJSON
 
         object ParseByToken(TOKEN token)
         {
-            switch (token) {
+            switch (token)
+            {
                 case TOKEN.STRING:
-                return ParseString();
+                    return ParseString();
                 case TOKEN.NUMBER:
-                return ParseNumber();
+                    return ParseNumber();
                 case TOKEN.CURLY_OPEN:
-                return ParseObject();
+                    return ParseObject();
                 case TOKEN.SQUARED_OPEN:
-                return ParseArray();
+                    return ParseArray();
                 case TOKEN.TRUE:
-                return true;
+                    return true;
                 case TOKEN.FALSE:
-                return false;
+                    return false;
                 case TOKEN.NULL:
-                return null;
+                    return null;
                 default:
-                return null;
+                    return null;
             }
         }
 
@@ -241,60 +250,66 @@ public static class MiniJSON
             json.Read();
 
             bool parsing = true;
-            while (parsing) {
+            while (parsing)
+            {
 
-                if (json.Peek() == -1) {
+                if (json.Peek() == -1)
+                {
                     parsing = false;
                     break;
                 }
 
                 c = NextChar;
-                switch (c) {
+                switch (c)
+                {
                     case '"':
-                    parsing = false;
-                    break;
-                    case '\\':
-                    if (json.Peek() == -1) {
                         parsing = false;
                         break;
-                    }
-
-                    c = NextChar;
-                    switch (c) {
-                        case '"':
-                        case '\\':
-                        case '/':
-                        s.Append(c);
-                        break;
-                        case 'b':
-                        s.Append('\b');
-                        break;
-                        case 'f':
-                        s.Append('\f');
-                        break;
-                        case 'n':
-                        s.Append('\n');
-                        break;
-                        case 'r':
-                        s.Append('\r');
-                        break;
-                        case 't':
-                        s.Append('\t');
-                        break;
-                        case 'u':
-                        var hex = new char[4];
-
-                        for (int i = 0; i < 4; i++) {
-                            hex[i] = NextChar;
+                    case '\\':
+                        if (json.Peek() == -1)
+                        {
+                            parsing = false;
+                            break;
                         }
 
-                        s.Append((char)Convert.ToInt32(new string(hex), 16));
+                        c = NextChar;
+                        switch (c)
+                        {
+                            case '"':
+                            case '\\':
+                            case '/':
+                                s.Append(c);
+                                break;
+                            case 'b':
+                                s.Append('\b');
+                                break;
+                            case 'f':
+                                s.Append('\f');
+                                break;
+                            case 'n':
+                                s.Append('\n');
+                                break;
+                            case 'r':
+                                s.Append('\r');
+                                break;
+                            case 't':
+                                s.Append('\t');
+                                break;
+                            case 'u':
+                                var hex = new char[4];
+
+                                for (int i = 0; i < 4; i++)
+                                {
+                                    hex[i] = NextChar;
+                                }
+
+                                s.Append((char)Convert.ToInt32(new string(hex), 16));
+                                break;
+                        }
                         break;
-                    }
-                    break;
                     default:
-                    s.Append(c);
-                    break;
+                        s.Append(c);
+                        break;
                 }
             }
 
@@ -305,7 +320,8 @@ public static class MiniJSON
         {
             string number = NextWord;
 
-            if (number.IndexOf('.') == -1) {
+            if (number.IndexOf('.') == -1)
+            {
                 long parsedInt;
                 Int64.TryParse(number, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out parsedInt);
                 return parsedInt;
@@ -318,10 +334,12 @@ public static class MiniJSON
 
         void EatWhitespace()
         {
-            while (Char.IsWhiteSpace(PeekChar)) {
+            while (Char.IsWhiteSpace(PeekChar))
+            {
                 json.Read();
 
-                if (json.Peek() == -1) {
+                if (json.Peek() == -1)
+                {
                     break;
                 }
             }
@@ -349,10 +367,12 @@ public static class MiniJSON
             {
                 StringBuilder word = new StringBuilder();
 
-                while (!IsWordBreak(PeekChar)) {
+                while (!IsWordBreak(PeekChar))
+                {
                     word.Append(NextChar);
 
-                    if (json.Peek() == -1) {
+                    if (json.Peek() == -1)
+                    {
                         break;
                     }
                 }
@@ -367,28 +387,30 @@ public static class MiniJSON
             {
                 EatWhitespace();
 
-                if (json.Peek() == -1) {
+                if (json.Peek() == -1)
+                {
                     return TOKEN.NONE;
                 }
 
-                switch (PeekChar) {
+                switch (PeekChar)
+                {
                     case '{':
-                    return TOKEN.CURLY_OPEN;
+                        return TOKEN.CURLY_OPEN;
                     case '}':
-                    json.Read();
-                    return TOKEN.CURLY_CLOSE;
+                        json.Read();
+                        return TOKEN.CURLY_CLOSE;
                     case '[':
-                    return TOKEN.SQUARED_OPEN;
+                        return TOKEN.SQUARED_OPEN;
                     case ']':
-                    json.Read();
-                    return TOKEN.SQUARED_CLOSE;
+                        json.Read();
+                        return TOKEN.SQUARED_CLOSE;
                     case ',':
-                    json.Read();
-                    return TOKEN.COMMA;
+                        json.Read();
+                        return TOKEN.COMMA;
                     case '"':
-                    return TOKEN.STRING;
+                        return TOKEN.STRING;
                     case ':':
-                    return TOKEN.COLON;
+                        return TOKEN.COLON;
                     case '0':
                     case '1':
                     case '2':
@@ -400,16 +422,17 @@ public static class MiniJSON
                     case '8':
                     case '9':
                     case '-':
-                    return TOKEN.NUMBER;
+                        return TOKEN.NUMBER;
                 }
 
-                switch (NextWord) {
+                switch (NextWord)
+                {
                     case "false":
-                    return TOKEN.FALSE;
+                        return TOKEN.FALSE;
                     case "true":
-                    return TOKEN.TRUE;
+                        return TOKEN.TRUE;
                     case "null":
-                    return TOKEN.NULL;
+                        return TOKEN.NULL;
                 }
 
                 return TOKEN.NONE;
@@ -417,11 +440,11 @@ public static class MiniJSON
         }
     }
 
-    /// <summary>
-    /// Converts a IDictionary / IList object or a simple type (string, int, etc.) into a JSON string
-    /// </summary>
-    /// <param name="json">A Dictionary&lt;string, object&gt; / List&lt;object&gt;</param>
-    /// <returns>A JSON encoded string, or null if object 'json' is not serializable</returns>
+    // <summary>
+    // Converts a IDictionary / IList object or a simple type (string, int, etc.) into a JSON string
+    // </summary>
+    // <param name="json">A Dictionary&lt;string, object&gt; / List&lt;object&gt;</param>
+    // <returns>A JSON encoded string, or null if object 'json' is not serializable</returns>
     public static string Serialize(object obj)
     {
         return Serializer.Serialize(obj);
@@ -451,19 +474,32 @@ public static class MiniJSON
             IDictionary asDict;
             string asStr;
 
-            if (value == null) {
+            if (value == null)
+            {
                 builder.Append("null");
-            } else if ((asStr = value as string) != null) {
+            }
+            else if ((asStr = value as string) != null)
+            {
                 SerializeString(asStr);
-            } else if (value is bool) {
+            }
+            else if (value is bool)
+            {
                 builder.Append((bool)value ? "true" : "false");
-            } else if ((asList = value as IList) != null) {
+            }
+            else if ((asList = value as IList) != null)
+            {
                 SerializeArray(asList, indentationLevel);
-            } else if ((asDict = value as IDictionary) != null) {
+            }
+            else if ((asDict = value as IDictionary) != null)
+            {
                 SerializeObject(asDict, indentationLevel);
-            } else if (value is char) {
+            }
+            else if (value is char)
+            {
                 SerializeString(new string((char)value, 1));
-            } else {
+            }
+            else
+            {
                 SerializeOther(value);
             }
         }
@@ -474,15 +510,19 @@ public static class MiniJSON
 
             builder.Append('{');
             builder.Append('\n');
-            for (int i = 0; i < indentationLevel; ++i) {
+            for (int i = 0; i < indentationLevel; ++i)
+            {
                 builder.Append('\t');
             }
 
-            foreach (object e in obj.Keys) {
-                if (!first) {
+            foreach (object e in obj.Keys)
+            {
+                if (!first)
+                {
                     builder.Append(',');
                     builder.Append('\n');
-                    for (int i = 0; i < indentationLevel; ++i) {
+                    for (int i = 0; i < indentationLevel; ++i)
+                    {
                         builder.Append('\t');
                     }
                 }
@@ -498,7 +538,8 @@ public static class MiniJSON
             }
 
             builder.Append('\n');
-            for (int i = 0; i < indentationLevel - 1; ++i) {
+            for (int i = 0; i < indentationLevel - 1; ++i)
+            {
                 builder.Append('\t');
             }
             builder.Append('}');
@@ -510,9 +551,11 @@ public static class MiniJSON
 
             bool first = true;
 
-            for (int i = 0; i < anArray.Count; i++) {
+            for (int i = 0; i < anArray.Count; i++)
+            {
                 object obj = anArray[i];
-                if (!first) {
+                if (!first)
+                {
                     builder.Append(',');
                 }
 
@@ -529,39 +572,44 @@ public static class MiniJSON
             builder.Append('\"');
 
             char[] charArray = str.ToCharArray();
-            for (int i = 0; i < charArray.Length; i++) {
+            for (int i = 0; i < charArray.Length; i++)
+            {
                 char c = charArray[i];
-                switch (c) {
+                switch (c)
+                {
                     case '"':
-                    builder.Append("\\\"");
-                    break;
+                        builder.Append("\\\"");
+                        break;
                     case '\\':
-                    builder.Append("\\\\");
-                    break;
+                        builder.Append("\\\\");
+                        break;
                     case '\b':
-                    builder.Append("\\b");
-                    break;
+                        builder.Append("\\b");
+                        break;
                     case '\f':
-                    builder.Append("\\f");
-                    break;
+                        builder.Append("\\f");
+                        break;
                     case '\n':
-                    builder.Append("\\n");
-                    break;
+                        builder.Append("\\n");
+                        break;
                     case '\r':
-                    builder.Append("\\r");
-                    break;
+                        builder.Append("\\r");
+                        break;
                     case '\t':
-                    builder.Append("\\t");
-                    break;
+                        builder.Append("\\t");
+                        break;
                     default:
-                    int codepoint = Convert.ToInt32(c);
-                    if ((codepoint >= 32) && (codepoint <= 126)) {
-                        builder.Append(c);
-                    } else {
-                        builder.Append("\\u");
-                        builder.Append(codepoint.ToString("x4"));
-                    }
-                    break;
+                        int codepoint = Convert.ToInt32(c);
+                        if ((codepoint >= 32) && (codepoint <= 126))
+                        {
+                            builder.Append(c);
+                        }
+                        else
+                        {
+                            builder.Append("\\u");
+                            builder.Append(codepoint.ToString("x4"));
+                        }
+                        break;
                 }
             }
 
@@ -573,33 +621,48 @@ public static class MiniJSON
             // NOTE: decimals lose precision during serialization.
             // They always have, I'm just letting you know.
             // Previously floats and doubles lost precision too.
-            if (value is float) {
+            if (value is float)
+            {
                 builder.Append(((float)value).ToString("R", System.Globalization.CultureInfo.InvariantCulture));
-            } else if (value is int
-                           || value is uint
-                           || value is long
-                           || value is sbyte
-                           || value is byte
-                           || value is short
-                           || value is ushort
-                           || value is ulong) {
+            }
+            else if (value is int
+                         || value is uint
+                         || value is long
+                         || value is sbyte
+                         || value is byte
+                         || value is short
+                         || value is ushort
+                         || value is ulong)
+            {
                 builder.Append(value);
-            } else if (value is double
-                           || value is decimal) {
+            }
+            else if (value is double
+                         || value is decimal)
+            {
                 builder.Append(Convert.ToDouble(value).ToString("R", System.Globalization.CultureInfo.InvariantCulture));
-            } else if (value is Vector2) {
+            }
+            else if (value is Vector2)
+            {
                 var vectorValue = (Vector2)value;
                 builder.Append(("\"(" + vectorValue.x.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + "," + vectorValue.y.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + ")\""));
-            } else if (value is Vector3) {
+            }
+            else if (value is Vector3)
+            {
                 var vectorValue = (Vector3)value;
                 builder.Append("\"(" + vectorValue.x.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + "," + vectorValue.y.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + "," + vectorValue.z.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + ")\"");
-            } else if (value is Vector4) {
+            }
+            else if (value is Vector4)
+            {
                 var vectorValue = (Vector4)value;
                 builder.Append(("\"(" + vectorValue.x.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + "," + vectorValue.y.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + "," + vectorValue.z.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + "," + vectorValue.w.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + ")\""));
-            } else if (value is Quaternion) {
+            }
+            else if (value is Quaternion)
+            {
                 var quaternionValue = (Quaternion)value;
                 builder.Append(("\"(" + quaternionValue.x.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + "," + quaternionValue.y.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + "," + quaternionValue.z.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + "," + quaternionValue.w.ToString("R", System.Globalization.CultureInfo.InvariantCulture) + ")\""));
-            } else {
+            }
+            else
+            {
                 SerializeString(value.ToString());
             }
         }
