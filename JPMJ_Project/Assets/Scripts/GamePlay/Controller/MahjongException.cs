@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿/**
+ * MahjongException
+ * 异常处理
+ * brandy added
+ */
+
+using UnityEngine;
 using System.Collections;
 
 

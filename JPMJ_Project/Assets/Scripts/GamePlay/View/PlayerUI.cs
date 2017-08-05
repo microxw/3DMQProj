@@ -1,4 +1,10 @@
-﻿using UnityEngine;
+﻿/**
+ * PlayerUI
+ * 玩家相关的UI，牌，玩家信息等
+ * brandy added
+ */
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 

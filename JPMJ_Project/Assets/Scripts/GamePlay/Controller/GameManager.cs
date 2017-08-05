@@ -1,6 +1,6 @@
 ﻿/**
  * GameManager
- * singleton game manager
+ * singleton game manager, a component
  * brandy added
  */
 

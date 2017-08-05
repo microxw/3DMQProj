@@ -1,7 +1,7 @@
 ﻿
 public enum EKyoku
 {
-    Ton_1 = 1,  // 東一局
+    Ton_1 = 1,  // 东一局
     Ton_2 = 2,
     Ton_3 = 3,
     Ton_4 = 4,

@@ -25,13 +25,13 @@ public class Yama
     // 自摸牌的排列
     private int[] TsumoHaiIndex_InYama = new int[TSUMO_HAIS_MAX];
 
-	// 岭上开花牌的序列
-	private int[] RinshanHaiIndex_InYama = new int[RINSHAN_HAIS_MAX];
+    // 岭上开花牌的序列
+    private int[] RinshanHaiIndex_InYama = new int[RINSHAN_HAIS_MAX];
 
-    // 表ドラ牌の配列
+    // 表多拉牌的序列
     private int[] OmoteDoraHaiIndex_InYama = new int[DORA_HAIS_MAX];
 
-    // 裏ドラ牌の配列
+    // 里多拉牌的序列
     private int[] UraDoraHaiIndex_InYama = new int[DORA_HAIS_MAX];
 
 
@@ -62,7 +62,7 @@ public class Yama
         return _yamaHais;
     }
 
-    // 取得Tsumo牌的剩余
+    // 取得可摸入牌的剩余
     public int getTsumoNokori()
     {
         return TSUMO_HAIS_MAX - _rinshanHaisIndex - _tsumoHaisIndex;
@@ -136,8 +136,8 @@ public class Yama
     }
 
 
-	// 取得自摸牌
-	public Hai PickTsumoHai()
+    // 取得自摸牌
+    public Hai PickTsumoHai()
     {
         if (getTsumoNokori() <= 0)
             return null;
@@ -150,8 +150,8 @@ public class Yama
         return tsumoHai;
     }
 
-	// 获得了Rinshan(岭上开花)牌
-	public Hai PickRinshanHai()
+    // 获得了Rinshan(岭上开花)牌
+    public Hai PickRinshanHai()
     {
         if (getRinshanNokori() <= 0)
             return null;
@@ -165,8 +165,8 @@ public class Yama
     }
 
 
-	// 表ドラの配列を取得する（取得表多拉的排列）
-	public Hai[] getOpenedOmoteDoraHais()
+    // 取得表多拉的队列
+    public Hai[] getOpenedOmoteDoraHais()
     {
         int omoteDoraHaisCount = _rinshanHaisIndex + 1;
         Hai[] omoteDoraHais = new Hai[omoteDoraHaisCount];
@@ -193,8 +193,8 @@ public class Yama
     }
 
 
-	// 裏ドラの配列を取得する（取得了背面的排列）
-	public Hai[] getOpenedUraDoraHais()
+    // 取得里多拉的队列
+    public Hai[] getOpenedUraDoraHais()
     {
         int uraDoraHaisCount = _rinshanHaisIndex + 1;
         Hai[] uraDoraHais = new Hai[uraDoraHaisCount];
@@ -222,15 +222,14 @@ public class Yama
     }
 
 
-	/**
-     * ツモ牌の開始位置を設定する（设定焦点牌的开始位置）
+    /**
+     * 设定新抓手牌的开始位置
      *
-     *  the correct array is like:
+     * the correct array is like:
      *  
-     *  Tsumo Start <--| Wareme |<-- Rinshan 2x2 <-- Doras 2x5 |<-- Tsumo End <--.
+     * Tsumo Start <--| Wareme |<-- Rinshan 2x2 <-- Doras 2x5 |<-- Tsumo End <--.
      */
-
-	public bool setTsumoHaisStartIndex(int tsumoHaiStartIndex)
+    public bool setTsumoHaisStartIndex(int tsumoHaiStartIndex)
     {
         if (tsumoHaiStartIndex >= YAMA_HAIS_MAX)
             return false;
@@ -296,7 +295,7 @@ public class Yama
     }
 
 
-    // 赤ドラ牌（红多拉）
+    // 红多拉
     public void setRedDora(int id, int num)
     {
         if (num <= 0) return;

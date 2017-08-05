@@ -1,15 +1,20 @@
-﻿
-public static class GameSettings 
+﻿/**
+ * GameSettings
+ * 游戏设置值
+ * brandy added
+ */
+
+public static class GameSettings
 {
     public static int PlayerCount = 4;
 
-    // 食断.
+    // 食断
     public static bool UseKuitan = true;
 
-    // 红Dora.
+    // 红Dora
     public static bool UseRedDora = true;
 
-    // if allow furiten
+    // furiten：能胡自己打过的牌，也不能胡听牌后放弃胡牌的牌
     public static bool AllowFuriten = true;
 
 
@@ -17,11 +22,11 @@ public static class GameSettings
     public const bool AllowReach4 = false;
     public const bool AllowSuteFonHai4 = false;
 
-    // 局の最大値
+    // 局的最大値
     public const int Kyoku_Max = (int)EKyoku.Nan_4;
     public const int KanCountMax = 4;
 
-    // 持ち点の初期値
+    // 初始分数数值
     public const int Init_Tenbou = 25000;
     public const int Back_Tenbou = 30000; // used for calculating final pt
 

@@ -1,6 +1,6 @@
 ﻿/**
  * StateMachine
- * safely manage state of players
+ * 状态机的实现
  * brandy added
  */
 

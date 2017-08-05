@@ -1,9 +1,15 @@
-﻿using UnityEngine;
+﻿/**
+ * AudioManager
+ * 音频播放管理
+ * brandy added
+ */
+
+using UnityEngine;
 using System.Collections;
 
 
 [RequireComponent(typeof(AudioSource))]
-public class AudioManager : MonoBehaviour 
+public class AudioManager : MonoBehaviour
 {
     private static AudioManager _instance;
     public static AudioManager Get()
@@ -13,10 +19,12 @@ public class AudioManager : MonoBehaviour
 
     void Awake()
     {
-        if( _instance != null && _instance != this ){
+        if (_instance != null && _instance != this)
+        {
             Destroy(gameObject);
         }
-        else{
+        else
+        {
             _instance = this;
             DontDestroyOnLoad(gameObject);
         }
@@ -37,13 +45,16 @@ public class AudioManager : MonoBehaviour
     private float bgm_vol = -1f;
     public float BgmVolume
     {
-        get{ 
-            if(bgm_vol == -1)
-                bgm_vol = PlayerPrefs.GetFloat("BGM_VOLUME", 1f); 
+        get
+        {
+            if (bgm_vol == -1f)
+                bgm_vol = PlayerPrefs.GetFloat("BGM_VOLUME", 1f);
             return bgm_vol;
         }
-        set{
-            if( bgm_vol != value ){
+        set
+        {
+            if (bgm_vol != value)
+            {
                 bgm_vol = value;
                 PlayerPrefs.SetFloat("BGM_VOLUME", bgm_vol);
 
@@ -75,13 +86,16 @@ public class AudioManager : MonoBehaviour
     private float sfxVol = -1f;
     public float SfxVolume
     {
-        get{
-            if( sfxVol < 0 )
-                sfxVol = PlayerPrefs.GetFloat( "SFX_VOLUME", 1f );
-            return sfxVol;               
+        get
+        {
+            if (sfxVol < 0)
+                sfxVol = PlayerPrefs.GetFloat("SFX_VOLUME", 1f);
+            return sfxVol;
         }
-        set{
-            if( sfxVol != value ){
+        set
+        {
+            if (sfxVol != value)
+            {
                 sfxVol = value;
                 PlayerPrefs.SetFloat("SFX_VOLUME", sfxVol);
 
@@ -92,7 +106,7 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySFX(string path, float volumeScale = 1f)
     {
-        PlaySFX( Resources.Load<AudioClip>(path), volumeScale );
+        PlaySFX(Resources.Load<AudioClip>(path), volumeScale);
     }
     public void PlaySFX(AudioClip clip, float volumeScale = 1f)
     {

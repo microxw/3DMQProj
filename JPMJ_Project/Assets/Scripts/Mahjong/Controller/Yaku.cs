@@ -1,13 +1,16 @@
-﻿using System.Collections;
+﻿/**
+ * Yaku
+ * 计算手牌整体的番牌
+ * 役牌（番牌）
+ * brandy added
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using YakuHelper;
 
-/// <summary>
-/// 手牌全体の役を判定するクラスです
-/// 计算役
-/// </summary>
 
-public class Yaku 
+public class Yaku
 {
     #region Constructor
     protected Tehai _tehai;
@@ -23,12 +26,12 @@ public class Yaku
 
     public bool isKokushi { get { return _kokushi; } }
     public bool isNaki { get { return _nakiFlag; } }
-    public int DoraCount{ get{ return _doraCount; } }
+    public int DoraCount { get { return _doraCount; } }
 
-    public Tehai Tehai{ get{ return _tehai; } }
-    public Hai AddHai{ get{ return _addHai; } }
-    public HaiCombi Combi{ get{ return _combi; } }
-    public AgariParam AgariParam{ get{ return _agariParam; } }
+    public Tehai Tehai { get { return _tehai; } }
+    public Hai AddHai { get { return _addHai; } }
+    public HaiCombi Combi { get { return _combi; } }
+    public AgariParam AgariParam { get { return _agariParam; } }
 
 
     // Constructors
@@ -48,20 +51,18 @@ public class Yaku
     }
 
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Yaku"/> class.
-    /// Common combi Yaku(常规牌型)
-    /// 
-    /// NOTE: 
-    /// 1. CheckChiitoitsu, CheckHonroutou_Chiitoitsu, CheckTsuisou_Chiitoitsu, 这3种七对子相关的役不在这里处理!
-    /// 2. CheckKokushi, CheckKokushi_13Men，这2种国士无双相关的役不在这里处理!
-    /// </summary>
+    // Initializes a new instance of the <see cref="Yaku"/> class.
+    // Common combi Yaku(常规牌型)
+    // 
+    // NOTE: 
+    // 1. CheckChiitoitsu, CheckHonroutou_Chiitoitsu, CheckTsuisou_Chiitoitsu, 这3种七对子相关的役不在这里处理!
+    // 2. CheckKokushi, CheckKokushi_13Men，这2种国士无双相关的役不在这里处理!
 
     protected Yaku(Tehai tehai, Hai addHai, HaiCombi combi, AgariParam param)
     {
         this._tehai = tehai;
         this._addHai = addHai;
-        this._combi  = combi;
+        this._combi = combi;
         this._agariParam = param;
         this._nakiFlag = tehai.isNaki();
 
@@ -76,7 +77,7 @@ public class Yaku
             new CheckHoutei(this),
             new CheckRinshan(this),
             new CheckChankan(this),
-            
+
             new CheckTanyao(this),
             new CheckPinfu(this),
             new CheckIpeikou(this),
@@ -130,12 +131,9 @@ public class Yaku
     }
 
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Yaku"/> class.
-    /// For Chiitoitsu（七对子）, 
-    /// The param "chiitoitsuSymbol" is just used as a distinguish between Chiitoitsu and Kokushi
-    /// </summary>
-
+    // Initializes a new instance of the <see cref="Yaku"/> class.
+    // For Chiitoitsu（七对子）, 
+    // The param "chiitoitsuSymbol" is just used as a distinguish between Chiitoitsu and Kokushi
     protected Yaku(Tehai tehai, Hai addHai, AgariParam param, int chiitoitsuSymbol)
     {
         this._tehai = tehai;
@@ -175,11 +173,8 @@ public class Yaku
         FilterYakuPiece();
     }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Yaku"/> class.
-    /// For Kokushi（国士无双）
-    /// </summary>
-    
+    // Initializes a new instance of the <see cref="Yaku"/> class.
+    // For Kokushi（国士无双）
     protected Yaku(Tehai tehai, Hai addHai, AgariParam param)
     {
         this._tehai = tehai;
@@ -199,7 +194,7 @@ public class Yaku
         };
         #endregion
 
-        this._kokushi = _yakuHandlers[_yakuHandlers.Length-1].isHantei() || _yakuHandlers[_yakuHandlers.Length-2].isHantei();
+        this._kokushi = _yakuHandlers[_yakuHandlers.Length - 1].isHantei() || _yakuHandlers[_yakuHandlers.Length - 2].isHantei();
 
         FilterYakuPiece();
     }
@@ -208,15 +203,15 @@ public class Yaku
     protected void FilterYakuPiece()
     {
         //役満成立時は他の一般役は切り捨てる
-        if(_yakuHandlers != null)
+        if (_yakuHandlers != null)
         {
-            for(int i = 0; i < _yakuHandlers.Length; i++)
+            for (int i = 0; i < _yakuHandlers.Length; i++)
             {
-                if( _yakuHandlers[i].isYakuman() && _yakuHandlers[i].isHantei()) 
+                if (_yakuHandlers[i].isYakuman() && _yakuHandlers[i].isHantei())
                 {
-                    for(int j = 0; j < _yakuHandlers.Length; j++)
+                    for (int j = 0; j < _yakuHandlers.Length; j++)
                     {
-                        if( !_yakuHandlers[j].isYakuman() && !_yakuHandlers[j].isDoubleYakuman() )
+                        if (!_yakuHandlers[j].isYakuman() && !_yakuHandlers[j].isDoubleYakuman())
                             _yakuHandlers[j].setYakuHantei(false);
                     }
                 }
@@ -229,14 +224,14 @@ public class Yaku
     public int calculateHanSuu()
     {
         int hanSuu = 0;
-        for(int i = 0; i < _yakuHandlers.Length; i++)
+        for (int i = 0; i < _yakuHandlers.Length; i++)
         {
-            if( _yakuHandlers[i].isHantei() == true)
+            if (_yakuHandlers[i].isHantei() == true)
                 hanSuu += _yakuHandlers[i].getHanSuu();
         }
 
         // ドラのみは無し
-        if( hanSuu == _yakuHandlers[_yakuHandlers.Length - 1].getHanSuu() )
+        if (hanSuu == _yakuHandlers[_yakuHandlers.Length - 1].getHanSuu())
             return 0;
 
         return hanSuu;
@@ -245,9 +240,9 @@ public class Yaku
     public int getHan()
     {
         int hanSuu = 0;
-        for(int i = 0; i < _yakuHandlers.Length ; i++)
+        for (int i = 0; i < _yakuHandlers.Length; i++)
         {
-            if( _yakuHandlers[i].isHantei() )
+            if (_yakuHandlers[i].isHantei())
                 hanSuu += _yakuHandlers[i].getHanSuu();
         }
 
@@ -258,11 +253,11 @@ public class Yaku
     {
         List<YakuHandler> yakus = new List<YakuHandler>();
 
-        for(int i = 0; i < _yakuHandlers.Length; i++)
+        for (int i = 0; i < _yakuHandlers.Length; i++)
         {
-            if( _yakuHandlers[i].isHantei() )
+            if (_yakuHandlers[i].isHantei())
             {
-                yakus.Add( _yakuHandlers[i] );
+                yakus.Add(_yakuHandlers[i]);
             }
         }
 
@@ -271,9 +266,9 @@ public class Yaku
 
     public bool isYakuMan()
     {
-        for(int i = 0; i < _yakuHandlers.Length; i++)
+        for (int i = 0; i < _yakuHandlers.Length; i++)
         {
-            if(  _yakuHandlers[i].isYakuman() )
+            if (_yakuHandlers[i].isYakuman())
                 return true;
         }
         return false;
@@ -287,19 +282,19 @@ public class Yaku
     protected static bool checkTsuuHai(Tehai tehai, HaiCombi combi, int yakuHaiID)
     {
         //純手牌をチェック
-        for(int i = 0; i < combi.kouCount; i++)
+        for (int i = 0; i < combi.kouCount; i++)
         {
             //IDと役牌のIDをチェック
-            if( Hai.NumKindToID(combi.kouNumKinds[i]) == yakuHaiID )
+            if (Hai.NumKindToID(combi.kouNumKinds[i]) == yakuHaiID)
                 return true;
         }
 
         Fuuro[] fuuros = tehai.getFuuros();
 
-        for(int i = 0; i < fuuros.Length; i++) 
+        for (int i = 0; i < fuuros.Length; i++)
         {
             //IDと役牌のIDをチェック
-            if( fuuros[i].Hais[0].ID == yakuHaiID )
+            if (fuuros[i].Hais[0].ID == yakuHaiID)
                 return true;
         }
         return false;
@@ -308,12 +303,13 @@ public class Yaku
     // 东 //
     public bool checkTon()
     {
-        if(AgariParam.getJikaze() == EKaze.Ton || 
+        if (AgariParam.getJikaze() == EKaze.Ton ||
            AgariParam.getBakaze() == EKaze.Ton)
         {
-            return checkTsuuHai(_tehai,_combi, Hai.ID_TON);
+            return checkTsuuHai(_tehai, _combi, Hai.ID_TON);
         }
-        else{
+        else
+        {
             return false;
         }
     }
@@ -321,12 +317,13 @@ public class Yaku
     // 南 //
     public bool checkNan()
     {
-        if(AgariParam.getJikaze() == EKaze.Nan || 
+        if (AgariParam.getJikaze() == EKaze.Nan ||
            AgariParam.getBakaze() == EKaze.Nan)
         {
-            return checkTsuuHai(_tehai,_combi, Hai.ID_NAN);
+            return checkTsuuHai(_tehai, _combi, Hai.ID_NAN);
         }
-        else{
+        else
+        {
             return false;
         }
     }
@@ -334,10 +331,12 @@ public class Yaku
     // 西 //
     public bool checkSya()
     {
-        if(AgariParam.getJikaze() == EKaze.Sya){
+        if (AgariParam.getJikaze() == EKaze.Sya)
+        {
             return checkTsuuHai(_tehai, _combi, Hai.ID_SYA);
         }
-        else{
+        else
+        {
             return false;
         }
     }
@@ -345,10 +344,12 @@ public class Yaku
     // 北 //
     public bool checkPei()
     {
-        if(AgariParam.getJikaze() == EKaze.Sya){
+        if (AgariParam.getJikaze() == EKaze.Sya)
+        {
             return checkTsuuHai(_tehai, _combi, Hai.ID_PE);
         }
-        else{
+        else
+        {
             return false;
         }
     }
@@ -378,19 +379,19 @@ public class Yaku
     // 立直 //
     public bool checkReach()
     {
-        return AgariParam.getYakuFlag( EYakuFlagType.REACH );
+        return AgariParam.getYakuFlag(EYakuFlagType.REACH);
     }
 
     // 一发(立直后，轮牌内和了) //
     public bool checkIppatu()
     {
-        return AgariParam.getYakuFlag( EYakuFlagType.IPPATU );
+        return AgariParam.getYakuFlag(EYakuFlagType.IPPATU);
     }
 
     // 门前清自摸和 //
     public bool checkTsumo()
     {
-        if(_nakiFlag == true)
+        if (_nakiFlag == true)
             return false;
 
         return AgariParam.getYakuFlag(EYakuFlagType.TSUMO);
@@ -421,19 +422,19 @@ public class Yaku
     }
 
     // 断幺九. //
-    public bool checkTanyao() 
+    public bool checkTanyao()
     {
-        /// 追加牌をチェック
+        // 追加牌をチェック
         //１９字牌ならば不成立
-        if( _addHai.IsYaochuu == true )
+        if (_addHai.IsYaochuu == true)
             return false;
 
         //純手牌をチェック
         Hai[] jyunTehai = _tehai.getJyunTehai();
-        for(int i = 0; i < jyunTehai.Length; i++)
+        for (int i = 0; i < jyunTehai.Length; i++)
         {
             //１９字牌ならば不成立
-            if( jyunTehai[i].IsYaochuu == true )
+            if (jyunTehai[i].IsYaochuu == true)
                 return false;
         }
 
@@ -443,39 +444,39 @@ public class Yaku
         Fuuro[] fuuros = _tehai.getFuuros();
 
         // 喰いタンなしで、鳴いていたら不成立
-        if( AgariParam.getYakuFlag( EYakuFlagType.KUITAN ) == false)
+        if (AgariParam.getYakuFlag(EYakuFlagType.KUITAN) == false)
         {
-            if(fuuros.Length > 0)
+            if (fuuros.Length > 0)
                 return false;
         }
 
-        for(int i = 0; i < fuuros.Length; i++)
+        for (int i = 0; i < fuuros.Length; i++)
         {
-            switch( fuuros[i].Type )
+            switch (fuuros[i].Type)
             {
                 case EFuuroType.MinShun:
-                {
-                    //明順の牌をチェック
-                    checkHai = fuuros[i].Hais[0];
+                    {
+                        //明順の牌をチェック
+                        checkHai = fuuros[i].Hais[0];
 
-                    //123 と 789 の順子があれば不成立
-                    if( checkHai.Num == 1 || checkHai.Num == 7)
-                        return false;
-                }
-                break;
+                        //123 と 789 の順子があれば不成立
+                        if (checkHai.Num == 1 || checkHai.Num == 7)
+                            return false;
+                    }
+                    break;
 
                 case EFuuroType.MinKou:
                 case EFuuroType.DaiMinKan:
                 case EFuuroType.KaKan:
                 case EFuuroType.AnKan:
-                {
-                    //暗槓の牌をチェック
-                    checkHai = fuuros[i].Hais[0];
+                    {
+                        //暗槓の牌をチェック
+                        checkHai = fuuros[i].Hais[0];
 
-                    if( checkHai.IsYaochuu == true )
-                        return false;
-                }
-                break;
+                        if (checkHai.IsYaochuu == true)
+                            return false;
+                    }
+                    break;
             }
         }
 
@@ -486,34 +487,34 @@ public class Yaku
     public bool checkPinfu()
     {
         //鳴きが入っている場合は成立しない
-        if( _nakiFlag == true )
+        if (_nakiFlag == true)
             return false;
 
         //面子が順子だけではない
-        if( _combi.shunCount != 4 )
+        if (_combi.shunCount != 4)
             return false;
 
         //頭が三元牌
         Hai atamaHai = new Hai(Hai.NumKindToID(_combi.atamaNumKind));
-        if( atamaHai.Kind == Hai.KIND_SANGEN )
+        if (atamaHai.Kind == Hai.KIND_SANGEN)
             return false;
 
         //頭が場風
-        if( atamaHai.Kind == Hai.KIND_FON && 
-           (atamaHai.Num-1) == (int)AgariParam.getBakaze())
+        if (atamaHai.Kind == Hai.KIND_FON &&
+           (atamaHai.Num - 1) == (int)AgariParam.getBakaze())
         {
             return false;
         }
 
         //頭が自風
-        if( atamaHai.Kind == Hai.KIND_FON && 
-           (atamaHai.Num-1) == (int)AgariParam.getJikaze())
+        if (atamaHai.Kind == Hai.KIND_FON &&
+           (atamaHai.Num - 1) == (int)AgariParam.getJikaze())
         {
             return false;
         }
 
         //字牌の頭待ちの場合は不成立//
-        if( _addHai.IsTsuu == true )
+        if (_addHai.IsTsuu == true)
             return false;
 
         //待ちが両面待ちか判定//
@@ -521,49 +522,49 @@ public class Yaku
         int addHaiNumKind = _addHai.NumKind;
 
         //上がり牌の数をチェックして場合分け
-        switch(_addHai.Num)
+        switch (_addHai.Num)
         {
             //上がり牌が1,2,3の場合は123,234,345の順子ができているかどうかチェック
             case 1:
             case 2:
             case 3:
-            {
-                for(int i = 0; i < _combi.shunCount; i++)
                 {
-                    if(addHaiNumKind == _combi.shunNumKinds[i])
-                        ryanmenFlag = true;
+                    for (int i = 0; i < _combi.shunCount; i++)
+                    {
+                        if (addHaiNumKind == _combi.shunNumKinds[i])
+                            ryanmenFlag = true;
+                    }
                 }
-            }
-            break;
+                break;
 
             //上がり牌が4,5,6の場合は456か234,567か345,678か456の順子ができているかどうかチェック
             case 4:
             case 5:
             case 6:
-            {
-                for(int i = 0; i < _combi.shunCount; i++)
                 {
-                    if((addHaiNumKind == _combi.shunNumKinds[i]) ||
-                       (addHaiNumKind-2 == _combi.shunNumKinds[i]))
+                    for (int i = 0; i < _combi.shunCount; i++)
                     {
-                        ryanmenFlag = true;
+                        if ((addHaiNumKind == _combi.shunNumKinds[i]) ||
+                           (addHaiNumKind - 2 == _combi.shunNumKinds[i]))
+                        {
+                            ryanmenFlag = true;
+                        }
                     }
                 }
-            }
-            break;
+                break;
 
             //上がり牌が7,8,9の場合は567,678,789の順子ができているかどうかチェック
             case 7:
             case 8:
             case 9:
-            {
-                for(int i = 0; i < _combi.shunCount; i++)
                 {
-                    if( addHaiNumKind-2 == _combi.shunNumKinds[i] )
-                        ryanmenFlag = true;
+                    for (int i = 0; i < _combi.shunCount; i++)
+                    {
+                        if (addHaiNumKind - 2 == _combi.shunNumKinds[i])
+                            ryanmenFlag = true;
+                    }
                 }
-            }
-            break;
+                break;
         }
 
         return ryanmenFlag;
@@ -573,13 +574,13 @@ public class Yaku
     public bool checkIpeikou()
     {
         //鳴きが入っている場合は成立しない
-        if( _nakiFlag == true )
+        if (_nakiFlag == true)
             return false;
 
         //順子の組み合わせを確認する
-        for( int i = 0; i < _combi.shunCount - 1; i++ )
+        for (int i = 0; i < _combi.shunCount - 1; i++)
         {
-            if( _combi.shunNumKinds[i] == _combi.shunNumKinds[i+1] )
+            if (_combi.shunNumKinds[i] == _combi.shunNumKinds[i + 1])
                 return true;
         }
 
@@ -601,7 +602,7 @@ public class Yaku
     public bool checkChiitoitsu()
     {
         //鳴きが入っている場合は成立しない
-        if( _nakiFlag == true )
+        if (_nakiFlag == true)
             return false;
 
         /*
@@ -644,60 +645,60 @@ public class Yaku
         Hai checkHai;
 
         //純手牌の刻子をチェック
-        for(int i = 0; i < _combi.kouCount; i++)
+        for (int i = 0; i < _combi.kouCount; i++)
         {
             checkHai = new Hai(Hai.NumKindToID(_combi.kouNumKinds[i]));
 
             //数牌の場合は数字をチェック
-            if( checkHai.IsYaochuu == false )
+            if (checkHai.IsYaochuu == false)
                 return false;
         }
 
         //純手牌の順子をチェック
-        for(int i = 0; i < _combi.shunCount; i++)
+        for (int i = 0; i < _combi.shunCount; i++)
         {
             checkHai = new Hai(Hai.NumKindToID(_combi.shunNumKinds[i]));
 
             //数牌の場合は数字をチェック
-            if(checkHai.IsTsuu == false)
+            if (checkHai.IsTsuu == false)
             {
-                if(checkHai.Num > 1 && checkHai.Num < 7)
+                if (checkHai.Num > 1 && checkHai.Num < 7)
                     return false;
             }
         }
 
         //純手牌の頭をチェック
-        checkHai = new Hai( Hai.NumKindToID(_combi.atamaNumKind) );
+        checkHai = new Hai(Hai.NumKindToID(_combi.atamaNumKind));
 
-        if(checkHai.IsYaochuu == false)
+        if (checkHai.IsYaochuu == false)
             return false;
 
         Fuuro[] fuuros = _tehai.getFuuros();
 
-        for (int i = 0; i < fuuros.Length; i++) 
+        for (int i = 0; i < fuuros.Length; i++)
         {
             checkHai = fuuros[i].Hais[0];
 
-            switch( fuuros[i].Type ) 
+            switch (fuuros[i].Type)
             {
                 case EFuuroType.MinShun:
-                {
-                    //123 と 789 以外の順子があれば不成立
-                    if( checkHai.Num > 1 && checkHai.Num < 7 )
-                        return false;
-                }
-                break;
+                    {
+                        //123 と 789 以外の順子があれば不成立
+                        if (checkHai.Num > 1 && checkHai.Num < 7)
+                            return false;
+                    }
+                    break;
 
                 case EFuuroType.MinKou:
                 case EFuuroType.DaiMinKan:
                 case EFuuroType.KaKan:
                 case EFuuroType.AnKan:
-                {
-                    //数牌の場合は数字をチェック
-                    if( checkHai.IsYaochuu == false )
-                        return false;
-                }
-                break;
+                    {
+                        //数牌の場合は数字をチェック
+                        if (checkHai.IsYaochuu == false)
+                            return false;
+                    }
+                    break;
             }
         }
 
@@ -707,7 +708,7 @@ public class Yaku
     // 一气通贯 //
     public bool checkIkkituukan()
     {
-        bool[] ikkituukanFlag = {false,false,false,false,false,false,false,false,false};
+        bool[] ikkituukanFlag = { false, false, false, false, false, false, false, false, false };
 
         //萬子、筒子、索子の1,4,7をチェック
         int[] checkId = { Hai.ID_WAN_1, Hai.ID_WAN_4, Hai.ID_WAN_7, Hai.ID_PIN_1, Hai.ID_PIN_4, Hai.ID_PIN_7, Hai.ID_SOU_1, Hai.ID_SOU_4, Hai.ID_SOU_7 };
@@ -715,46 +716,47 @@ public class Yaku
         int id;
 
         //手牌の順子をチェック
-        for(int i = 0; i < _combi.shunCount; i++)
+        for (int i = 0; i < _combi.shunCount; i++)
         {
-            id = Hai.NumKindToID( _combi.shunNumKinds[i] );
+            id = Hai.NumKindToID(_combi.shunNumKinds[i]);
 
-            for(int j = 0; j < checkId.Length; j++)
+            for (int j = 0; j < checkId.Length; j++)
             {
-                if( id == checkId[j] )
+                if (id == checkId[j])
                     ikkituukanFlag[j] = true;
             }
         }
 
         Fuuro[] fuuros = _tehai.getFuuros();
 
-        for (int i = 0; i < fuuros.Length; i++) 
+        for (int i = 0; i < fuuros.Length; i++)
         {
-            switch( fuuros[i].Type ) 
+            switch (fuuros[i].Type)
             {
                 case EFuuroType.MinShun:
-                {
-                    //鳴いた牌をチェック
-                    id = fuuros[i].Hais[0].ID;
-
-                    for(int j = 0; j < checkId.Length; j++)
                     {
-                        if( id == checkId[j] )
-                            ikkituukanFlag[j] = true;
+                        //鳴いた牌をチェック
+                        id = fuuros[i].Hais[0].ID;
+
+                        for (int j = 0; j < checkId.Length; j++)
+                        {
+                            if (id == checkId[j])
+                                ikkituukanFlag[j] = true;
+                        }
                     }
-                }
-                break;
+                    break;
             }
         }
 
         //一気通貫が出来ているかどうかチェック
-        if((ikkituukanFlag[0] == true && ikkituukanFlag[1] == true && ikkituukanFlag[2] == true ) ||
-           (ikkituukanFlag[3] == true && ikkituukanFlag[4] == true && ikkituukanFlag[5] == true ) ||
-           (ikkituukanFlag[6] == true && ikkituukanFlag[7] == true && ikkituukanFlag[8] == true ))
+        if ((ikkituukanFlag[0] == true && ikkituukanFlag[1] == true && ikkituukanFlag[2] == true) ||
+           (ikkituukanFlag[3] == true && ikkituukanFlag[4] == true && ikkituukanFlag[5] == true) ||
+           (ikkituukanFlag[6] == true && ikkituukanFlag[7] == true && ikkituukanFlag[8] == true))
         {
             return true;
         }
-        else{
+        else
+        {
             return false;
         }
     }
@@ -766,11 +768,11 @@ public class Yaku
         //萬子、筒子、索子をチェック
         int[] checkId = { Hai.ID_WAN_1, Hai.ID_PIN_1, Hai.ID_SOU_1 };
 
-        for(int i = 0; i < sansyokuFlag.Length; i++)
+        for (int i = 0; i < sansyokuFlag.Length; i++)
         {
-            for(int j = 0; j < sansyokuFlag[i].Length; j++)
+            for (int j = 0; j < sansyokuFlag[i].Length; j++)
             {
-                if( id == (checkId[i] + j) )
+                if (id == (checkId[i] + j))
                     sansyokuFlag[i][j] = true;
             }
         }
@@ -783,11 +785,11 @@ public class Yaku
         bool[][] sansyokuFlag = new bool[3][];
 
         //フラグの初期化
-        for(int i = 0; i < sansyokuFlag.Length; i++)
+        for (int i = 0; i < sansyokuFlag.Length; i++)
         {
             sansyokuFlag[i] = new bool[Column];
 
-            for(int k = 0; k < sansyokuFlag[i].Length; k++)
+            for (int k = 0; k < sansyokuFlag[i].Length; k++)
             {
                 sansyokuFlag[i][k] = false;
             }
@@ -796,34 +798,34 @@ public class Yaku
         int id = 0;
 
         //手牌の順子をチェック
-        for(int i = 0 ; i < _combi.shunCount ; i++)
+        for (int i = 0; i < _combi.shunCount; i++)
         {
-            id = Hai.NumKindToID( _combi.shunNumKinds[i] );
+            id = Hai.NumKindToID(_combi.shunNumKinds[i]);
             checkSansyoku(id, sansyokuFlag);
         }
 
         Fuuro[] fuuros = _tehai.getFuuros();
 
-        for(int i = 0; i < fuuros.Length; i++)
+        for (int i = 0; i < fuuros.Length; i++)
         {
-            switch(fuuros[i].Type)
+            switch (fuuros[i].Type)
             {
                 case EFuuroType.MinShun:
-                {
-                    //鳴いた牌をチェック
-                    id = fuuros[i].Hais[0].ID;
-                    checkSansyoku(id, sansyokuFlag);
-                }
-                break;
+                    {
+                        //鳴いた牌をチェック
+                        id = fuuros[i].Hais[0].ID;
+                        checkSansyoku(id, sansyokuFlag);
+                    }
+                    break;
             }
         }
 
         //三色同順が出来ているかどうかチェック
-        for( int i = 0; i < sansyokuFlag[0].Length; i++ )
+        for (int i = 0; i < sansyokuFlag[0].Length; i++)
         {
-            if(sansyokuFlag[0][i] == true && 
-               sansyokuFlag[1][i] == true && 
-               sansyokuFlag[2][i] == true )
+            if (sansyokuFlag[0][i] == true &&
+               sansyokuFlag[1][i] == true &&
+               sansyokuFlag[2][i] == true)
             {
                 return true;
             }
@@ -839,11 +841,11 @@ public class Yaku
         bool[][] sansyokuFlag = new bool[3][];
 
         //フラグの初期化
-        for(int i = 0; i < sansyokuFlag.Length; i++)
+        for (int i = 0; i < sansyokuFlag.Length; i++)
         {
             sansyokuFlag[i] = new bool[Column];
 
-            for(int k = 0; k < sansyokuFlag[i].Length; k++)
+            for (int k = 0; k < sansyokuFlag[i].Length; k++)
             {
                 sansyokuFlag[i][k] = false;
             }
@@ -852,7 +854,7 @@ public class Yaku
         int id = 0;
 
         //手牌の刻子をチェック
-        for(int i = 0 ; i < _combi.kouCount ; i++)
+        for (int i = 0; i < _combi.kouCount; i++)
         {
             id = Hai.NumKindToID(_combi.kouNumKinds[i]);
             checkSansyoku(id, sansyokuFlag);
@@ -860,7 +862,7 @@ public class Yaku
 
         Fuuro[] fuuros = _tehai.getFuuros();
 
-        for (int i = 0; i < fuuros.Length; i++) 
+        for (int i = 0; i < fuuros.Length; i++)
         {
             switch (fuuros[i].Type)
             {
@@ -868,20 +870,20 @@ public class Yaku
                 case EFuuroType.DaiMinKan:
                 case EFuuroType.KaKan:
                 case EFuuroType.AnKan:
-                {
-                    id = fuuros[i].Hais[0].ID;
-                    checkSansyoku(id, sansyokuFlag);
-                }
-                break;
+                    {
+                        id = fuuros[i].Hais[0].ID;
+                        checkSansyoku(id, sansyokuFlag);
+                    }
+                    break;
             }
         }
 
         //三色同刻が出来ているかどうかチェック
-        for(int i = 0; i < sansyokuFlag[0].Length; i++)
+        for (int i = 0; i < sansyokuFlag[0].Length; i++)
         {
-            if(sansyokuFlag[0][i] == true && 
-               sansyokuFlag[1][i] == true && 
-               sansyokuFlag[2][i] == true )
+            if (sansyokuFlag[0][i] == true &&
+               sansyokuFlag[1][i] == true &&
+               sansyokuFlag[2][i] == true)
             {
                 return true;
             }
@@ -898,17 +900,19 @@ public class Yaku
 
         Fuuro[] fuuros = _tehai.getFuuros();
 
-        for(int i = 0; i < fuuros.Length; i++) 
+        for (int i = 0; i < fuuros.Length; i++)
         {
-            if( fuuros[i].Type == EFuuroType.MinShun )
+            if (fuuros[i].Type == EFuuroType.MinShun)
                 minShunCount++;
         }
 
         //手牌に順子がある
-        if( _combi.shunCount != 0 || minShunCount != 0 ){
+        if (_combi.shunCount != 0 || minShunCount != 0)
+        {
             return false;
         }
-        else{
+        else
+        {
             return true;
         }
     }
@@ -917,25 +921,25 @@ public class Yaku
     public bool checkSanankou()
     {
         //対々形で鳴きがなければ成立している【ツモ和了りや単騎の場合、四暗刻が優先される）
-        if( _nakiFlag == false && checkToitoi() == true )
+        if (_nakiFlag == false && checkToitoi() == true)
             return true;
 
         int anKanCount = 0;
 
         Fuuro[] fuuros = _tehai.getFuuros();
 
-        for(int i = 0; i < fuuros.Length; i++) 
+        for (int i = 0; i < fuuros.Length; i++)
         {
-            if( fuuros[i].Type == EFuuroType.AnKan )
+            if (fuuros[i].Type == EFuuroType.AnKan)
                 anKanCount++;
         }
 
         //暗刻と暗槓の合計が３つではない場合は不成立
-        if( _combi.kouCount + anKanCount != 3 )
+        if (_combi.kouCount + anKanCount != 3)
             return false;
 
         //ツモ上がりの場合は成立
-        if( AgariParam.getYakuFlag(EYakuFlagType.TSUMO) )
+        if (AgariParam.getYakuFlag(EYakuFlagType.TSUMO))
         {
             return true;
         }
@@ -944,81 +948,82 @@ public class Yaku
             int numKind = _addHai.NumKind;
 
             //ロン上がりで頭待ちの場合は成立
-            if( numKind == _combi.atamaNumKind ){
+            if (numKind == _combi.atamaNumKind)
+            {
                 return true;
             }
             else
             {
                 //和了った牌と刻子になっている牌が同じか確認
                 bool checkFlag = false;
-                for(int i = 0 ; i < _combi.kouCount ; i++)
+                for (int i = 0; i < _combi.kouCount; i++)
                 {
-                    if(numKind == _combi.kouNumKinds[i])
+                    if (numKind == _combi.kouNumKinds[i])
                         checkFlag = true;
                 }
 
                 //刻子の牌で和了った場合
-                if(checkFlag == true)
+                if (checkFlag == true)
                 {
                     //字牌ならば不成立
-                    if(_addHai.IsTsuu == false)
+                    if (_addHai.IsTsuu == false)
                     {
                         // 順子の待ちにもなっていないか確認する
                         // 例:11123 で1で和了り, 45556の5で和了り
                         bool checkshun = false;
 
-                        for(int i = 0 ; i < _combi.shunCount ; i++)
+                        for (int i = 0; i < _combi.shunCount; i++)
                         {
-                            switch(_addHai.Num)
+                            switch (_addHai.Num)
                             {
                                 case 1:
-                                {
-                                    if(numKind == _combi.shunNumKinds[i])
-                                        checkshun = true;
-                                }
-                                break;
+                                    {
+                                        if (numKind == _combi.shunNumKinds[i])
+                                            checkshun = true;
+                                    }
+                                    break;
 
                                 case 2:
-                                {
-                                    if((numKind == _combi.shunNumKinds[i]) ||
-                                       (numKind-1 == _combi.shunNumKinds[i]))
                                     {
-                                        checkshun = true;
+                                        if ((numKind == _combi.shunNumKinds[i]) ||
+                                           (numKind - 1 == _combi.shunNumKinds[i]))
+                                        {
+                                            checkshun = true;
+                                        }
                                     }
-                                }
-                                break;
+                                    break;
 
                                 case 3:
                                 case 4:
                                 case 5:
                                 case 6:
                                 case 7:
-                                {
-                                    if((numKind == _combi.shunNumKinds[i]) ||
-                                       (numKind-1 == _combi.shunNumKinds[i]) ||
-                                       (numKind-2 == _combi.shunNumKinds[i]) )
                                     {
-                                        checkshun = true;
+                                        if ((numKind == _combi.shunNumKinds[i]) ||
+                                           (numKind - 1 == _combi.shunNumKinds[i]) ||
+                                           (numKind - 2 == _combi.shunNumKinds[i]))
+                                        {
+                                            checkshun = true;
+                                        }
                                     }
-                                }
-                                break;
+                                    break;
 
                                 case 8:
-                                {
-                                    if( (numKind-1 == _combi.shunNumKinds[i]) ||
-                                       (numKind-2 == _combi.shunNumKinds[i]))
                                     {
-                                        checkshun = true;
+                                        if ((numKind - 1 == _combi.shunNumKinds[i]) ||
+                                           (numKind - 2 == _combi.shunNumKinds[i]))
+                                        {
+                                            checkshun = true;
+                                        }
                                     }
-                                }
-                                break;
+                                    break;
 
                                 case 9:
-                                {
-                                    if( numKind-2 == _combi.shunNumKinds[i] )
-                                        checkshun = true;
-                                }
-                                break;
+                                    {
+                                        if (numKind - 2 == _combi.shunNumKinds[i])
+                                            checkshun = true;
+                                    }
+                                    break;
                             } // end switch().
 
                         } // end for().
@@ -1048,22 +1053,24 @@ public class Yaku
 
         Fuuro[] fuuros = _tehai.getFuuros();
 
-        for(int i = 0; i < fuuros.Length; i++) 
+        for (int i = 0; i < fuuros.Length; i++)
         {
-            switch (fuuros[i].Type) 
+            switch (fuuros[i].Type)
             {
                 case EFuuroType.DaiMinKan:
                 case EFuuroType.KaKan:
                 case EFuuroType.AnKan:
-                    kanCount ++;
-                break;
+                    kanCount++;
+                    break;
             }
         }
 
-        if( kanCount == 3 ){
+        if (kanCount == 3)
+        {
             return true;
         }
-        else{
+        else
+        {
             return false;
         }
     }
@@ -1072,14 +1079,16 @@ public class Yaku
     public bool checkHonroutou()
     {
         //トイトイが成立している
-        if( checkToitoi() == false )
+        if (checkToitoi() == false)
             return false;
 
         //(混全带幺九)チャンタが成立している
-        if( checkCyanta() == true ){
+        if (checkCyanta() == true)
+        {
             return true;
         }
-        else{
+        else
+        {
             return false;
         }
     }
@@ -1088,15 +1097,15 @@ public class Yaku
     public bool checkHonroutou_Chiitoitsu()
     {
         //１９字牌ならば成立
-        if( _addHai.IsYaochuu == false )
+        if (_addHai.IsYaochuu == false)
             return false;
 
         //純手牌をチェック
         Hai[] jyunTehai = _tehai.getJyunTehai();
 
-        for(int i = 0; i < jyunTehai.Length; i++)
+        for (int i = 0; i < jyunTehai.Length; i++)
         {
-            if( jyunTehai[i].IsYaochuu == false )
+            if (jyunTehai[i].IsYaochuu == false)
                 return false;
         }
 
@@ -1110,19 +1119,19 @@ public class Yaku
         int sangenCount = 0;
 
         //白が刻子
-        if( checkHaku() == true )
+        if (checkHaku() == true)
             sangenCount++;
 
         //発が刻子
-        if( checkHatsu() == true )
+        if (checkHatsu() == true)
             sangenCount++;
 
         //中が刻子
-        if( checkCyun() == true )
+        if (checkCyun() == true)
             sangenCount++;
 
         //頭が三元牌 かつ、三元牌役が2つ成立
-        if( (_combi.atamaNumKind & Hai.KIND_SANGEN) == Hai.KIND_SANGEN && sangenCount == 2 ) 
+        if ((_combi.atamaNumKind & Hai.KIND_SANGEN) == Hai.KIND_SANGEN && sangenCount == 2)
         {
             return true;
         }
@@ -1139,20 +1148,21 @@ public class Yaku
     public bool checkRyanpeikou()
     {
         //鳴きが入っている場合は成立しない
-        if( _nakiFlag == true )
+        if (_nakiFlag == true)
             return false;
 
         //順子が４つである
-        if( _combi.shunCount < 4 )
+        if (_combi.shunCount < 4)
             return false;
 
         //順子の組み合わせを確認する
-        if( _combi.shunNumKinds[0] == _combi.shunNumKinds[1] && 
+        if (_combi.shunNumKinds[0] == _combi.shunNumKinds[1] &&
            _combi.shunNumKinds[2] == _combi.shunNumKinds[3])
         {
             return true;
         }
-        else{
+        else
+        {
             return false;
         }
     }
@@ -1168,18 +1178,20 @@ public class Yaku
         Hai[] jyunTehais = _tehai.getJyunTehai();
         Fuuro[] fuuros = _tehai.getFuuros();
 
-        for( int i = 0; i < checkId.Length; i++ )
+        for (int i = 0; i < checkId.Length; i++)
         {
             bool honisouFlag = true;
 
             //純手牌をチェック
-            if( honisouFlag == true ){
-                for(int j = 0; j < jyunTehais.Length; j++)
+            if (honisouFlag == true)
+            {
+                for (int j = 0; j < jyunTehais.Length; j++)
                 {
                     checkHai = jyunTehais[j];
 
                     //牌が(萬子、筒子、索子)以外もしくは字牌以外
-                    if( checkHai.Kind != checkId[i] && checkHai.IsTsuu == false ){
+                    if (checkHai.Kind != checkId[i] && checkHai.IsTsuu == false)
+                    {
                         honisouFlag = false;
                         break;
                     }
@@ -1187,13 +1199,15 @@ public class Yaku
             }
 
             //副露をチェック
-            if( honisouFlag == true ){
-                for(int j = 0; j < fuuros.Length; j++)
+            if (honisouFlag == true)
+            {
+                for (int j = 0; j < fuuros.Length; j++)
                 {
                     checkHai = fuuros[j].Hais[0];
 
                     //牌が(萬子、筒子、索子)以外もしくは字牌以外
-                    if( checkHai.Kind != checkId[i] && checkHai.IsTsuu == false ){
+                    if (checkHai.Kind != checkId[i] && checkHai.IsTsuu == false)
+                    {
                         honisouFlag = false;
                         break;
                     }
@@ -1201,7 +1215,7 @@ public class Yaku
             }
 
             //混一が成立している
-            if( honisouFlag == true )
+            if (honisouFlag == true)
                 return true;
         }
 
@@ -1214,30 +1228,30 @@ public class Yaku
         Hai checkHai;
 
         //純手牌の刻子をチェック
-        for(int i = 0; i < _combi.kouCount; i++)
+        for (int i = 0; i < _combi.kouCount; i++)
         {
             checkHai = new Hai(Hai.NumKindToID(_combi.kouNumKinds[i]));
 
             //字牌があれば不成立
-            if( checkHai.IsTsuu == true)
+            if (checkHai.IsTsuu == true)
                 return false;
 
             //中張牌ならば不成立
-            if( checkHai.IsYaochuu == false )
+            if (checkHai.IsYaochuu == false)
                 return false;
         }
 
         //純手牌の順子をチェック
-        for(int i = 0; i < _combi.shunCount; i++)
+        for (int i = 0; i < _combi.shunCount; i++)
         {
             checkHai = new Hai(Hai.NumKindToID(_combi.shunNumKinds[i]));
 
             //字牌があれば不成立
-            if( checkHai.IsTsuu == true )
+            if (checkHai.IsTsuu == true)
                 return false;
 
             //数牌の場合は数字をチェック
-            if( checkHai.Num > Hai.NUM_1 && checkHai.Num < Hai.NUM_7 )
+            if (checkHai.Num > Hai.NUM_1 && checkHai.Num < Hai.NUM_7)
                 return false;
         }
 
@@ -1246,43 +1260,43 @@ public class Yaku
         checkHai = new Hai(Hai.NumKindToID(_combi.atamaNumKind));
 
         //字牌があれば不成立
-        if( checkHai.IsTsuu == true)
+        if (checkHai.IsTsuu == true)
             return false;
 
         //中張牌ならば不成立
-        if( checkHai.IsYaochuu == false )
+        if (checkHai.IsYaochuu == false)
             return false;
 
         Fuuro[] fuuros = _tehai.getFuuros();
 
-        for (int i = 0; i < fuuros.Length; i++) 
+        for (int i = 0; i < fuuros.Length; i++)
         {
             checkHai = fuuros[i].Hais[0];
 
             switch (fuuros[i].Type)
             {
                 case EFuuroType.MinShun:
-                {
-                    //123 と 789 以外の順子があれば不成立
-                    if( checkHai.Num > Hai.NUM_1 && checkHai.Num < Hai.NUM_7 )
-                        return false;
-                }
-                break;
+                    {
+                        //123 と 789 以外の順子があれば不成立
+                        if (checkHai.Num > Hai.NUM_1 && checkHai.Num < Hai.NUM_7)
+                            return false;
+                    }
+                    break;
 
                 case EFuuroType.MinKou:
                 case EFuuroType.DaiMinKan:
                 case EFuuroType.KaKan:
                 case EFuuroType.AnKan:
-                {
-                    //字牌があれば不成立
-                    if( checkHai.IsTsuu == true)
-                        return false;
+                    {
+                        //字牌があれば不成立
+                        if (checkHai.IsTsuu == true)
+                            return false;
 
-                    //中張牌ならば不成立
-                    if( checkHai.IsYaochuu == false )
-                        return false;
-                }
-                break;
+                        //中張牌ならば不成立
+                        if (checkHai.IsYaochuu == false)
+                            return false;
+                    }
+                    break;
             }
         }
 
@@ -1303,25 +1317,29 @@ public class Yaku
         Hai[] jyunTehais = _tehai.getJyunTehai();
         Fuuro[] fuuros = _tehai.getFuuros();
 
-        for(int i = 0; i < checkId.Length; i++)
+        for (int i = 0; i < checkId.Length; i++)
         {
             bool tinituFlag = true;
 
             //純手牌をチェック
-            if( tinituFlag == true ){
-                for(int j = 0; j < jyunTehais.Length; j++)
+            if (tinituFlag == true)
+            {
+                for (int j = 0; j < jyunTehais.Length; j++)
                 {
-                    if( jyunTehais[j].Kind != checkId[i] ){
+                    if (jyunTehais[j].Kind != checkId[i])
+                    {
                         tinituFlag = false;
                         break;
                     }
                 }
             }
 
-            if( tinituFlag == true ){
-                for(int j = 0; j < fuuros.Length; j++)
+            if (tinituFlag == true)
+            {
+                for (int j = 0; j < fuuros.Length; j++)
                 {
-                    if( fuuros[j].Hais[0].Kind != checkId[i] ){
+                    if (fuuros[j].Hais[0].Kind != checkId[i])
+                    {
                         tinituFlag = false;
                         break;
                     }
@@ -1329,7 +1347,7 @@ public class Yaku
             }
 
             //清一が成立している
-            if( tinituFlag == true )
+            if (tinituFlag == true)
                 return true;
         }
 
@@ -1362,11 +1380,11 @@ public class Yaku
     public bool checkChinroutou()
     {
         //順子があるかどうか確認
-        if( checkToitoi() == false )
+        if (checkToitoi() == false)
             return false;
 
         //順子なしでジュンチャンが成立しているか（1と9のみで作成）
-        if( checkJyunCyan() == false )
+        if (checkJyunCyan() == false)
             return false;
 
         return true;
@@ -1382,55 +1400,55 @@ public class Yaku
         //純手牌をチェック
         Hai[] jyunTehais = _tehai.getJyunTehai();
 
-        for(int i = 0; i < jyunTehais.Length; i++) 
+        for (int i = 0; i < jyunTehais.Length; i++)
         {
             ryuuisouFlag = false;
 
-            for(int j = 0; j < checkId.Length; j++)
+            for (int j = 0; j < checkId.Length; j++)
             {
                 //緑一色に使用できる牌だった
-                if( jyunTehais[i].ID == checkId[j] )
+                if (jyunTehais[i].ID == checkId[j])
                     ryuuisouFlag = true;
             }
 
             //該当する牌ではなかった
-            if( ryuuisouFlag == false )
+            if (ryuuisouFlag == false)
                 return false;
         }
 
         Fuuro[] fuuros = _tehai.getFuuros();
 
-        for (int i = 0; i < fuuros.Length; i++) 
+        for (int i = 0; i < fuuros.Length; i++)
         {
-            switch( fuuros[i].Type )
+            switch (fuuros[i].Type)
             {
                 case EFuuroType.MinShun: //明順の牌をチェック
-                {
-                    //索子の2,3,4以外の順子があった場合不成立
-                    if( fuuros[i].Hais[0].ID != Hai.ID_SOU_2 ) 
-                        return false;
-                }
-                break;
+                    {
+                        //索子の2,3,4以外の順子があった場合不成立
+                        if (fuuros[i].Hais[0].ID != Hai.ID_SOU_2)
+                            return false;
+                    }
+                    break;
 
                 case EFuuroType.MinKou:
                 case EFuuroType.DaiMinKan:
                 case EFuuroType.KaKan:
                 case EFuuroType.AnKan:
-                {
-                    ryuuisouFlag = false;
-
-                    for(int j = 0; j < checkId.Length; j++)
                     {
-                        //緑一色に使用できる牌だった
-                        if( fuuros[i].Hais[0].ID == checkId[j] )
-                            ryuuisouFlag = true;
-                    }
+                        ryuuisouFlag = false;
 
-                    //該当する牌ではなかった
-                    if( ryuuisouFlag == false )
-                        return false;
-                }
-                break;
+                        for (int j = 0; j < checkId.Length; j++)
+                        {
+                            //緑一色に使用できる牌だった
+                            if (fuuros[i].Hais[0].ID == checkId[j])
+                                ryuuisouFlag = true;
+                        }
+
+                        //該当する牌ではなかった
+                        if (ryuuisouFlag == false)
+                            return false;
+                    }
+                    break;
             }
         }
 
@@ -1444,7 +1462,7 @@ public class Yaku
 
         Fuuro[] fuuros = _tehai.getFuuros();
 
-        for (int i = 0; i < fuuros.Length; i++) 
+        for (int i = 0; i < fuuros.Length; i++)
         {
             switch (fuuros[i].Type)
             {
@@ -1452,7 +1470,7 @@ public class Yaku
                 case EFuuroType.KaKan:
                 case EFuuroType.AnKan:
                     kanCount++;
-                break;
+                    break;
             }
         }
 
@@ -1466,15 +1484,15 @@ public class Yaku
         int sangenCount = 0;
 
         //白が刻子
-        if( checkHaku() == true )
+        if (checkHaku() == true)
             sangenCount++;
 
         //発が刻子
-        if( checkHatsu() == true )
+        if (checkHatsu() == true)
             sangenCount++;
 
         //中が刻子
-        if( checkCyun() == true )
+        if (checkCyun() == true)
             sangenCount++;
 
         //３元牌が３つ揃っている
@@ -1488,23 +1506,23 @@ public class Yaku
         int fonCount = 0;
 
         //東が刻子
-        if( checkTsuuHai(_tehai,_combi, Hai.ID_TON) )
+        if (checkTsuuHai(_tehai, _combi, Hai.ID_TON))
             fonCount++;
 
         //南が刻子
-        if( checkTsuuHai(_tehai, _combi, Hai.ID_NAN) )
+        if (checkTsuuHai(_tehai, _combi, Hai.ID_NAN))
             fonCount++;
 
         //西が刻子
-        if( checkTsuuHai(_tehai, _combi, Hai.ID_SYA) )
+        if (checkTsuuHai(_tehai, _combi, Hai.ID_SYA))
             fonCount++;
 
         //北が刻子
-        if( checkTsuuHai(_tehai, _combi, Hai.ID_PE) )
+        if (checkTsuuHai(_tehai, _combi, Hai.ID_PE))
             fonCount++;
 
         //頭が風牌 かつ、風牌役が3つ成立
-        if( (_combi.atamaNumKind & Hai.KIND_FON) == Hai.KIND_FON && fonCount == 3 )
+        if ((_combi.atamaNumKind & Hai.KIND_FON) == Hai.KIND_FON && fonCount == 3)
         {
             return true;
         }
@@ -1515,23 +1533,23 @@ public class Yaku
     // 字一色(对对和) //
     public bool checkTsuisou()
     {
-        if( _addHai.IsTsuu == false )
+        if (_addHai.IsTsuu == false)
             return false;
 
         //純手牌をチェック
         Hai[] jyunTehais = _tehai.getJyunTehai();
-        for(int j = 0; j < jyunTehais.Length; j++)
+        for (int j = 0; j < jyunTehais.Length; j++)
         {
             //牌が字牌ではない
-            if(jyunTehais[j].IsTsuu == false)
+            if (jyunTehais[j].IsTsuu == false)
                 return false;
         }
 
         Fuuro[] fuuros = _tehai.getFuuros();
-        for(int i = 0; i < fuuros.Length; i++)
+        for (int i = 0; i < fuuros.Length; i++)
         {
             //牌が字牌ではない
-            if( fuuros[i].Hais[0].IsTsuu == false )
+            if (fuuros[i].Hais[0].IsTsuu == false)
                 return false;
         }
 
@@ -1542,23 +1560,23 @@ public class Yaku
     // 字一色(七对子) //
     public bool checkTsuisou_Chiitoitsu()
     {
-        if( _addHai.IsTsuu == false )
+        if (_addHai.IsTsuu == false)
             return false;
 
         //純手牌をチェック
         Hai[] jyunTehais = _tehai.getJyunTehai();
-        for(int j = 0; j < jyunTehais.Length; j++)
+        for (int j = 0; j < jyunTehais.Length; j++)
         {
             //牌が字牌ではない
-            if(jyunTehais[j].IsTsuu == false)
+            if (jyunTehais[j].IsTsuu == false)
                 return false;
         }
 
         Fuuro[] fuuros = _tehai.getFuuros();
-        for(int i = 0; i < fuuros.Length; i++)
+        for (int i = 0; i < fuuros.Length; i++)
         {
             //牌が字牌ではない
-            if( fuuros[i].Hais[0].IsTsuu == false )
+            if (fuuros[i].Hais[0].IsTsuu == false)
                 return false;
         }
 
@@ -1573,29 +1591,33 @@ public class Yaku
 
         Fuuro[] fuuros = _tehai.getFuuros();
 
-        for(int i = 0; i < fuuros.Length; i++) 
+        for (int i = 0; i < fuuros.Length; i++)
         {
-            if( fuuros[i].Type == EFuuroType.AnKan )
+            if (fuuros[i].Type == EFuuroType.AnKan)
                 anKanCount++;
         }
 
         //手牌の暗刻が4つ
-        if( _combi.kouCount + anKanCount < 4 ){
+        if (_combi.kouCount + anKanCount < 4)
+        {
             return false;
         }
         else
         {
             //ツモ和了りの場合は成立
-            if( AgariParam.getYakuFlag(EYakuFlagType.TSUMO) ) {
+            if (AgariParam.getYakuFlag(EYakuFlagType.TSUMO))
+            {
                 return true;
             }
             else //ロン和了りの場合
             {
                 //頭待ちならば成立 (四暗刻単騎待ち)
-                if( _addHai.NumKind == _combi.atamaNumKind ){
+                if (_addHai.NumKind == _combi.atamaNumKind)
+                {
                     return true;
                 }
-                else{
+                else
+                {
                     return false;
                 }
             }
@@ -1606,36 +1628,36 @@ public class Yaku
     public bool checkCyuurennpoutou()
     {
         //鳴きがある場合は成立しない
-        if( _nakiFlag == true )
+        if (_nakiFlag == true)
             return false;
 
         //手牌が清一になっていない場合も成立しない
-        if( checkTinisou() == false )
+        if (checkTinisou() == false)
             return false;
 
         //牌の数を調べるための配列 (0番地は使用しない）
-        int[] countNumber = {0,0,0,0,0,0,0,0,0,0}; //length = 10
+        int[] countNumber = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; //length = 10
 
         //手牌をコピーする
         Hai[] checkHais = _tehai.getJyunTehai();
 
         //手牌にある牌の番号を調べる
-        for(int i = 0; i < _tehai.getJyunTehai().Length; i++)
+        for (int i = 0; i < _tehai.getJyunTehai().Length; i++)
         {
             //数字の番号をインクリメントする
             countNumber[checkHais[i].Num]++;
         }
 
         //九蓮宝燈になっているか調べる（1と9が３枚以上 2～8が１枚以上)
-        if(( countNumber[1] >= 3)&& 
-           ( countNumber[2] >= 1)&& 
-           ( countNumber[3] >= 1)&& 
-           ( countNumber[4] >= 1)&& 
-           ( countNumber[5] >= 1)&& 
-           ( countNumber[6] >= 1)&& 
-           ( countNumber[7] >= 1)&& 
-           ( countNumber[8] >= 1)&& 
-           ( countNumber[9] >= 3))
+        if ((countNumber[1] >= 3) &&
+           (countNumber[2] >= 1) &&
+           (countNumber[3] >= 1) &&
+           (countNumber[4] >= 1) &&
+           (countNumber[5] >= 1) &&
+           (countNumber[6] >= 1) &&
+           (countNumber[7] >= 1) &&
+           (countNumber[8] >= 1) &&
+           (countNumber[9] >= 3))
         {
             return true;
         }
@@ -1647,7 +1669,7 @@ public class Yaku
     public bool checkKokushi()
     {
         //鳴きがある場合は成立しない
-        if( _nakiFlag == true )
+        if (_nakiFlag == true)
             return false;
 
         /*
@@ -1711,19 +1733,19 @@ public class Yaku
         int fonCount = 0;
 
         //東が刻子
-        if( checkTsuuHai(_tehai, _combi, Hai.ID_TON) )
+        if (checkTsuuHai(_tehai, _combi, Hai.ID_TON))
             fonCount++;
 
         //南が刻子
-        if( checkTsuuHai(_tehai, _combi, Hai.ID_NAN) )
+        if (checkTsuuHai(_tehai, _combi, Hai.ID_NAN))
             fonCount++;
 
         //西が刻子
-        if( checkTsuuHai(_tehai, _combi, Hai.ID_SYA) )
+        if (checkTsuuHai(_tehai, _combi, Hai.ID_SYA))
             fonCount++;
 
         //北が刻子
-        if( checkTsuuHai(_tehai, _combi, Hai.ID_PE) )
+        if (checkTsuuHai(_tehai, _combi, Hai.ID_PE))
             fonCount++;
 
         //風牌役が4つ成立
@@ -1737,22 +1759,25 @@ public class Yaku
 
         Fuuro[] fuuros = _tehai.getFuuros();
 
-        for(int i = 0; i < fuuros.Length; i++) 
+        for (int i = 0; i < fuuros.Length; i++)
         {
-            if( fuuros[i].Type == EFuuroType.AnKan )
+            if (fuuros[i].Type == EFuuroType.AnKan)
                 anKanCount++;
         }
 
         //手牌の暗刻が4つ
-        if( _combi.kouCount + anKanCount < 4 ){
+        if (_combi.kouCount + anKanCount < 4)
+        {
             return false;
         }
         else
         {
-            if( _addHai.NumKind == _combi.atamaNumKind ){
+            if (_addHai.NumKind == _combi.atamaNumKind)
+            {
                 return true;
             }
-            else{
+            else
+            {
                 return false;
             }
         }
@@ -1762,38 +1787,38 @@ public class Yaku
     public bool checkCyuurennpoutou_Jyunsei()
     {
         //鳴きがある場合は成立しない
-        if( _nakiFlag == true )
+        if (_nakiFlag == true)
             return false;
 
         //手牌が清一になっていない場合も成立しない
-        if( checkTinisou() == false )
+        if (checkTinisou() == false)
             return false;
 
         //牌の数を調べるための配列 (0番地は使用しない）
-        int[] countNumber = {0,0,0,0,0,0,0,0,0,0}; //length = 10
+        int[] countNumber = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; //length = 10
 
         //手牌をコピーする
         Hai[] checkHais = _tehai.getJyunTehai();
 
         //手牌にある牌の番号を調べる
-        for(int i = 0; i < _tehai.getJyunTehai().Length; i++)
+        for (int i = 0; i < _tehai.getJyunTehai().Length; i++)
         {
             //数字の番号をインクリメントする
             countNumber[checkHais[i].Num]++;
         }
 
         //九蓮宝燈になっているか調べる（1と9が３枚以上 2～8が１枚以上)
-        if(( countNumber[1] == 3)&& 
-           ( countNumber[2] == 1)&& 
-           ( countNumber[3] == 1)&& 
-           ( countNumber[4] == 1)&& 
-           ( countNumber[5] == 1)&& 
-           ( countNumber[6] == 1)&& 
-           ( countNumber[7] == 1)&& 
-           ( countNumber[8] == 1)&& 
-           ( countNumber[9] == 3))
+        if ((countNumber[1] == 3) &&
+           (countNumber[2] == 1) &&
+           (countNumber[3] == 1) &&
+           (countNumber[4] == 1) &&
+           (countNumber[5] == 1) &&
+           (countNumber[6] == 1) &&
+           (countNumber[7] == 1) &&
+           (countNumber[8] == 1) &&
+           (countNumber[9] == 3))
         {
-            if( _addHai.Num >= Hai.NUM_1 && _addHai.Num <= Hai.NUM_9 )
+            if (_addHai.Num >= Hai.NUM_1 && _addHai.Num <= Hai.NUM_9)
                 return true;
         }
 
@@ -1804,40 +1829,40 @@ public class Yaku
     public bool checkKokushi_13Men()
     {
         //鳴きがある場合は成立しない
-        if( _nakiFlag == true )
+        if (_nakiFlag == true)
             return false;
 
         //牌の数を調べるための配列 (0番地は使用しない）
-        int[] checkId = { 
+        int[] checkId = {
             Hai.ID_WAN_1, Hai.ID_WAN_9,Hai.ID_PIN_1,Hai.ID_PIN_9,Hai.ID_SOU_1,Hai.ID_SOU_9,
             Hai.ID_TON, Hai.ID_NAN,Hai.ID_SYA,Hai.ID_PE,Hai.ID_HAKU,Hai.ID_HATSU,Hai.ID_CHUN
         };
 
-        int[] countNumber = {0,0,0,0,0,0,0,0,0,0,0,0,0}; //length = 13
+        int[] countNumber = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; //length = 13
 
         //手牌をコピーする
         Hai[] jyunTehais = _tehai.getJyunTehai();
 
-        for(int i = 0; i < jyunTehais.Length; i++)
+        for (int i = 0; i < jyunTehais.Length; i++)
         {
-            for(int j = 0; j < checkId.Length; j++)
+            for (int j = 0; j < checkId.Length; j++)
             {
-                if( jyunTehais[i].ID == checkId[j] )
+                if (jyunTehais[i].ID == checkId[j])
                     countNumber[j]++;
             }
         }
 
         // all checkId should contain only one.
-        for(int i = 0; i < countNumber.Length; i++)
+        for (int i = 0; i < countNumber.Length; i++)
         {
-            if( countNumber[i] != 1 )
+            if (countNumber[i] != 1)
                 return false;
         }
 
         // check add hai
-        for(int j = 0; j < checkId.Length; j++)
+        for (int j = 0; j < checkId.Length; j++)
         {
-            if( _addHai.ID == checkId[j] )
+            if (_addHai.ID == checkId[j])
                 return true;
         }
 
@@ -1853,16 +1878,16 @@ public class Yaku
     {
         int doraCount = 0;
 
-        /// all doras
+        // all doras
         Hai[] omoteDoras = AgariParam.getOmoteDoraHais() ?? new Hai[0];
         Hai[] uraDoras = AgariParam.getUraDoraHais() ?? new Hai[0];
 
         Hai[] allDoraHais = new Hai[omoteDoras.Length + uraDoras.Length];
-        for( int i = 0; i < omoteDoras.Length; i++)
+        for (int i = 0; i < omoteDoras.Length; i++)
         {
             allDoraHais[i] = omoteDoras[i];
         }
-        for( int i = 0; i < uraDoras.Length; i++)
+        for (int i = 0; i < uraDoras.Length; i++)
         {
             allDoraHais[omoteDoras.Length + i] = uraDoras[i];
         }
@@ -1870,19 +1895,19 @@ public class Yaku
         // 手牌
         Hai[] jyunTehai = _tehai.getJyunTehai();
 
-        for(int i = 0; i < allDoraHais.Length; i++)
+        for (int i = 0; i < allDoraHais.Length; i++)
         {
             for (int j = 0; j < jyunTehai.Length; j++)
             {
-                if( jyunTehai[j].ID == allDoraHais[i].NextHaiID )
+                if (jyunTehai[j].ID == allDoraHais[i].NextHaiID)
                     doraCount++;
             }
         }
 
         // add Hai
-        for(int i = 0; i < allDoraHais.Length; i++)
+        for (int i = 0; i < allDoraHais.Length; i++)
         {
-            if( _addHai.ID == allDoraHais[i].NextHaiID )
+            if (_addHai.ID == allDoraHais[i].NextHaiID)
             {
                 doraCount++;
                 break;
@@ -1890,96 +1915,99 @@ public class Yaku
         }
 
         // red dora
-        for(int j = 0; j < jyunTehai.Length; j++)
+        for (int j = 0; j < jyunTehai.Length; j++)
         {
-            if( jyunTehai[j].IsRed )
+            if (jyunTehai[j].IsRed)
                 doraCount++;
         }
-        if( _addHai.IsRed )
+        if (_addHai.IsRed)
             doraCount++;
 
         // 副露
         Fuuro[] fuuros = _tehai.getFuuros();
 
-        for(int i = 0; i < fuuros.Length; i++) 
+        for (int i = 0; i < fuuros.Length; i++)
         {
             switch (fuuros[i].Type)
             {
                 case EFuuroType.MinShun:
-                {
-                    for(int j = 0; j < allDoraHais.Length; j++)
                     {
-                        for(int k = 0; k < 3; k++)
+                        for (int j = 0; j < allDoraHais.Length; j++)
                         {
-                            if( fuuros[i].Hais[k].ID == allDoraHais[j].NextHaiID )
+                            for (int k = 0; k < 3; k++)
                             {
-                                doraCount += 1;
+                                if (fuuros[i].Hais[k].ID == allDoraHais[j].NextHaiID)
+                                {
+                                    doraCount += 1;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    break;
+
+                case EFuuroType.MinKou:
+                    {
+                        for (int j = 0; j < allDoraHais.Length; j++)
+                        {
+                            if (fuuros[i].Hais[0].ID == allDoraHais[j].NextHaiID)
+                            {
+                                doraCount += 3;
                                 break;
                             }
                         }
                     }
-                }
-                break;
-
-                case EFuuroType.MinKou:
-                {
-                    for(int j = 0; j < allDoraHais.Length; j++)
-                    {
-                        if( fuuros[i].Hais[0].ID == allDoraHais[j].NextHaiID ) {
-                            doraCount += 3;
-                            break;
-                        }
-                    }
-                }
-                break;
+                    break;
 
                 case EFuuroType.DaiMinKan:
                 case EFuuroType.KaKan:
                 case EFuuroType.AnKan:
-                {
-                    for(int j = 0; j < allDoraHais.Length; j++)
                     {
-                        if(allDoraHais[j].NextHaiID == fuuros[i].Hais[0].ID) {
-                            doraCount += 4;
-                            break;
+                        for (int j = 0; j < allDoraHais.Length; j++)
+                        {
+                            if (allDoraHais[j].NextHaiID == fuuros[i].Hais[0].ID)
+                            {
+                                doraCount += 4;
+                                break;
+                            }
                         }
                     }
-                }
-                break;
+                    break;
             }
         }
 
         // red dora.
-        for(int i = 0; i < fuuros.Length; i++) 
+        for (int i = 0; i < fuuros.Length; i++)
         {
-            switch(fuuros[i].Type)
+            switch (fuuros[i].Type)
             {
                 case EFuuroType.MinShun:
                 case EFuuroType.MinKou:
-                {
-                    for(int j = 0; j < 3; j++)
                     {
-                        if( fuuros[i].Hais[j].IsRed )
-                            doraCount++;
+                        for (int j = 0; j < 3; j++)
+                        {
+                            if (fuuros[i].Hais[j].IsRed)
+                                doraCount++;
+                        }
                     }
-                }
-                break;
+                    break;
 
                 case EFuuroType.DaiMinKan:
                 case EFuuroType.KaKan:
                 case EFuuroType.AnKan:
-                {
-                    for(int j = 0; j < 4; j++)
                     {
-                        if( fuuros[i].Hais[j].IsRed )
-                            doraCount++;
+                        for (int j = 0; j < 4; j++)
+                        {
+                            if (fuuros[i].Hais[j].IsRed)
+                                doraCount++;
+                        }
                     }
-                }
-                break;
+                    break;
             }
         }
 
-        if( doraCount > 0 ) {
+        if (doraCount > 0)
+        {
             _doraCount = doraCount;
             return true;
         }

@@ -1,24 +1,30 @@
+/**
+ * FuuroUI
+ * 副牌UI展示（副牌:就是吃／碰／杠之后放在桌角的牌）
+ * brandy added
+ */
+
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 
-public class FuuroUI : UIObject 
+public class FuuroUI : UIObject
 {
-    //public Vector2 AlignRightLocalPos = new Vector2(0, 0);
     private int FuuroOffsetX = 6;
     private List<MahjongPai> fuuroHais = new List<MahjongPai>();
     private float curMaxPosX = 0;
 
-
-    void Start () {
+    void Start()
+    {
 
     }
 
 
-    public void UpdateFuuro( Fuuro[] fuuros )
+    public void UpdateFuuro(Fuuro[] fuuros)
     {
-        if( fuuros == null  ){
+        if (fuuros == null)
+        {
             return;
         }
 
@@ -26,12 +32,12 @@ public class FuuroUI : UIObject
         Clear();
 
         // create new.
-        for( int i = 0; i < fuuros.Length; i++ ) 
+        for (int i = 0; i < fuuros.Length; i++)
         {
             Fuuro fuu = fuuros[i];
             EFuuroType fuuroType = fuu.Type;
 
-            if( i > 0 )
+            if (i > 0)
                 curMaxPosX -= FuuroOffsetX;
 
             int newPickIndex = fuu.NewPickIndex;
@@ -40,63 +46,64 @@ public class FuuroUI : UIObject
 
             bool shouldSetLand = false;
 
-            switch(fuuroType)
+            switch (fuuroType)
             {
-                case EFuuroType.MinShun: //Chii.
-                case EFuuroType.MinKou:  // Pon.
-                case EFuuroType.KaKan:   // 加杠.
-                case EFuuroType.DaiMinKan: // 大明杠.
-                {
-                    for( int j = 0; j < hais.Length; j++ ) 
+                case EFuuroType.MinShun: // 吃
+                case EFuuroType.MinKou:  // 碰
+                case EFuuroType.KaKan:   // 加杠
+                case EFuuroType.DaiMinKan: // 大明杠
                     {
-                        if( hais[j].ID < 0 )
-                            continue;
+                        for (int j = 0; j < hais.Length; j++)
+                        {
+                            if (hais[j].ID < 0)
+                                continue;
 
-                        shouldSetLand = (j == newPickIndex);
+                            shouldSetLand = (j == newPickIndex);
 
-                        float posX = curMaxPosX - GetMahjongRange(shouldSetLand) * 0.5f;
-                        Vector3 localPos = new Vector3(posX, 0, 0);
+                            float posX = curMaxPosX - GetMahjongRange(shouldSetLand) * 0.5f;
+                            Vector3 localPos = new Vector3(posX, 0, 0);
 
-                        MahjongPai pai = PlayerUI.CreateMahjongPai(transform, localPos, hais[j], true);
+                            MahjongPai pai = PlayerUI.CreateMahjongPai(transform, localPos, hais[j], true);
 
-                        if( shouldSetLand ) {
-                            pai.SetOrientation(EOrientation.Landscape_Left);
+                            if (shouldSetLand)
+                            {
+                                pai.SetOrientation(EOrientation.Landscape_Left);
 
-                            pai.transform.localPosition += new Vector3(0, MahjongPai.LandHaiPosOffsetY, 0);
+                                pai.transform.localPosition += new Vector3(0, MahjongPai.LandHaiPosOffsetY, 0);
+                            }
+
+                            pai.DisableInput();
+                            fuuroHais.Add(pai);
+
+                            // update curMaxPosX.
+                            curMaxPosX -= GetMahjongRange(shouldSetLand);
                         }
-
-                        pai.DisableInput();
-                        fuuroHais.Add(pai);
-
-                        // update curMaxPosX.
-                        curMaxPosX -= GetMahjongRange(shouldSetLand);
                     }
-                }
-                break;
+                    break;
 
                 case EFuuroType.AnKan: // 暗杠.
-                {
-                    for( int j = 0; j < hais.Length; j++ ) 
                     {
-                        if( hais[j].ID < 0 )
-                            continue;
+                        for (int j = 0; j < hais.Length; j++)
+                        {
+                            if (hais[j].ID < 0)
+                                continue;
 
-                        shouldSetLand = false;
+                            shouldSetLand = false;
 
-                        float posX = curMaxPosX - GetMahjongRange(shouldSetLand) * 0.5f;
-                        Vector3 localPos = new Vector3(posX, 0, 0);
+                            float posX = curMaxPosX - GetMahjongRange(shouldSetLand) * 0.5f;
+                            Vector3 localPos = new Vector3(posX, 0, 0);
 
-                        bool isShow = (j != 0 && j != hais.Length - 1); // 2 sides hide.
+                            bool isShow = (j != 0 && j != hais.Length - 1); // 2 sides hide.
 
-                        MahjongPai pai = PlayerUI.CreateMahjongPai(transform, localPos, hais[j], isShow);
+                            MahjongPai pai = PlayerUI.CreateMahjongPai(transform, localPos, hais[j], isShow);
 
-                        fuuroHais.Add(pai);
+                            fuuroHais.Add(pai);
 
-                        // update curMaxPosX.
-                        curMaxPosX -= GetMahjongRange(shouldSetLand);
+                            // update curMaxPosX.
+                            curMaxPosX -= GetMahjongRange(shouldSetLand);
+                        }
                     }
-                }
-                break;
+                    break;
             }
         } // end for().
 
@@ -112,7 +119,8 @@ public class FuuroUI : UIObject
         base.Clear();
 
         // clear all pai.
-        for( int i = 0; i < fuuroHais.Count; i++ ) {
+        for (int i = 0; i < fuuroHais.Count; i++)
+        {
             MahjongPai pai = fuuroHais[i];
             PlayerUI.CollectMahjongPai(pai);
         }

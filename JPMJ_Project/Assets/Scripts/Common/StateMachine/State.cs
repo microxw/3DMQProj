@@ -14,7 +14,7 @@ public abstract class State : MonoBehaviour
     {
         AddListeners();
 
-        Debug.LogWarningFormat( "~State {0} Enter.", GetType().Name );
+        //Debug.LogWarningFormat( "~State {0} Enter.", GetType().Name );
     }
 
     public virtual void Exit ()

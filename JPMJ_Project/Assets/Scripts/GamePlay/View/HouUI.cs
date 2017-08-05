@@ -1,9 +1,15 @@
-﻿using UnityEngine;
+﻿/**
+ * HouUI
+ * 河UI（日本麻将，玩家打出去的牌放置的那块区域叫河）
+ * brandy added
+ */
+
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
 
-public class HouUI : UIObject 
+public class HouUI : UIObject
 {
     public Vector2 AlignLeftLocalPos = new Vector2(-150, 0);
     public int HaiPosOffsetX = 2;
@@ -23,18 +29,23 @@ public class HouUI : UIObject
 
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         Init();
     }
 
-    public override void Init() {
+    public override void Init()
+    {
         base.Init();
 
-        if(isInit == false){
+        if (isInit == false)
+        {
             lineParents = new List<Transform>(Max_Lines);
-            for( int i = 0; i < Max_Lines; i++ ) {
-                Transform line = transform.Find("Line_" + (i+1));
-                if(line != null){
+            for (int i = 0; i < Max_Lines; i++)
+            {
+                Transform line = transform.Find("Line_" + (i + 1));
+                if (line != null)
+                {
                     lineParents.Add(line);
                 }
             }
@@ -45,46 +56,53 @@ public class HouUI : UIObject
         _curLineRightAligPosX = AlignLeftLocalPos.x;
     }
 
-    public override void Clear() {
+    public override void Clear()
+    {
         base.Clear();
 
         // clear all hai.
-        for( int i = 0; i < _allHais.Count; i++ ) {
+        for (int i = 0; i < _allHais.Count; i++)
+        {
             PlayerUI.CollectMahjongPai(_allHais[i]);
         }
         _allHais.Clear();
     }
 
-    public override void SetParentPanelDepth( int depth ) {
-        for( int i = 0; i < lineParents.Count; i++ ) {
+    public override void SetParentPanelDepth(int depth)
+    {
+        for (int i = 0; i < lineParents.Count; i++)
+        {
             UIPanel panel = lineParents[i].GetComponent<UIPanel>();
 
             panel.depth = depth + (lineParents.Count - i);
         }
     }
 
-    public void AddHai(MahjongPai pai) 
+    public void AddHai(MahjongPai pai)
     {
         int inLine = _allHais.Count / MaxCoutPerLine;  //inLine=0,1,2. >2 has a small chance.
         int indexInLine = _allHais.Count % MaxCoutPerLine;
 
         int EndingLine = Max_Lines - 1;
 
-        if( inLine != _curLine )
+        if (inLine != _curLine)
         {
-            if( inLine <= EndingLine ){
+            if (inLine <= EndingLine)
+            {
                 _curLine = inLine;
                 _curLineRightAligPosX = AlignLeftLocalPos.x;
             }
-            else if(inLine > EndingLine){
+            else if (inLine > EndingLine)
+            {
                 _curLine = EndingLine;
 
                 indexInLine += MaxCoutPerLine;
                 _curLineRightAligPosX += MahjongPai.Width + HaiPosOffsetX;
             }
         }
-        else{
-            if(indexInLine > 0)
+        else
+        {
+            if (indexInLine > 0)
                 _curLineRightAligPosX += MahjongPai.Width + HaiPosOffsetX;
         }
 
@@ -101,7 +119,7 @@ public class HouUI : UIObject
 
     public bool setTedashi(bool isTedashi)
     {
-        if( _allHais.Count <= 0 )
+        if (_allHais.Count <= 0)
             return false;
 
         // set last hai tedashi.
@@ -113,7 +131,7 @@ public class HouUI : UIObject
 
     public bool SetReach(bool isReach)
     {
-        if( _allHais.Count <= 0 )
+        if (_allHais.Count <= 0)
             return false;
 
         // set last hai reach.
@@ -127,7 +145,7 @@ public class HouUI : UIObject
 
     public bool setNaki(bool isNaki)
     {
-        if( _allHais.Count <= 0 )
+        if (_allHais.Count <= 0)
             return false;
 
         // set last hai naki.
@@ -141,7 +159,7 @@ public class HouUI : UIObject
 
     public bool setShining(bool isShining)
     {
-        if( _allHais.Count <= 0 )
+        if (_allHais.Count <= 0)
             return false;
 
         // set last hai shining.

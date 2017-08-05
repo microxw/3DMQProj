@@ -1,4 +1,10 @@
-﻿using System;
+﻿/**
+ * Player
+ * Player抽象基类，包含玩家信息和牌数据，动画
+ * brandy added
+ */
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -20,17 +26,17 @@ public abstract class Player
 
     public string Name
     {
-        get{ return _name; }
+        get { return _name; }
     }
     public EVoiceType VoiceType
     {
-        get{ return _voiceType; }
+        get { return _voiceType; }
     }
 
     protected PlayerAction _action = new PlayerAction();
     public PlayerAction Action
     {
-        get{ return _action; }
+        get { return _action; }
     }
 
 
@@ -38,81 +44,81 @@ public abstract class Player
     protected Tehai _tehai = new Tehai();
     public Tehai Tehai
     {
-        get{ return _tehai; }
+        get { return _tehai; }
     }
 
     // 河
     protected Hou _hou = new Hou();
     public Hou Hou
     {
-        get{ return _hou; }
+        get { return _hou; }
     }
 
-    // 自風
+    // 自风
     protected EKaze _jikaze;
     public EKaze JiKaze
     {
-        get{ return _jikaze; }
-        set{ _jikaze = value; }
+        get { return _jikaze; }
+        set { _jikaze = value; }
     }
 
     // 点棒
     protected int _tenbou;
-    public int Tenbou 
+    public int Tenbou
     {
-        get{ return _tenbou; }
-        set{ _tenbou = value; }
+        get { return _tenbou; }
+        set { _tenbou = value; }
     }
 
-    // リーチ(can't set by self!!!)
+    // 听(can't set by self!!!)
     protected bool _reach;
     public bool IsReach
     {
-        get{ return _reach; }
-        set{ _reach = value; }
+        get { return _reach; }
+        set { _reach = value; }
     }
 
-    // ダブルリーチ
+    // 双听
     protected bool _doubleReach;
     public bool IsDoubleReach
     {
-        get{ return _doubleReach; }
-        set{ _doubleReach = value; }
+        get { return _doubleReach; }
+        set { _doubleReach = value; }
     }
 
     // 一発
     protected bool _ippatsu;
     public bool IsIppatsu
     {
-        get{ return _ippatsu; }
-        set{ _ippatsu = value; }
+        get { return _ippatsu; }
+        set { _ippatsu = value; }
     }
 
-    // 捨牌数
+    // 舍牌数
     protected int _suteHaisCount;
     public int SuteHaisCount
     {
-        get{ return _suteHaisCount; }
-        set{ _suteHaisCount = value; }
+        get { return _suteHaisCount; }
+        set { _suteHaisCount = value; }
     }
 
     protected CountFormat _countFormat = new CountFormat();
     public CountFormat FormatWorker
     {
-        get{ return _countFormat; }
+        get { return _countFormat; }
     }
 
     #region Logic
 
-    public virtual void Init() 
+    public virtual void Init()
     {
-        // 手牌を初期化します。
+        // 将手牌初始化
         _tehai.initialize();
 
-        // 河を初期化します。
+        // 将河牌（桌面上打出去的牌）初始化
         _hou.initialize();
 
-        // リーチを初期化します。
+        // 初始化
         _reach = false;
         _doubleReach = false;
         _ippatsu = false;
@@ -120,12 +126,12 @@ public abstract class Player
         _suteHaisCount = 0;
     }
 
-    // 点棒を増やします
+    // 增加点棒
     public void increaseTenbou(int value)
     {
         Tenbou += value;
     }
-    // 点棒を減らします
+    // 减少点棒
     public void reduceTenbou(int value)
     {
         Tenbou -= value;
@@ -134,28 +140,28 @@ public abstract class Player
     // 听牌
     public bool isTenpai()
     {
-        if( _reach == true )
+        if (_reach == true)
             return true;
 
-        return MahjongAgent.canTenpai( _tehai );
+        return MahjongAgent.canTenpai(_tehai);
     }
 
-    // 振听.
+    // Furiten：不能胡自己打过的牌，也不能胡听牌后放弃胡牌的牌
     public bool isFuriten()
     {
         List<Hai> machiHais;
-        if( MahjongAgent.tryGetMachiHais(Tehai, out machiHais) )
+        if (MahjongAgent.tryGetMachiHais(Tehai, out machiHais))
         {
             // check hou
             SuteHai[] suteHais = Hou.getSuteHais();
-
-            for( int i = 0; i < suteHais.Length; i++ )
+            int length = suteHais.Length;
+            for (int i = 0; i < length; i++)
             {
                 SuteHai suteHaiTemp = suteHais[i];
 
-                for( int j = 0; j < machiHais.Count; j++ )
+                for (int j = 0; j < machiHais.Count; j++)
                 {
-                    if( suteHaiTemp.ID == machiHais[j].ID )
+                    if (suteHaiTemp.ID == machiHais[j].ID)
                         return true;
                 }
             }
@@ -164,13 +170,13 @@ public abstract class Player
             suteHais = MahjongAgent.getSuteHaiList();
 
             int playerSuteHaisCount = MahjongAgent.getPlayerSuteHaisCount(JiKaze);
-            for( ; playerSuteHaisCount < suteHais.Length - 1; playerSuteHaisCount++ )
+            for (; playerSuteHaisCount < suteHais.Length - 1; playerSuteHaisCount++)
             {
                 SuteHai suteHaiTemp = suteHais[playerSuteHaisCount];
 
-                for( int j = 0; j < machiHais.Count; j++ )
+                for (int j = 0; j < machiHais.Count; j++)
                 {
-                    if( suteHaiTemp.ID == machiHais[j].ID )
+                    if (suteHaiTemp.ID == machiHais[j].ID)
                         return true;
                 }
             }
@@ -182,8 +188,8 @@ public abstract class Player
 
     public bool CheckReachPreConditions()
     {
-        return !MahjongAgent.isReach(JiKaze) && 
-            MahjongAgent.getTsumoRemain() >= GameSettings.PlayerCount && 
+        return !MahjongAgent.isReach(JiKaze) &&
+            MahjongAgent.getTsumoRemain() >= GameSettings.PlayerCount &&
             Tenbou >= GameSettings.Reach_Cost;
     }
 
@@ -192,7 +198,7 @@ public abstract class Player
 
     protected GameAgent MahjongAgent
     {
-        get{ return GameAgent.Instance; }
+        get { return GameAgent.Instance; }
     }
 
     protected float ResponseDelayTime = 0.3f; // must > 0
@@ -202,7 +208,7 @@ public abstract class Player
     protected ERequest _request;
     protected ERequest CurrentRequest
     {
-        get{ return _request; }
+        get { return _request; }
     }
 
     protected EResponse DoResponse(EResponse response)
@@ -211,8 +217,8 @@ public abstract class Player
 
         ResponseDelayTime = Math.Max(ResponseDelayTime, 0.1f);
 
-        if( ResponseDelayTime > 0f )
-            GameManager.Get().StartCoroutine( DoResponseDelay(ResponseDelayTime) );
+        if (ResponseDelayTime > 0f)
+            GameManager.Get().StartCoroutine(DoResponseDelay(ResponseDelayTime));
         else
             DoResponseDirectly();
 
@@ -226,13 +232,14 @@ public abstract class Player
     }
     protected void DoResponseDirectly()
     {
-        if(_onResponse != null) 
+        if (_onResponse != null)
             _onResponse.Invoke(JiKaze, _action.Response);
     }
 
     public void OnPlayerInputFinished()
     {
         //UnityEngine.Debug.Log("~~~OnPlayerInputFinished(): " + _action.Response.ToString());
+
         DoResponseDirectly();
     }
 
@@ -242,33 +249,33 @@ public abstract class Player
         this._request = request;
         this._onResponse = onResponse;
 
-        switch( request )
+        switch (request)
         {
             case ERequest.Handle_TsumoHai:
-            {
-                OnHandle_TsumoHai(fromPlayerKaze, haiToHandle);
-            }
-            break;
+                {
+                    OnHandle_TsumoHai(fromPlayerKaze, haiToHandle);
+                }
+                break;
             case ERequest.Handle_KaKanHai:
-            {
-                OnHandle_KakanHai(fromPlayerKaze, haiToHandle);
-            }
-            break;
+                {
+                    OnHandle_KakanHai(fromPlayerKaze, haiToHandle);
+                }
+                break;
             case ERequest.Handle_SuteHai:
-            {
-                OnHandle_SuteHai(fromPlayerKaze, haiToHandle);
-            }
-            break;
+                {
+                    OnHandle_SuteHai(fromPlayerKaze, haiToHandle);
+                }
+                break;
             case ERequest.Select_SuteHai:
-            {
-                OnSelect_SuteHai(fromPlayerKaze, haiToHandle);
-            }
-            break;
+                {
+                    OnSelect_SuteHai(fromPlayerKaze, haiToHandle);
+                }
+                break;
             default:
-            {
-                DoResponse( EResponse.Nagashi );
-            }
-            break;
+                {
+                    DoResponse(EResponse.Nagashi);
+                }
+                break;
         }
     }
 

@@ -1,8 +1,14 @@
-﻿using UnityEngine;
+﻿/**
+ * GameInfoUI
+ * 游戏信息面板
+ * brandy added
+ */
+
+using UnityEngine;
 using System.Collections;
 
 
-public class GameInfoUI : UIObject 
+public class GameInfoUI : UIObject
 {
     private UILabel kyokuLab;
     private UILabel reachCountLab;
@@ -10,12 +16,15 @@ public class GameInfoUI : UIObject
     private UILabel lab_remain;
 
 
-    void Start () {
+    void Start()
+    {
         Init();
     }
 
-    public override void Init() {
-        if(isInit == false){
+    public override void Init()
+    {
+        if (isInit == false)
+        {
             kyokuLab = transform.Find("Kyoku").GetComponent<UILabel>();
             reachCountLab = transform.Find("ReachCount").GetComponent<UILabel>();
             reachBan = transform.Find("ReachBan").GetComponent<UISprite>();
@@ -35,20 +44,23 @@ public class GameInfoUI : UIObject
         reachBan.enabled = false;
     }
 
-    public void SetKyoku( EKaze kaze, int kyoku ) {
-        string kazeStr = ResManager.getString( "kaze_" + kaze.ToString().ToLower() );
+    public void SetKyoku(EKaze kaze, int kyoku)
+    {
+        string kazeStr = ResManager.getString("kaze_" + kaze.ToString().ToLower());
         kyokuLab.text = kazeStr + " " + kyoku.ToString() + "局";
     }
 
-    public void SetReachCount(int count) {
+    public void SetReachCount(int count)
+    {
         reachCountLab.text = "x" + count.ToString();
 
-        if(!reachBan.enabled)
+        if (!reachBan.enabled)
             reachBan.enabled = true;
     }
 
-    public void SetHonba(int honba) {
-        Debug.Log( honba + "本场");
+    public void SetHonba(int honba)
+    {
+        Debug.Log(honba + "本场");
     }
 
     public void SetRemain(int remain)

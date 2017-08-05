@@ -1,19 +1,24 @@
-﻿using System.Collections.Generic;
+﻿/**
+ * GameAgent
+ * 管理用户(player)信息的代理单例类
+ * brandy added
+ */
 
-/// <summary>
-/// プレイヤー(Player)に提供する情報を管理するクラスです。
-/// </summary>
+using System.Collections.Generic;
 
-public class GameAgent 
+
+public class GameAgent
 {
-    private GameAgent(){
-        
+    private GameAgent()
+    {
+
     }
     private static GameAgent _instance;
     public static GameAgent Instance
     {
-        get{
-            if(_instance == null)
+        get
+        {
+            if (_instance == null)
                 _instance = new GameAgent();
             return _instance;
         }
@@ -26,38 +31,45 @@ public class GameAgent
     }
 
 
-    // リーチを取得する
-    public bool isReach(EKaze kaze) {
+    // 是否听牌
+    public bool isReach(EKaze kaze)
+    {
         return _game.getPlayer(kaze).IsReach;
     }
 
-    // ツモの残り数を取得する
-    public int getTsumoRemain() {
+    // 获取剩余的摸牌数量
+    public int getTsumoRemain()
+    {
         return _game.getTsumoRemainCount();
     }
 
-    // 局を取得する
-    public int getkyoku() {
+    // 获取局
+    public int getkyoku()
+    {
         return _game.Kyoku;
     }
 
-    // 本場を取得する
-    public int getHonba() {
+    // 本场获取
+    public int getHonba()
+    {
         return _game.HonBa;
     }
 
-    // リーチ棒の数を取得する
-    public int getReachbou() {
+    // 取得听的数量
+    public int getReachbou()
+    {
         return _game.ReachBou;
     }
 
-    public Hai getSuteHai(){
+    public Hai getSuteHai()
+    {
         Hai suteHai = _game.SuteHai;
-        return suteHai == null? suteHai : new Hai(suteHai);
+        return suteHai == null ? suteHai : new Hai(suteHai);
     }
-    public Hai getTsumoHai(){
+    public Hai getTsumoHai()
+    {
         Hai suteHai = _game.TsumoHai;
-        return suteHai == null? suteHai : new Hai(suteHai);
+        return suteHai == null ? suteHai : new Hai(suteHai);
     }
 
     public void PostUiEvent(UIEventType eventType, params object[] args)
@@ -65,43 +77,50 @@ public class GameAgent
         EventManager.Get().SendEvent(eventType, args);
     }
 
-    public SuteHai[] getSuteHaiList() {
+    public SuteHai[] getSuteHaiList()
+    {
         return _game.AllSuteHaiList.ToArray();
     }
 
-    public int getPlayerSuteHaisCount(EKaze kaze) {
+    public int getPlayerSuteHaisCount(EKaze kaze)
+    {
         return _game.getPlayer(kaze).SuteHaisCount;
     }
 
-    public Hai[] getOmotoDoraHais(){
+    public Hai[] getOmotoDoraHais()
+    {
         return _game.getOpenedOmotoDoras();
     }
 
-    public Hai[] getUraDoraHais() {
+    public Hai[] getUraDoraHais()
+    {
         return _game.getOpenedUraDoraHais();
     }
 
-    public EKaze getManKaze() {
+    public EKaze getManKaze()
+    {
         return _game.getManKaze();
     }
 
 
-    // 起(親)家のプレイヤーインデックスを取得する
-    public int getChiichaIndex() {
+    // 获取吃家的序列号
+    public int getChiichaIndex()
+    {
         return _game.ChiiChaIndex;
     }
 
-    public AgariInfo getAgariInfo() {
+    public AgariInfo getAgariInfo()
+    {
         return _game.AgariInfo;
     }
 
     public HaiCombi[] combis
     {
-        get{ return _game.Combis; }
+        get { return _game.Combis; }
     }
     public CountFormat countFormat
     {
-        get{ return _game.CountFormater; }
+        get { return _game.CountFormater; }
     }
 
     public int getTotalKanCount()
@@ -109,7 +128,7 @@ public class GameAgent
         return _game.GetTotalKanCount(null);
     }
 
-    // あがり点を取得する
+    // 获取胡牌分数
     public int getAgariScore(Tehai tehai, Hai addHai, EKaze jikaze)
     {
         return _game.GetAgariScore(tehai, addHai, jikaze);
@@ -118,7 +137,7 @@ public class GameAgent
     #region Logic
 
 
-    protected List<Hai> _reachHaiList = new List<Hai>( Tehai.JYUN_TEHAI_LENGTH_MAX );
+    protected List<Hai> _reachHaiList = new List<Hai>(Tehai.JYUN_TEHAI_LENGTH_MAX);
 
 
     // 打哪些牌可以立直.
@@ -127,7 +146,7 @@ public class GameAgent
         haiIndexList = new List<int>();
 
         // 鳴いている場合は、リーチできない。
-        if( a_tehai.isNaki() )
+        if (a_tehai.isNaki())
             return false;
 
         /// find all reach-enabled hais in a_tehai, also the tsumoHai.
@@ -136,23 +155,23 @@ public class GameAgent
 
         // As _jyunTehais won't sort automatically on new hais added, 
         // so we can add tsumo hai directly to simplify the checks.
-        Tehai tehai_copy = new Tehai( a_tehai );
-        tehai_copy.addJyunTehai( tsumoHai );
+        Tehai tehai_copy = new Tehai(a_tehai);
+        tehai_copy.addJyunTehai(tsumoHai);
         tehai_copy.Sort();
 
         Hai[] jyunTehai = tehai_copy.getJyunTehai();
 
-        for( int i = 0; i < jyunTehai.Length; i++ )
+        for (int i = 0; i < jyunTehai.Length; i++)
         {
             Hai haiTemp = tehai_copy.removeJyunTehaiAt(i);
 
-            for( int id = Hai.ID_MIN; id <= Hai.ID_MAX; id++ )
+            for (int id = Hai.ID_MIN; id <= Hai.ID_MAX; id++)
             {
                 countFormat.setCounterFormat(tehai_copy, new Hai(id));
 
-                if( countFormat.calculateCombisCount( combis ) > 0 )
+                if (countFormat.calculateCombisCount(combis) > 0)
                 {
-                    _reachHaiList.Add( new Hai(haiTemp) );
+                    _reachHaiList.Add(new Hai(haiTemp));
                     break;
                 }
             }
@@ -162,20 +181,20 @@ public class GameAgent
 
 
         /// transfer to index list.
-        if( _reachHaiList.Count > 0 )
+        if (_reachHaiList.Count > 0)
         {
             jyunTehai = a_tehai.getJyunTehai();
 
-            for( int i = 0; i < _reachHaiList.Count; i++ )
+            for (int i = 0; i < _reachHaiList.Count; i++)
             {
-                for( int j = 0; j < jyunTehai.Length; j++ )
+                for (int j = 0; j < jyunTehai.Length; j++)
                 {
-                    if( jyunTehai[j].ID == _reachHaiList[i].ID && !haiIndexList.Contains(j))
-                        haiIndexList.Add( j );
+                    if (jyunTehai[j].ID == _reachHaiList[i].ID && !haiIndexList.Contains(j))
+                        haiIndexList.Add(j);
                 }
 
-                if( tsumoHai.ID == _reachHaiList[i].ID && !haiIndexList.Contains(jyunTehai.Length) )
-                    haiIndexList.Add( jyunTehai.Length );
+                if (tsumoHai.ID == _reachHaiList[i].ID && !haiIndexList.Contains(jyunTehai.Length))
+                    haiIndexList.Add(jyunTehai.Length);
             }
             haiIndexList.Sort();
 
@@ -190,15 +209,15 @@ public class GameAgent
     {
         hais = new List<Hai>();
 
-        for(int id = Hai.ID_MIN; id <= Hai.ID_MAX; id++)
+        for (int id = Hai.ID_MIN; id <= Hai.ID_MAX; id++)
         {
             Hai addHai = new Hai(id);
 
             countFormat.setCounterFormat(tehai, addHai);
 
-            if( countFormat.calculateCombisCount( combis ) > 0 )
+            if (countFormat.calculateCombisCount(combis) > 0)
             {
-                hais.Add( addHai );
+                hais.Add(addHai);
             }
         }
 
@@ -208,55 +227,55 @@ public class GameAgent
     // 是否可以听牌，只需要检查一个成立的牌.
     public bool canTenpai(Tehai tehai)
     {
-        for(int id = Hai.ID_MIN; id <= Hai.ID_MAX; id++)
+        for (int id = Hai.ID_MIN; id <= Hai.ID_MAX; id++)
         {
             countFormat.setCounterFormat(tehai, new Hai(id));
 
-            if( countFormat.calculateCombisCount( combis ) > 0 )
+            if (countFormat.calculateCombisCount(combis) > 0)
                 return true;
         }
         return false;
     }
 
 
-    public bool CheckHaiTypeOver9( Tehai tehai, Hai addHai )
+    public bool CheckHaiTypeOver9(Tehai tehai, Hai addHai)
     {
-        if( !_game.isChiHou )
+        if (!_game.isChiHou)
             return false;
 
-        if( tehai.getJyunTehaiCount() < Tehai.JYUN_TEHAI_LENGTH_MAX-1 )
+        if (tehai.getJyunTehaiCount() < Tehai.JYUN_TEHAI_LENGTH_MAX - 1)
             return false;
 
 
-        int[] checkId = { 
+        int[] checkId = {
             Hai.ID_WAN_1, Hai.ID_WAN_9,Hai.ID_PIN_1,Hai.ID_PIN_9,Hai.ID_SOU_1,Hai.ID_SOU_9,
             Hai.ID_TON, Hai.ID_NAN,Hai.ID_SYA,Hai.ID_PE,Hai.ID_HAKU,Hai.ID_HATSU,Hai.ID_CHUN
         };
-        int[] countNumber = {0,0,0,0,0,0,0,0,0,0,0,0,0}; //length = 13
+        int[] countNumber = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; //length = 13
 
-        //手牌をコピーする
+        // 复制手牌
         Hai[] checkHais = tehai.getJyunTehai();
 
-        for(int i = 0; i < checkHais.Length; i++)
+        for (int i = 0; i < checkHais.Length; i++)
         {
-            for(int j = 0; j < checkId.Length; j++)
+            for (int j = 0; j < checkId.Length; j++)
             {
-                if( checkHais[i].ID == checkId[j] )
+                if (checkHais[i].ID == checkId[j])
                     countNumber[j]++;
             }
         }
 
-        for(int j = 0; j < checkId.Length; j++)
+        for (int j = 0; j < checkId.Length; j++)
         {
-            if( addHai.ID == checkId[j] )
+            if (addHai.ID == checkId[j])
                 countNumber[j]++;
         }
 
-        int totalHaiType = 0; 
+        int totalHaiType = 0;
 
-        for(int c = 0; c < countNumber.Length; c++)
+        for (int c = 0; c < countNumber.Length; c++)
         {
-            if( countNumber[c] > 0 )
+            if (countNumber[c] > 0)
                 totalHaiType++;
         }
 

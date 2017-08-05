@@ -1,6 +1,6 @@
 ﻿/**
  * ResManager
- * resource manager
+ * 麻将牌和玩家UI资源的管理
  * brandy added
  */
 
@@ -67,22 +67,29 @@ public class ResManager
     private static Transform poolRoot = null;
     private static GameObject mahjongPaiPrefab = null;
 
-
+    // 设置麻将池位置
     public static void SetPoolRoot(Transform root)
     {
         poolRoot = root;
     }
 
+    // 释放麻将池
     public static void ClearMahjongPaiPool()
     {
-        for (int i = 0; i < _mahjongPaiPool.Count; i++)
+        int count = _mahjongPaiPool.Count;
+        GameObject mjPai = null;
+        for (int i = 0; i < count; i++)
         {
-            if (_mahjongPaiPool[i] != null)
-                GameObject.Destroy(_mahjongPaiPool[i]);
+            mjPai = _mahjongPaiPool[i];
+            if (mjPai != null)
+            {
+                GameObject.Destroy(mjPai);
+            }
         }
         _mahjongPaiPool.Clear();
     }
 
+    // 创建麻将对象
     public static GameObject CreateMahjongObject()
     {
         if (_mahjongPaiPool.Count > 0)
@@ -97,7 +104,9 @@ public class ResManager
         else
         {
             if (mahjongPaiPrefab == null)
+            {
                 mahjongPaiPrefab = Resources.Load<GameObject>("Prefabs/Mahjong/MahjongPai");
+            }
             return Object.Instantiate(mahjongPaiPrefab) as GameObject;
         }
     }
@@ -110,7 +119,9 @@ public class ResManager
         pai.Clear();
 
         if (poolRoot == null)
+        {
             poolRoot = new GameObject("MahjongPoolRoot").transform;
+        }
 
         pai.transform.parent = poolRoot;
 

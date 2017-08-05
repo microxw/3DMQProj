@@ -1,31 +1,36 @@
-﻿
-public enum EResponse 
+﻿/**
+ * EResponse
+ * EResponse type, It's a response to the request
+ * brandy added
+ */
+
+public enum EResponse
 {
-    // ツモあがり 
+    // 自摸胡
     Tsumo_Agari,
-    // 捨牌 
+    // 舍牌
     SuteHai,
-    // リーチ 
+    // 听
     Reach,
-    // 加槓 
+    // 加杠
     Kakan,
-    // 暗槓 
+    // 暗杠
     Ankan,
 
-    // ロンあがり 
+    // 点炮胡
     Ron_Agari,
 
-    // 大明槓 
+    // 大明杠
     DaiMinKan,
-    // ポン 
+    // 碰
     Pon,
-    // チー(左) 
+    // 吃(左) 
     Chii_Left,
-    // チー(中央) 
+    // 吃(中央) 
     Chii_Center,
-    // チー(右) 
+    // 吃(右) 
     Chii_Right,
 
-    // 流し 
-    Nagashi,
+    // 流局
+    Nagashi
 }

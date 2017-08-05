@@ -1,38 +1,43 @@
-﻿
-public enum UIEventType 
+﻿/**
+ * UIEventType
+ * UI事件类型
+ * brandy added
+ */
+
+public enum UIEventType
 {
     #region event id
-    // pick a tsumo hai. 
+    // 抓牌 
     PickTsumoHai,
     PickRinshanHai,
 
-    // 捨牌の選択 
+    // 选择舍牌
     Select_SuteHai,
-    // 捨牌 
+    // 舍牌
     SuteHai,
-    // リーチ 
+    // 听
     Reach,
-    // ポン 
+    // 碰
     Pon,
-    // チー(左) 
+    // 吃(左) 
     Chii_Left,
-    // チー(中央) 
+    // 吃(中央) 
     Chii_Center,
-    // チー(右) 
+    // 吃(右) 
     Chii_Right,
-    // 大明槓 
+    // 大明杠
     DaiMinKan,
-    // 加槓 
+    // 加杠 
     Kakan,
-    // 暗槓 
+    // 暗杠
     Ankan,
-    // ロンのチェック 
+    // 点炮检查
     Ron_Check,
-    // ツモあがり 
+    // 自摸胡
     Tsumo_Agari,
-    // ロンあがり 
+    // 炮胡
     Ron_Agari,
-    // 流し 
+    // 满贯
     Nagashi,
     #endregion
 
@@ -41,17 +46,18 @@ public enum UIEventType
 
     DisplayKyokuInfo,
 
-    On_UIAnim_End, // callback of all EActionType, and other system animations.
+    // callback of all EActionType, and other system animations
+    On_UIAnim_End,
 
-    // ゲームの開始 
+    // 开始游戏
     Start_Game,
 
-    // 局の開始 
+    // 开局
     Start_Kyoku,
 
     Init_Game,
 
-    // Saifuri
+    // 选择吃牌顺序
     Select_ChiiCha,
     On_Select_ChiiCha_End,
 
@@ -71,11 +77,11 @@ public enum UIEventType
     // 流局 
     RyuuKyoku,
 
-    // 局の終了 
+    // 本局结束
     End_Kyoku,
     End_RyuuKyoku,
 
-    // ゲームの終了 
+    // 游戏结束
     End_Game,
 
 }

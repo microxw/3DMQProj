@@ -1,4 +1,10 @@
-﻿using System.Collections.Generic;
+﻿/**
+ * AgariUpdateInfo
+ * 胡牌的结算信息子类
+ * brandy added
+ */
+
+using System.Collections.Generic;
 
 
 public class AgariUpdateInfo : AgariInfo
@@ -23,26 +29,27 @@ public class AgariUpdateInfo : AgariInfo
     public bool isLastKyoku;
 
 
-    public AgariUpdateInfo(){
-        
-    }
-
-    public AgariUpdateInfo( AgariInfo other )
+    public AgariUpdateInfo()
     {
-        Copy( this, other );
+
+    }
+
+    public AgariUpdateInfo(AgariInfo other)
+    {
+        Copy(this, other);
     }
 
 
-    public static void Copy( AgariUpdateInfo dest, AgariInfo src )
+    public static void Copy(AgariUpdateInfo dest, AgariInfo src)
     {
         dest.han = src.han;
         dest.fu = src.fu;
 
         dest.hanteiYakus = new YakuHelper.YakuHandler[src.hanteiYakus.Length];
-        for( int i = 0; i < dest.hanteiYakus.Length; i++ )
+        for (int i = 0; i < dest.hanteiYakus.Length; i++)
             dest.hanteiYakus[i] = src.hanteiYakus[i].Clone();
 
-        dest.scoreInfo = new Score( src.scoreInfo );
+        dest.scoreInfo = new Score(src.scoreInfo);
         dest.agariScore = src.agariScore;
     }
 

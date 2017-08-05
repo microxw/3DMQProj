@@ -1,4 +1,10 @@
-﻿using System.Collections;
+﻿/**
+ * AgariInfo
+ * 胡牌的结算信息
+ * brandy added
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using YakuHelper;
 

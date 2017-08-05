@@ -1,4 +1,8 @@
-﻿
+﻿/**
+ * ERyuuKyokuReason
+ * 流局的原因
+ * brandy added
+ */
 
 public enum ERyuuKyokuReason 
 {

@@ -78,19 +78,33 @@ public class MahjongView : UIObject, IObserver
     public void HideAllHudPanel()
     {
         if (playerInputPanel != null)
+        {
             playerInputPanel.Hide();
+        }
         if (selectChiiChanPanel != null)
+        {
             selectChiiChanPanel.Hide();
+        }
         if (kyokuInfoPanel != null)
+        {
             kyokuInfoPanel.Hide();
+        }
         if (saifuriPanel != null)
+        {
             saifuriPanel.Hide();
+        }
         if (ryuuKyokuPanel != null)
+        {
             ryuuKyokuPanel.Hide();
+        }
         if (agariPanel != null)
+        {
             agariPanel.Hide();
+        }
         if (gameOverPanel != null)
+        {
             gameOverPanel.Hide();
+        }
     }
 
     public override void Clear()
@@ -98,10 +112,14 @@ public class MahjongView : UIObject, IObserver
         base.Clear();
 
         if (gameInfo != null)
+        {
             gameInfo.Clear();
+        }
 
         foreach (var kv in playerUIDict)
+        {
             kv.Value.Clear();
+        }
 
         playerUIDict.Clear();
         playerUIDict_Kaze.Clear();
@@ -599,11 +617,11 @@ public class MahjongView : UIObject, IObserver
         }
     }
 
-    // 获取对应玩家的Yama范围.
-    //          P2(68~101)
-    // P3(34~67)          P1(102~135)
-    //          P0(0~33)
-    int[] getStartEndOfYamaUIOfPlayer(int playerIndex)
+	// 获取对应玩家的Yama范围(山牌)
+	//          P2(68~101)
+	// P3(34~67)          P1(102~135)
+	//          P0(0~33)
+	int[] getStartEndOfYamaUIOfPlayer(int playerIndex)
     {
         if (playerIndex < 0 || playerIndex > 3)
             return null;
@@ -618,11 +636,7 @@ public class MahjongView : UIObject, IObserver
         return index;
     }
 
-    // <summary>
-    // 寻找yamahai下标所在玩家Yama的范围.
-    // </summary>
-    // <param name="yamahaiIndex"></param>
-    // <returns></returns>
+    // 寻找yamahai下标所在玩家Yama的范围(山牌)
     int[] getStartEndOfYamahaiIndex(int yamahaiIndex)
     {
         for (int i = 0; i < 4; i++)
@@ -636,12 +650,8 @@ public class MahjongView : UIObject, IObserver
         return null;
     }
 
-    // <summary>
-    // 寻找yamahai下标所在的玩家.
-    // </summary>
-    // <param name="yamahaiIndex"></param>
-    // <returns></returns>
-    int findPlayerForYamahaiIndex(int yamahaiIndex)
+	// 寻找yamahai下标所在的玩家(山牌)
+	int findPlayerForYamahaiIndex(int yamahaiIndex)
     {
         for (int i = 0; i < 4; i++)
         {

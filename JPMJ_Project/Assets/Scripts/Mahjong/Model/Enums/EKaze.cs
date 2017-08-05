@@ -1,5 +1,5 @@
 ﻿
-// Kaze = 風 //
+// 风
 public enum EKaze 
 {
     Ton = 0,
@@ -21,6 +21,7 @@ public static class EKazeExtension
         }
         return EKaze.Nan;
     }
+
     public static EKaze Pre(this EKaze kaze)
     {
         switch(kaze)

@@ -28,7 +28,7 @@ public class Tehai
 
     // 纯手牌的长度的最大值
     public readonly static int JYUN_TEHAI_LENGTH_MAX = 14;
-    // 副露の最大値（最多4铺牌，包括吃碰杠，放在桌面上）
+    // 副牌的最大値（最多4铺牌，包括吃碰杠，放在桌角上面的）
     public readonly static int FUURO_MAX = 4;
 
     // 面子の長さ(3)
@@ -37,10 +37,10 @@ public class Tehai
     public readonly static int MENTSU_LENGTH_4 = 4;
 
 
-    // 純手牌
+    // 纯手牌
     private List<Hai> _jyunTehais = new List<Hai>(JYUN_TEHAI_LENGTH_MAX);
 
-    // 副露の配列
+    // 副牌的队列
     private List<Fuuro> _fuuros = new List<Fuuro>(FUURO_MAX);
 
 
@@ -82,7 +82,7 @@ public class Tehai
     }
 
 
-    // 副露の配列を取得する
+    // 获得副牌的队列
     public Fuuro[] getFuuros()
     {
         return _fuuros.ToArray();
@@ -100,10 +100,7 @@ public class Tehai
         return false;
     }
 
-    // <summary>
-    // 副露の配列をコピーする
-    // </summary>
-
+    // 复制副牌的队列
     public static bool copyFuuros(Fuuro[] dest, Fuuro[] src, int length)
     {
         if (length > FUURO_MAX)

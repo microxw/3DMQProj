@@ -1,13 +1,14 @@
-﻿
-/// <summary>
-/// 他家との関係
-/// </summary>
+﻿/**
+ * ERelation
+ * 去其他玩家的关系
+ * brandy added
+ */
 
 public enum ERelation
 {
-    JiBun = 0,    //自分
-    KaMiCha = 1,  //上家
-    ToiMen = 2,   //対面
-    ShiMoCha = 3, //下家
+    JiBun = 0,    // 自己
+    KaMiCha = 1,  // 上家
+    ToiMen = 2,   // 对面
+    ShiMoCha = 3, // 下家
 }
 

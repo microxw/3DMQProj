@@ -1,5 +1,4 @@
 ﻿
-
 public class PlayerTenbouChangeInfo 
 {
     public EKaze playerKaze;

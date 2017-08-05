@@ -1,10 +1,13 @@
-﻿
-/// <summary>
-/// Score, has the same function to class ScoreInfo, but is more clear.
-/// </summary>
-public struct Score 
+﻿/**
+ * Score
+ * Score, has the same function to class ScoreInfo, but is more clear
+ * brandy added
+ */
+
+
+public struct Score
 {
-    //parent.
+    //parent
     public int oyaAgari;
     public int oyaTsumoKoPay;
 
@@ -14,7 +17,7 @@ public struct Score
     public int koTsumoOyaPay;
 
 
-    public Score( int oyaAgari, int oyaTsumoKoPay, int koAgari, int koTsumoKoPay, int koTsumoOyaPay )
+    public Score(int oyaAgari, int oyaTsumoKoPay, int koAgari, int koTsumoKoPay, int koTsumoOyaPay)
     {
         this.oyaAgari = oyaAgari;
         this.oyaTsumoKoPay = oyaTsumoKoPay;
@@ -24,7 +27,7 @@ public struct Score
         this.koTsumoOyaPay = koTsumoOyaPay;
     }
 
-    public Score( Score other )
+    public Score(Score other)
     {
         this.oyaAgari = other.oyaAgari;
         this.oyaTsumoKoPay = other.oyaTsumoKoPay;
@@ -37,6 +40,6 @@ public struct Score
     public override string ToString()
     {
         return string.Format("[Score]: oyaAgari = {0}, oyaTsumoKoPay = {1},\n koAgari = {2}, koTsumoKoPay = {3}, koTsumoOyaPay = {4}",
-                             oyaAgari, oyaTsumoKoPay, koAgari, koTsumoKoPay, koTsumoOyaPay );
+                             oyaAgari, oyaTsumoKoPay, koAgari, koTsumoKoPay, koTsumoOyaPay);
     }
 }

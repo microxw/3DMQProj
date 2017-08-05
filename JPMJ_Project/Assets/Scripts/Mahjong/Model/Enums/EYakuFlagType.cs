@@ -1,21 +1,22 @@
-﻿
-/// <summary>
-/// 特殊系役.
-/// </summary>
+﻿/**
+ * EYakuFlagType
+ * 特殊的番牌
+ * brandy added
+ */
 
-public enum EYakuFlagType 
+public enum EYakuFlagType
 {
-    // 立直
+    // 听牌
     REACH = 0,
-    // ダブル立直 
+    // 双听
     DOUBLE_REACH = 1,
     // 一発
     IPPATU = 2,
-    // ツモ 
+    // 自摸
     TSUMO = 3,
-    // 嶺上開放 
+    // 杠上开花
     RINSYAN = 4,
-    // 搶槓 
+    // 抢杠
     CHANKAN = 5,
     // 海底 
     HAITEI = 6,
@@ -27,15 +28,15 @@ public enum EYakuFlagType
     TIHOU = 9,
     // 人和  
     RENHOU = 10,
-    // 流し満貫 
+    // 流局满贯
     NAGASHIMANGAN = 11,
-    // 喰いタン 
+    // 食断，副露后断幺九还成立
     KUITAN = 12,
-    // 十三不塔 
+    // 十三不塔
     //TIISANPUTOU,
-    // 八連荘 
+    // 八连庄
     //PARENCHAN,
 
-    // 役の数 
+    // 番数
     Count
 }

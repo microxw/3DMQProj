@@ -1,4 +1,10 @@
-﻿using System;
+﻿/**
+ * AI
+ * AI玩家类，后续不再需要AI了
+ * brandy added
+ */
+
+using System;
 using System.Collections.Generic;
 
 
@@ -28,8 +34,8 @@ public class AI : Player
 
         Hai tsumoHai = haiToHandle;
 
-        // ツモあがりの場合は、イベント(ツモあがり)を返す。
-        int agariScore = MahjongAgent.getAgariScore(Tehai, tsumoHai, JiKaze);
+		// 麻将活动 (麻将) 返回
+		int agariScore = MahjongAgent.getAgariScore(Tehai, tsumoHai, JiKaze);
         if( agariScore > 0 )
         {
             if( GameSettings.AllowFuriten || !isFuriten() )
@@ -46,7 +52,7 @@ public class AI : Player
             return DoResponse(EResponse.Nagashi); 
         }
 
-        // リーチの場合は、ツモ切りする
+        // 听牌判定
         if( MahjongAgent.isReach(JiKaze) )
         {
             _action.SutehaiIndex = Tehai.getJyunTehaiCount();
@@ -69,7 +75,7 @@ public class AI : Player
             }
         }
 
-        // 制限事項。リーチ後のカンをさせない
+        // 限制事项：在听牌之后不会让你做
         if( !MahjongAgent.isReach(JiKaze) ) 
         {
             /*
